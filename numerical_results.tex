@@ -1,0 +1,124 @@
+
+
+\section{Numerical results}
+\label{sec:numerical-results}
+
+\subsection{Real data considerations}
+
+In practice, one often encounters data that has variables with both continuous
+as well as categorical data.  In problems such as these categorical data is
+typically reformulated into so-called dummy-coded variables.  However, the
+quantile-based classifier is inherently ill-conditioned to handle such data.
+When categorical variables are present in the data, we propose including them in
+the classifier as untransformed dummy-coded variables.
+
+A second type of data can also cause problems:  one where the data is a mixture
+of point masses as well as continuous data.  As an example, consider univariate
+data where the the quantiles of the underlying populations are given as follows.
+\begin{center}
+  \begin{tabular}{lrrrrrrrrrrr}
+    \toprule
+    & \multicolumn{11}{c}{\underline{Quantile levels}} \\
+    & 0.89 & 0.90 & 0.91 & 0.92 & 0.93 & 0.94 & 0.95 & 0.96 & 0.97 & 0.98 & 0.99 \\
+    \midrule
+    Class 0 & 0.00 & 0.02 & 0.14 & 0.23 & 0.33 & 0.42 & 0.55 & 0.68 & 0.87 & 1.05 & 1.41 \\
+    Class 1 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.06 & 0.08 & 0.18 & 0.20 \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+This example raises the question as to what the quantile distances would be for
+a fixed choice of quantile level.  Suppose first that we consider a quantile
+level with nonzero quantiles for both classes, say 0.97.  In this case, the
+quantile distances for the data in class 0 with value 0 than the data quantile
+distances for the data in class 1 with value 0.  As a result, the quantile-based
+data will have spuriously introduced differences in the data for 90\% of the
+data, when in fact there is no discriminative data in those quantiles.
+Conversely, suppose now that we select a quantile level with quantiles for both
+classes with value 0.  Doing so has the effect of simply multiplying the nonzero
+values in the data by a constant factor.  While this is less disastrous then the
+previous scenario, we are not using the quantile-based data approach consistent
+with the rest of the paper.
+
+What we propose to do for such a scenario is the following.  When mixture data
+such as the example given above is present for a variable, we try to separate
+the parts of the data that belong to the point mass contribution to the mixture,
+and those that belong to the continuous part of the mixture.  Then for the point
+mass data, we create a categorical variable that includes a reference category
+for the continuous part of the data, and for the continuous part we perform the
+quantile-based classification using only the reduced subset of the data.
+
+
+
+
+\subsection{Simulation study}
+\label{sec: simulation}
+
+The performance of the marginal quantile-based classifier is compared to other
+classification methods through the use of simulation studies.  A number of
+scenarios are considered as follows.  In the first scenario, we consider two
+classes, each with features drawn from a multivariate Gaussian distribution,
+with one class given a location shift.  In the second scenario, we consider
+highly skewed data by sampling from a multivariate Gaussian distribution, and
+then exponentiating the data, with one class given a location shift.  A third
+scenario is considered, with features drawn from a multivariate Gaussian
+distribution, and then blocks of the data are transformed through
+exponentiation, log transforms, squaring, and square root transforms.  Finally,
+features were was sampled from beta distributions and gamma distributions with
+different parameterizations for each class.
+
+The methods proposed in this paper are abbreviated as MQC / Aggregate and MQC /
+PLR to signify whether the decision rule was obtained using varying coefficients
+or not.  Additionally, a third variant abbreviated as MQC / PLR + Aug is
+considered (short for augmented), which means that the quantile distances data
+is augmented by the original data when constructing the decision rule.
+
+In the Gaussian setting, nearest shrunken centroids and penalized LDA show the
+best performance.  When $n$ is large compared to $p$, marginal quantile-based
+classifiers perform reasonably well, although performance deteriorates relative
+to other methods when conditions are less ideal.
+
+In the exponentiated Gaussian setting, Hennig and Viroli's quantile-based
+classifiers perform far better than any other competitor in every setting.  This
+is the setting where this method is really ideal, in that the optimal quantile
+level is the same for every feature.  This allows the method to in some sense,
+``borrow'' information across the features when selecting the empirically
+optimal quantile.  The aggregate MQC method will perform equally as well as the
+quantile-based classifiers in the limit, but it is clear that for finite samples
+the performance is not nearly as good.  The MQC / PLR methods do well compared
+to other methods, although still far behind the quantile-based classifiers.
+
+The MQC / PLR approach did well for the block transformed data simulations and
+was the best method for many settings.  Interestingly, decision trees was a
+close second for many settings.  Quantile-based classifiers was another
+effective method that performed the best when $n$ was small compared to $p$.
+
+For the beta and gamma distributed data, MQC, quantile-based classifiers and,
+decision trees exhibited the best performance.  We expect that this is due to a
+few features having a high level of discriminatory information, and each of
+these methods being able to make good use of these features for classification.
+
+
+
+
+\subsection{Real data study}
+\label{sec:real-data-study}
+
+For a real data study, we considered a spam data with a total of 4,601
+observations and 57 features.  The attributes are, for example, the percentage
+of specific words or phrases in the email, the average and maximum run lengths
+of uppercase letters, and the total number of uppercase letters.  The proportion
+of data used to train the methods is varied from 5\% to 80\%.  We see that for
+this data set, MQC performs at least as well as the best at every level, with
+SVM the next best competitor.
+
+
+\input{tables.tex}
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "mqc_paper"
+%%% End:

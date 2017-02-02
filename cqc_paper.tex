@@ -1,0 +1,109 @@
+
+\documentclass{article}
+
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage[margin=2.54cm]{geometry}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{titlesec}                       % \titlespacing
+\usepackage{bbm}                            % mathbbm (for \ind)
+\usepackage{booktabs}
+\usepackage{natbib}
+\usepackage{bm}
+\usepackage{authblk}
+
+
+% natbib bibliography style settings
+\bibliographystyle{humannat}
+\setcitestyle{authoryear,open={(},close={)}}
+
+
+% create custom commands
+\renewcommand{\arraystretch}{0.9}
+\renewcommand{\vec}{\bm}
+\newcommand{\ev}{\mathbb{E}\,}
+\newcommand{\prob}{\mathbb{P}\,}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\ind}{\mathbbm{1}\,}
+\newcommand{\normal}{\text{N}}
+\newcommand{\convp}{\stackrel{p}{\longrightarrow}}
+\newcommand{\limtheta}{\lim_{\vec{\theta} \rightarrow \vec{\theta}^{*}}}
+
+
+% Sets the document line spacing; 1.6 is double spacing.  See
+% https://www.sharelatex.com/learn/Paragraph_formatting#Line_spacing
+\linespread{1.6}
+
+
+% Spacing before/after sections and subsections
+\titlespacing*{\section}
+{0pt}{5.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsection}
+{0pt}{7.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsubsection}
+{0pt}{5.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+
+
+% see http://www.maths.tcd.ie/~dwilkins/LaTeXPrimer/Theorems.html for these
+% environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newenvironment{proof}[1][Proof]{\begin{trivlist}
+  \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+
+
+
+% document start ---------------------------------------------------------------
+
+\begin{document}
+
+% title and author specifications
+\title{Composite Quantile-Based Classifiers}
+\author[1]{David A. Pritchard}
+\author[2]{Yufeng Liu}
+\affil[1]{Department of Biostatistics, University of North Carolina, Chapel
+  Hill, NC 27599, USA}
+\affil[2]{Department of Statistics and Operations Research, University of North
+  Carolina, Chapel Hill, NC 27599, USA}
+\date{}
+\maketitle
+
+\begin{abstract}
+  \input{abstract.tex}
+\end{abstract}
+
+\renewcommand{\abstractname}{Keywords}
+\begin{abstract}
+  \noindent
+  classification, high-dimensional data, quantile-based classifier, decision
+  boundary
+\end{abstract}
+
+
+
+
+\input{introduction.tex}
+
+\input{univariate_results.tex}
+
+\input{multivariate_rules.tex}
+
+\input{asymptotic_results.tex}
+
+\input{numerical_results.tex}
+
+\bibliography{mqc_paper.bib}
+
+\end{document}
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

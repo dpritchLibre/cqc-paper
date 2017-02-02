@@ -1,0 +1,93 @@
+
+\section{Asymptotic theory}
+\label{sec:asymptotic-theory}
+
+\subsection{Consistency of the aggregate quantile classifier}
+\label{sec:aggregate-classifier-consistency}
+
+\begin{enumerate}[label=\emph{Assumption \arabic*.}, align=left]
+\item $F_{ij}^{-1}$ is a continuous function of
+  $\theta,~ i=0,1,~ j=1, \dots, p$.
+\item For all
+  $\vec{\theta} \in T, \hspace{3mm} \prob\Big(
+  \sum_{j=1}^p \Lambda_j (Z_j, \theta_j) = 0
+  \Big) = 0$.
+\item There is a unique $\tilde{\theta}_j$ that satisfies
+  $\tilde{\theta} = \argmax_{\theta \in T} \Psi_j(\theta)$.
+\end{enumerate}
+Let $\widetilde{\theta}_j$ denote the unique maximizer of
+$\Psi_j(\theta),~ j=1, \dots, p$, and further denote
+$\widetilde{\vec{\theta}} = \Big( \widetilde{\theta}_1, \dots,
+\widetilde{\theta}_P \Big)$.
+\vspace{5mm}
+
+\begin{theorem}
+  Under assumptions 1-3 it follows that
+  $\Psi(\widehat{\vec{\theta}}_n) \convp \Psi(\widetilde{\vec{\theta}})$.
+\end{theorem}
+
+\begin{proof}
+  The following upper bound on the difference between the component-wise
+  quantile distances was established in the proof of Theorem 1 in Hennig and
+  Viroli (2016).  For $z \in \mathbb{R}$ and
+  $\theta, \theta^{\prime} \in (0, 1)$ then
+  \begin{equation}
+    \label{eq:quantile-distance-ubnd}
+    \big| \Phi_{ij}(z, \theta) - \Phi_{ij}(z, \theta^{\prime}) \big|
+    \leq |z|\, | \theta - \theta^{\prime} | +
+    4 | F_{ij}^{-1}(\theta) - F_{ij}^{-1}(\theta^{\prime}) |,
+    \hspace{5mm} i = 1, 2,~ j = 1, \dots, p
+  \end{equation}
+  Since $F_{ij}^{-1}$ is continuous by assumption, it follows that for arbitrary
+  fixed $z$, $\Phi_{ij}(z, \theta)$ is continuous in $\theta$ for every
+  $\{i, j\}$.  This in turn implies that for arbitrary fixed $\vec{z}$,
+  $\Lambda(\vec{z}, \vec{\theta})$ is also continuous in $\vec{\theta}$, since
+  $\Lambda$ is just the sum of the differences of the
+  $\Phi_{ij}(z_j, \theta_j)$'s.  Then we observe that
+  \begin{align}
+    \label{eq:multivariate-phi-continuity}
+    \begin{split}
+      \limtheta \Psi(\vec{\theta})
+      & = \limtheta \left\{
+        \pi_0 \int \ind\Big( \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z}) +
+        \pi_1 \int \ind\Big(\Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+      \right\} \\[1ex]
+      & = \pi_0 \int \limtheta \ind\Big( \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z})
+      + \pi_1 \int \limtheta \ind\Big(\Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+      \\[1ex]
+      & = \pi_0 \int \ind \Big( \limtheta \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z})
+      + \pi_1 \int \ind \Big( \limtheta \Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+      \\[1ex]
+      & = \pi_0 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) > 0 \Big)\, dP_0(\vec{z})
+      + \pi_1 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) \leq 0 \Big)\, dP_1(\vec{z})
+      \\[1ex]
+      & = \Psi(\vec{\theta}^{*})
+    \end{split}
+  \end{align}
+  The justification for bringing the limit inside of the integral is due to the
+  dominated convergence theorem.  The justification for bringing the limit
+  inside of the indicator function is that the indicator function is continuous
+  everywhere except at 0, which by Assumption 2 occurs with probability 0, and
+  hence does not change the value of the integral.  This result establishes that
+  $\Psi$ is continuous in $\vec{\theta}$.
+
+  It was established in Lemma \ref{lem:univariate-consistency} that
+  $\widehat{\theta}_{jn} \convp \widetilde{\theta}_j$, so by Slutsky's theorem
+  it follows that $\widehat{\vec{\theta}}_n \convp \widetilde{\vec{\theta}}$.
+  Then by the result obtained in equation
+  (\ref{eq:multivariate-phi-continuity}), a second application of Slutsky's
+  theorem yields
+  $\Psi(\widehat{\vec{\theta}}_n) \convp \Psi(\widetilde{\vec{\theta}})$.
+\end{proof}
+
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "mqc_paper"
+%%% End:

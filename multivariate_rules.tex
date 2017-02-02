@@ -1,0 +1,276 @@
+
+\section{Multivariate quantile-based classification rules}
+\label{sec:multivariate-classifier}
+
+
+In this section we consider the task of building upon the quantile-based
+classifier developed for the univariate setting in order to construct a
+classifier for data with multivariate features.    
+
+
+\subsection{Aggregate quantile-based classification rule}
+\label{sec:aggregate-classifier}
+
+A natural way to construct a classifier for data with multivariate features
+based on the quantile classifer is to aggregate the component-wise quantile
+distances from each component from a point in $\mathbb{R}^p$ to the
+component-wise quantiles for a population of interest and choices of component
+quantile levels.  Consider populations $\Pi_0$ and $\Pi_1$ each with densities
+on $\mathbb{R}^p$ and a point $\vec{z} \in \mathbb{R}^p$.  Then we denote the
+component-wise quantile distance of the $j$-th component of $\vec{z}$ to the
+$\theta_j$-th quantile of a population's $j$-th component as
+\begin{equation}
+  \label{eq:multivariate-phi}
+  \Phi_{ij}(\vec{z}, \vec{\theta}) =
+  \rho_{\theta_j}\Big(z_j - F_{ij}^{-1}(\theta_j) \Big),
+  \hspace{5mm} i = 0, 1, \hspace{3mm} j = 1, \dots, p.
+\end{equation}
+Then the aggregate quantile-based classification rule is defined as follows.
+\begin{equation}
+  \label{eq:aggregate-quantile-classifier}
+  \text{For an observation $\vec{z}$, classify to:} \hspace{3mm}
+  \left\{
+    \begin{array}{lll}
+      \Pi_0, & & \sum_{j=1}^p \Big( \Phi_{1j}(\vec{z}, \vec{\theta}) -
+                 \Phi_{0j}(\vec{z}, \vec{\theta}) \Big) > 0 \\[1ex]
+      \Pi_1, & & \text{otherwise}
+    \end{array}
+  \right.
+\end{equation}
+This is the quantile-based classifier proposed in Hennig and Viroli (2016) for
+identically equal quantile levels across the components.  It is also the the
+median-based classifier proposed in Hall et. all (2009) for identically equal
+quantile levels of 0.5 across the components.
+
+
+\subsubsection{Empirical aggregate quantile-based classification rule}
+\label{sec:empirical-aggregate}
+
+% Let $\vec{v}_1, \dots, \vec{v}_{n_0}$ be samples from a population $\Pi_0$, and
+% $\vec{v}_1, \dots, \vec{v}_{n_0}$ be samples from a population $\Pi_1$, each
+% with a probability density on $\mathbb{R}^p$.  Then we define the
+% $\vec{\theta}^{\text{th}}$ empirical quantile for the population to be given by
+% the minimizer of the sample version of equation (\ref{eq:check-loss-min})
+% defined by
+% \begin{equation}
+%   \label{eq:empirical-quantile}
+%   \widehat{F}_{0j}^{-1} (\theta) = \argmin_q \left\{
+%     \theta \sum_{ v_{i} > q } |v_{i} - q| ~+~
+%     (1 - \theta) \sum_{ v_{i} \leq q } |v_{i} - q|
+%   \right\}.
+% \end{equation}
+
+Let $\widehat{F}_{0jn}(\vec{\theta})$ be the estimate of the $\theta_j$-th
+quantile levels of the $j$-th component of population $\Pi_0$ based on the
+$j$-th component of the samples $\vec{x}_1, \dots, \vec{x}_n$ that came from
+population $\Pi_0$, and similarly for $\widehat{F}_{1jn}(\vec{\theta})$, where.
+Then the aggregate empirical difference of the quantile distances of a point
+$\vec{z}$ to the population's $\vec{\theta}$-th quantiles is defined as
+\begin{equation}
+  \label{eq:multivariate-phi-empirical}
+  \Lambda_n (\vec{z}, \vec{\theta}) = \sum_{j=1}^p \left\{
+    \rho_{\theta}\Big(z_j - \widehat{F}_{1jn}^{-1}(\vec{\theta})\Big) -
+    \rho_{\theta}\Big(z_j - \widehat{F}_{0jn}^{-1}(\vec{\theta})\Big)
+  \right\}.
+\end{equation}
+Then the observed rate of correct classification for the $\theta$-th
+quantile is defined as
+\begin{equation}
+    \Psi_n(\vec{\theta}) = \frac{1}{n} \left[
+      \sum_{\vec{x}_i \in \Pi_0}
+      \mathbbm{1}\Big( \Lambda_n(\vec{x}_i, \vec{\theta}) > 0 \Big) +
+      \sum_{\vec{x}_i \in \Pi_1}
+      \mathbbm{1}\Big( \Lambda_n(\vec{x}_i, \vec{\theta}) \leq 0 \Big)
+    \right].
+\end{equation}
+Ideally, we would like to find a solution to
+$\widehat{\vec{\theta}}_n = \argmax_{\theta \in T^p} \Psi_n(\vec{\theta})$, but
+this computationally infeasible. Instead, we propose using the component-wise
+empirically optimal quantile classifiers to hopefully approximate this quantity.
+That is, we define the component-wise empirically optimal quantile levels to be
+any solution to the equation
+\begin{equation}
+  \label{eq:marginally-optimal-levels}
+  \widehat{\vec{\theta}}_n = \Big(
+  \widehat{\theta}_{1n}, \dots, \widehat{\theta}_{pn}
+  \Big)
+\end{equation}
+where $\widehat{\theta}_{jn}$ is the component-wise empirically optimal quantile
+classifier for the $j$-th component, as defined in Section
+\ref{sec:univariate-classifier}.
+
+The classifier proposed in Hennig and Viroli (2016) is defined as
+$\widehat{\vec{\theta}}_n^{*} = \argmax_{\substack{\vec{\theta} \in T^p \\
+    \theta_1 = ... = \theta_p}} \Psi_n(\vec{\theta})$.  Clearly the choice of
+quantile level for equation (\ref{eq:marginally-optimal-levels}) is more
+flexible that for that of $\widehat{\vec{\theta}}_n^{*}$; it might be hoped that
+this choice would perform better for data with components of varying marginal
+distributional shapes.  However, there are some advantages to the form of
+$\widehat{\vec{\theta}}_n^{*}$ and in many settings its performance seems to be
+greatly superior.  We will discuss this further in the following sections.
+
+% Then the empirical difference of the quantile distances of a point $z$ to the
+% population's $\theta$-th quantiles is defined as
+% \[
+%   \Lambda_n (z, \theta) = \rho_{\theta}\Big(z - \widehat{F}_{1n}^{-1}(\theta)\Big) -
+%   \rho_{\theta}\Big(z - \widehat{F}_{0n}^{-1}(\theta)\Big).
+% \]
+% where $\widehat{F}_{1n}$ is the estimate of the $\theta$-th quantile level of
+% population $\Pi_1$ based on the samples in $x_1, \dots, x_n$ that came from
+% population $\Pi_1$, and similarly for $\widehat{F}_{0n}$.  
+
+
+
+
+
+
+
+
+% \subsection{Aggregate quantile-based classification rule}
+% \label{sec: aggr classifier}
+
+% A natural way to construct a classifier for data with multivariate features is
+% to aggregate the component-wise quantile distances and to classify a new
+% observation to the class for which it has the smaller aggregate distance to.
+% Consider $p$-variate observations $\vec{x}_{0, 1}, \dots, \vec{x}_{0, n_0}$
+% sampled from population $\Pi_0$ and observations
+% $\vec{x}_{1, 1}, \dots, \vec{x}_{1, n_1}$ sampled from population $\Pi_1$.  Let
+% $\tau$ be some choice of quantile and denote $\widehat{F}^{-1}_{i, j} (\tau)$ to
+% be the $\tau^{\text{th}}$ sample quantile for the $j^{\text{th}}$ component of
+% population $\Pi_i,~ i = 1, 2,~ j = 1, \dots, p$.  Let
+% $\vec{z} = (z_1, \dots, z_p)$ be a new observation.  Then classify $\vec{z}$ to
+% \begin{equation} \label{eq: hennig} \hspace{-2mm}
+%   \left\{ 
+%     \begin{array}{lcl}
+%       \Pi_0, & & \displaystyle \text{if} \hspace{3mm} \sum_{j = 1}^p w_{jk} \bigg\{
+%                  \rho_{\tau_{jk}} \left( z_j - \widehat{F}^{-1}_{1, j} (\tau_{jk}) \right) ~-~
+%                  \rho_{\tau_{jk}} \left( z_j - \widehat{F}^{-1}_{0, j} (\tau_{jk}) \right)
+%                  \bigg\}  ~>~ 0 \\[3ex]
+%       \Pi_1, & & \text{otherwise} \\[1ex]
+%     \end{array}
+%   \right.
+% \end{equation}
+% where now we are indexing the weights $w_{jk}$ and corresponding quantile levels
+% $\tau_{jk}$ by the variable index $j$ and quantile level selection $k$.
+
+% This is the classifier proposed by Hennig and Viroli (2016) where the quantile
+% level is fixed across the variables and is chosen through cross-validation on
+% the missclassification rate, and the median-based classifier proposed by Hall
+% et. all (2009), where the quantile level is identically 0.5 for each variable
+% (and without a composite quantile weighting scheme for either method).
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Varying coefficient quantile-based classification rule}
+\label{sec:varying-coefficient}
+
+One potential drawback to the classification rules described in section
+\ref{sec:empirical-aggregate} is that equal weight is given to each of
+variables.  Naturally, some variables may potentially be more discriminatory and
+we would like to draw more heavily on these variables for classification
+purposes, or conversely we would like to draw less heavily on less
+discriminatory variables.  This motivates the following generalization of the
+classification rule.  
+\begin{equation}
+  \label{eq:varying-coefficient-classifier}
+  \text{For an observation $\vec{z}$, classify to:} \hspace{3mm}
+  \left\{
+    \begin{array}{lll}
+      \Pi_0, & & \sum_{j=1}^p \alpha_j \Big( \Phi_{1j}(\vec{z}, \vec{\theta}) -
+                 \Phi_{0j}(\vec{z}, \vec{\theta}) \Big) > 0 \\[1ex]
+      \Pi_1, & & \text{otherwise}
+    \end{array}
+  \right.
+\end{equation}
+for $\vec{\alpha} = (\alpha_1, \dots, \alpha_p) \in \mathbb{R}^p$. It is natural
+to think of $\alpha_j$'s as being coefficient weights, although in actually they
+are not weights as they are not normalized and we allow them to be negative.  By
+not imposing these restrictions this allows the model to more readily handle
+complex dependencies between the variables.
+
+
+\subsubsection{Choice of variable coefficients}
+\label{sec: var coefs}
+
+If we write
+\begin{equation}
+  z_j^{*} = \Phi_{1j}(\vec{z}, \vec{\theta}) - \Phi_{0j}(\vec{z}, \vec{\theta})
+\end{equation}
+then we can express the classification rule in equation
+(\ref{eq:varying-coefficient-classifier}) as follows.
+\begin{equation}
+  \label{eq: classifier transformed data}
+  \text{For an observation $\vec{z}$, classify to:} \hspace{3mm} \left\{ 
+    \begin{array}{lcl}
+      \Pi_0, & & \sum_{j = 1}^p \alpha_j z_j^{*} ~>~ 0 \\[1ex]
+      \Pi_1, & & \text{otherwise} \\[0ex]
+    \end{array}
+  \right.
+\end{equation}
+From this form it is readily apparent that the the classification rule decision
+boundary for the classifier in (\ref{eq: classifier transformed data}) is the
+same as that of the decision boundary obtained from the logistic regression
+model with $\vec{z}^{*} = (z_1^{*}, \dots, z_p^{*})$ as the predictor variables.
+From this perspective, it is natural to select the classifier component
+coefficients by using the logistic regression coefficient estimates obtained
+from the transformed training data.  This approach bears some similarities to
+the method proposed in Fan et al. (2016), although the motivations for the two
+methods comes from different perspectives.  Indeed, as is noted in Fan et
+al. (2016), we may use SVM or any other linear classifier as a means through
+which to obtain variable coefficient values, although for this paper we focus on
+using penalized linear regression with the $L_1$ penalty.
+
+
+% \subsubsection{Classifier algorithm}
+% \label{sec: algorithm}
+
+% The choice of variable coefficients proposed in section \ref{sec: var coefs}
+% leads to the following classification method algorithm.
+
+% \begin{enumerate}[leftmargin=*]
+  
+% \item Given $n$ pairs of observations
+%   $D = \left\{ (\vec{x}_i, y_i),~ i = 1, \dots, n \right\}$, randomly split the
+%   data into two parts for $L$ times:
+%   $D_{\ell} = (D_{\ell 1}, D_{\ell 2}),~ \ell = 1, \dots L$.
+  
+% \item Use the training data in $D_{\ell 1}$ to estimate within-class marginal
+%   quantiles for each variable and class, and then transform the variables in the
+%   testing data in $D_{\ell 2}$ as described in the preceding section.
+  
+% \item Fit a penalized logistic regression model to the transformed data
+%   $\{(\vec{x}_i^{*}, y_i),~ i \in D_{\ell 2} \}$, using cross validation to
+%   select the penalty parameter.
+  
+% \item Repeat 2-3 for $\ell = 1, \dots, L$ times and construct a classification
+%   rule based on the results.  Some possible rules are the following for a new
+%   observation $\vec{z}$:
+  
+%   \begin{itemize}
+    
+%   \item Sum the value of the expression in (3) over all the $\ell$, and assign
+%     $\vec{z}$ to class 1 if this value is positive, and to class 0 otherwise.
+    
+%   \item For each $\ell$, assign a class to $\vec{z}$ based on the expression in
+%     (3), and then assign an overall class to $\vec{z}$ based on a majority vote.
+    
+%   \end{itemize}
+  
+% \end{enumerate}
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "cqc_paper"
+%%% End:

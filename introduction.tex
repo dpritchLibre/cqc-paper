@@ -1,0 +1,101 @@
+
+\section{Introduction}
+\label{sec: intro}
+
+For the supervised classification problem, the goal is to build a rule for
+predicting the class membership of an item based on a set of variables or
+features.  The rule is constructed from a training sample consisting of the
+class membership and features for the training set.  Numerous applications
+include disease classification, image or sound recognition, object
+discrimination, and spam detection, among many others.
+
+Supervised classification has a long and historied place in the literature.
+Some important early methods include naive Bayes, linear and quadratic
+discriminant analysis, nearest neighbor methods \citep{cover1967}, and logistic
+regression.  Examples of more recent methods include kernel smoothing
+\citep{mika1999}, neural networks \citep{ripley1994}, and mixture discriminant
+analysis \citep{hastie1996}.  These methods often perform well in the classical
+low dimensional setting, where the number of features is smaller than the
+training data sample size.  However, in high dimensional settings such methods
+can have identifiability issues, be computationally demanding, or suffer from
+poor performance due to the curse of dimensionality.
+
+Some methods have been proposed that are designed to perform well in the
+high-dimensional setting.  Support vector machine (SVM) \citep{cortes1995} and
+penalized logistic regression \citep{park2007} are two well-know approaches
+have been successfully applied in many such settings.  Feature transformation
+through component-wise density estimation can be used in conjunction with such
+methods \citep{fan2016}.  Non-parametric distance-based classifiers such as
+centroid-based classifiers \citep{tibshirani2002} and median based classifiers
+\citep{jornsten2004, ghosh2005} have been proposed, as well as
+component-wise median-based classifiers \citep{hall2012} and quantile-based
+classifiers \citep{hennig2016}.
+
+In this paper we continue to explore the application of quantile-based
+classifiers, as introduced by Hennig and Viroli, in the high-dimensional
+setting.  This family of classifiers is based upon a comparison of the
+component-wise distances of the components of an observation to the within-class
+quantiles.  The quantile-based classifiers family of methods then classifies an
+observation as belonging to the class which has the smaller aggregate
+component-wise distance from the components of the observation to the
+within-class quantiles, and where the aggregate distance is defined as the sum
+of the individual distances.  The quantile-based classifiers in
+\citep{hennig2016} is a single-parameter family of classifiers with the
+parameter specifying a common quantile level for each component at which to
+compare the component-wise distances of an observation to.  The common quantile
+level, which is used for all of the component-wise comparisons, is selected to
+maximize the empirical classification rate of the classifiers.  This
+classification approach works extremely well in many settings, in particular for
+the setting where the optimal choice of quantile level is the same for each
+component.  However, this restriction on the choice of quantile level can lead
+to a loss of efficiency in settings where the optimal optimal choice of quantile
+level varies across components.  This naturally leads to the question of whether
+there is a way to allow for more flexibility in the choice of quantile levels in
+order to achieve improved performance in these other scenarios.
+
+The fundamental approach taken in this paper starts from a slightly different
+place then that of Hennig and Viroli.  It was established in \citep{hennig2016}
+that for univariate data and the optimal choice of quantile level, the decision
+rule based upon the distances of an observation to the corresponding
+within-class quantiles is the Bayes rule.  It is this result that motivates the
+methodologies developed in this paper: the goal is to use these most powerful
+univariate classifiers as building blocks for a multivariate classifier.  In
+this paper the component-wise quantile levels are selected to maximize the
+empirical classification rates for each of the components, taken one-at-a-time.
+We consider aggregating the component-wise distances of the components of an
+observation to the within-class quantiles, where the aggregation is taken as the
+sum of the component-wise distances.  This approach yields the same classifier
+in the limit as the Hennig and Viroli classifier for the setting where is
+optimal choice of quantile level is the same for each component, and it allows
+for more flexibility in the more general setting.  However, the finite-sample
+performance of this classifier suffers in comparison to the Hennig and Viroli
+version in the first case, and in the second case using different quantile
+levels introduces an issue with scaling that can affect performance.  To
+alleviate this issue we consider a second form of aggregation that allows for a
+linear combination of the component-wise quantile distances.  We propose
+selecting the coefficients for the linear combination through penalized
+regression with the lasso penalty.  The competitive performance of these
+approaches is demonstrated in through the use of simulation studies as well as
+on a benchmark email spam application.
+
+% In Section \ref{sec:univariate-classifier}, we present the quantile classifier
+% rule as proposed in \citep{hennig2016}.  We describe an algorithm for
+% calculating the empirical quantile classifier rule and show that this rule
+% converges to the optimal quantile classifier rule (and hence the Bayes rule) in
+% the limit and the sample size increases.  In Section
+% \ref{sec:multivariate-classifier}, we consider ways of constructing a
+% multivariate classifier from the quantile classifier rules based on the
+% individual features.  One method that we consider is to sum the component-wise
+% distances from a new point to the class quantiles.  However this method has some
+% drawbacks, as is discussed in Section \ref{sec:aggregate-classifier}.  To
+% alleviate some of these issues, a second approach is proposed, where the
+% decision rule is based on a linear combination of the component-wise quantile
+% distances.
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "cqc_paper"
+%%% End:

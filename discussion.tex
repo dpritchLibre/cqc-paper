@@ -1,0 +1,32 @@
+
+\section{Discussion}
+\label{sec:discussion}
+
+We propose a family of classification rules based on the marginal quantiles of
+the class features.  The quantile classifier is equal to the Bayes rule for the
+ideal choice of quantile level, so building a classification rule from this
+starting point seems like a promising endeavor.  Each of the classifiers
+considered in this paper are constructed in a two step process.  First, the
+marginal quantiles of the data are estimated and an estimate of the optimal
+quantile level for each component is calculated.  Secondly, a rule for combining
+the information provided by a point's quantile distance to the marginal class
+quantile levels is constructed.  We consider simple summation of the
+component-wise quantile distances, but there are some issues that cause problems
+with performance.  Instead, we suggest combining the component-wise quantile
+distances using a linear combination obtained through a regularization.
+
+We observe competitive performance from the proposed classifier when the sample
+size is large enough to accurately estimate the class quantiles.  When sample
+size is relatively small then the classifier is unstable due to the many moving
+parts, so that other classification methods may be more appropriate.  But for
+moderate sample sizes, the proposed classifier appears to exhibit competitive
+performance in a variety of settings and provides an alternative methodology for
+the classification problem.
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "mqc_paper"
+%%% End:
