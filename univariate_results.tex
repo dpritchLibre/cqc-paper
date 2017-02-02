@@ -1,21 +1,44 @@
 
-\section{Univariate classification rules}
+\section{QUANTILE CLASSIFIERS FOR UNIVARIATE DATA}
 \label{sec:univariate-classifier}
 
-Quantile-based classifiers such as Hall et al.'s median-based classifiers and
-Hennig and Viroli's quantile-based classifiers belong to a class of
-distance-based classification methods that classify a data observation based on
-the collective information provided by each of the marginal component-wise
-distances for the observation to of the potential member classes' components
-based on some metric of distance.  The methods proposed in this paper are built
-upon this same idea, and in this section we introduce some notation and consider
-the univariate setting before moving on to the multivariate setting in later
-sections.
+% Quantile-based classifiers such as Hall et al.'s median-based classifiers and
+% Hennig and Viroli's quantile-based classifiers belong to a class of
+% distance-based classification methods that classify a data observation based on
+% the collective information provided by each of the marginal component-wise
+% distances for the observation to of the potential member classes' components
+% based on some metric of distance.  The methods proposed in this paper are built
+% upon this same idea, and in this section we introduce some notation and consider
+% the univariate setting before moving on to the multivariate setting in later
+% sections.
+
+As noted in Section \ref{sec:intro}, the fundamental motivation for the family
+of classifiers proposed in this paper is the result that for univariate data and
+the optimal choice of quantile level, the decision rule based upon the distances
+of an observation to the corresponding within-class quantiles is the Bayes rule.
+The proposed classifiers for multivariate data are then constructed by
+considering each component of the observed data as a 1-dimensional problem, and
+then aggregating these most powerful univariate classifiers in some manner to
+create a multivariate classifier.  From this perspective, we find it natural to
+present our methodology by first considering the application of quantile
+classifiers in the univariate setting.
 
 The quantile classifier and the empirically optimal quantile classifier was
 introduced in Hennig and Viroli (2016).  For completeness, the notation and
 definitions are reintroduced in Sections \ref{sec:quantile-classifier} and
-\ref{sec:empirical-classifier}.
+\ref{sec:empirical-classifier}.  In Section
+\ref{sec:quantile-classifier-results} we present some results for the quantile
+classifier in the univariate setting.  A closed-form expression for the decision
+boundary for the quantile classifier for a fixed choice of quantile level is
+derived, as well as a closed-form solution for the empirical quantile for a
+given quantile level.  It is shown that these two results in conjunction yield a
+decision rule that can be found in $\bigO(n)$ time, where $n$ is the number of
+observations in the training data.  Consistency of both the estimated optimal
+quantile level and that of the empirically optimal quantile classifier is
+established.  Furthermore, an algorithm is proposed that obtains the decision
+rule for the empirically optimal quantile classifier in $\bigO(n \log n)$ time.
+
+
 
 
 \subsection{The quantile classifier}
