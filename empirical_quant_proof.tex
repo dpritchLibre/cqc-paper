@@ -1,0 +1,227 @@
+
+We can write the minimization problem
+\begin{equation*}
+  \min_q \left\{
+    \theta \sum_{ x_{i} > q } |x_{i} - q| ~+~
+    (1 - \theta) \sum_{ x_{i} \leq q } |x_{i} - q|
+  \right\}
+\end{equation*}
+equivalently as
+% \begin{align*}
+%   &\min_{q^{+}, q^{-}, \vec{u}, \vec{v}} \left\{
+%     \theta \sum_{i=1}^m u_i ~+~
+%     (1 - \theta) \sum_{i=1}^m v_i
+%   \right\} \\[2ex]
+%   & \text{subject to} \hspace{3mm}
+%   x_i - (q^{+} - q^{-}) = u_i - v_i, \hspace{5mm} i = 1, \dots, m \\[2ex]
+%   & q^{+} \geq 0,~ q^{-} \geq 0,~ \vec{u} \geq \vec{0},~ \vec{v} \geq 0
+% \end{align*}
+\begin{equation*}
+  \arraycolsep=5mm
+  \begin{array}{ll}
+    \displaystyle
+    \minimize_{q^{+}, q^{-}, \vec{u}, \vec{v}}
+    & \theta \sum_{i=1}^m u_i ~+~
+      (1 - \theta) \sum_{i=1}^m v_i \\[2ex]
+    \text{subject to}
+    & x_i - (q^{+} - q^{-}) = u_i - v_i, \hspace{5mm} i = 1, \dots, m \\[2ex]
+    & q^{+} \geq 0,~ q^{-} \geq 0,~ \vec{u} \geq \vec{0},~ \vec{v} \geq \vec{0} \\
+  \end{array}
+\end{equation*}
+which is seen to be a linear programming problem in standard form.  By rewriting
+the equality condition as $q^{+} - q^{-} + u_i - v_i = x_i$ for $i=1, \dots, m$,
+we can express the equality condition in matrix form as
+\begin{equation*}
+  \begin{bmatrix}
+    1      & -1     & 1 &        &   & -1 &        &    \\
+    \vdots & \vdots &   & \ddots &   &    & \ddots &    \\
+    1      & -1     &   &        & 1 &    &        & -1 \\
+  \end{bmatrix}
+  % \begin{bmatrix}
+  %   q^{+} \\ q^{-} \\ u_{1} \\ \vdots \\ u_m \\ v_1 \\ \vdots \\ v_m \\
+  % \end{bmatrix}
+  \begin{bmatrix}
+    q^{+} \\ q^{-} \\ \vec{u} \\ \vec{v} \\
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    x_1 \\ \vdots \\ x_m \\
+  \end{bmatrix}.
+\end{equation*}
+% \begin{equation*}
+%   \begin{bmatrix}
+%     1      & -1     & 1         &        &  \bigDown{0} & -1        &        & \bigDown{0} \\
+%     \vdots & \vdots &           & \ddots &              &           & \ddots &             \\
+%     1      & -1     & \bigUp{0} &        & 1            & \bigUp{0} &        & -1          \\
+%   \end{bmatrix}
+% \end{equation*}
+% \begin{equation*}
+%   \begin{bmatrix}
+%     1      & -1     & &         &  & &          & \\
+%     \vdots & \vdots & & \vec{I} &  & & -\vec{I} & \\
+%     1      & -1     & &         &  & &          & \\
+%   \end{bmatrix}
+% \end{equation*}
+% \begin{equation*}
+%   \begin{bmatrix}
+%     1      & -1     & 1      & 0      & \dots  & 0       & -1     &        &    \\
+%     \vdots & \vdots & 0      & \ddots & \ddots & \vdots  &  0     & \ddots & \\
+%     \vdots & \vdots & \vdots & \ddots & \ddots & 0       & \vdots & \ddots & \ddots &    \\
+%     1      & -1     & 0      & \dots  & 0      & 1       &  0     & \dots  &  0     & -1 \\
+%   \end{bmatrix}
+% \end{equation*}
+Recall that a solution for $(q^{+}, q^{-}, \vec{u}, \vec{v})$ is a basic
+solution if and only if there exist indices $B(1), \dots, B(m)$ such that both
+(i) the columns of the coefficient matrix with column indices subset by
+$B(1), \dots, B(m)$ are linearly independent, and (ii) if an element of
+$(q^{+}, q^{-}, \vec{u}, \vec{v})$ does not correspond to one of
+$B(1), \dots, B(m)$ then the element must have a value of 0.
+
+We can see that in order to have independent columns from the coefficient
+matrix, then for each $i$, no more than one of the columns corresponding to
+either $u_i$ or $v_i$ can have an index in $B(1), \dots, B(m)$, and additionally
+no more than one of the columns corresponding to either $q^{+}$ or $q^{-}$ can
+have an index in $B(1), \dots, B(m)$.  Furthermore, we note that if we have one
+column corresponding to $q^{+}$ or $q^{-}$, and one column corresponding to
+either $u_i$ or $v_i$ for each $i$, then we have $m + 1$ columns, which is still
+one column too many.  Thus we see that there must be either (i) exactly one
+column corresponding to either $u_i$ or $v_i$ for each $i$ and no columns
+corresponding to either $q^{+}$ or $q^{-}$, or (ii) exactly one column
+corresponding to either $u_i$ or $v_i$ for each $i$ less one and exactly one
+column corresponding to either $q^{+}$ or $q^{-}$.
+
+% Next we notice that if we include a column corresponding to $q^{+}$ or $q^{-}$,
+% then the solution for the corresponding coefficient is either the value of $x_i$
+% or $-x_i$, and where the index $i$ corresponds to the only $i$ without a column
+% corresponding to either $u_i$ or $v_i$.  Then each
+
+Furthermore, we can infer that if a column corresponding to $q^{+}$ or $q^{-}$
+has an index in $B(1), \dots, B(m)$ and the solution is feasible (i.e. $q^{+}$
+and $q^{-}$ are both nonnegative), then $q^{+} = (x_i)_{+}$ and
+$q^{-} = (-x_i)_{+}$, where the index $i$ corresponds to the only $i$ without a
+column corresponding to either $u_i$ or $v_i$, and $(z)_{+} = \max(0, z)$.  Let
+$q = q^{+} - q^{-}$, then it follows that a feasible solution for any $j \ne i$
+has $u_i = (x_i - q)_{+}$ and $v_i = (q - x_i)_{+}$.  This leads to a set of
+basic feasible solutions given by $q \in \{x_1, \dots, x_m\}$.  One last basic
+feasible solution is given for $q = 0$ with $u_i = (x_i)_{+}$ and
+$v_i = (-x_i)_{+}$ for all $i$.
+
+Next we aim to find the minimizing basic feasible solution.  Suppose that
+$\lceil \theta m \rceil = k$ and that $\ell < k$, and let $q = x_k$ and
+$q^{\prime} = x_{\ell}$.  Then comparing the objective function evaluated at $q$
+and $q^{\prime}$, we have
+\begin{align*} 
+  \left\{ \theta \sum_{i=\ell+1}^m \right.
+  & (x_i - q^{\prime}) +
+    \left. (1 - \theta) \sum_{i=1}^{\ell} (q^{\prime} - x_i) \right\} -
+    \left\{ \theta \sum_{i=k+1}^m (x_i - q) +
+    (1 - \theta) \sum_{i=1}^k (q - x_i) \right\} \\[1ex]
+  &= (1 - \theta) \sum_{i=1}^{\ell} \Big\{ (q^{\prime} - x_i) - (q - x_i) \Big\} \\
+  &\hspace{8mm}
+    + \theta \sum_{i=\ell+1}^k (x_i - q^{\prime})
+    - (1 - \theta) \sum_{i=\ell+1}^k (q - x_i) \\
+  &\hspace{8mm}
+    + \theta \sum_{i=k+1}^m \Big\{ (x_i - q^{\prime})
+    - (x_i - q) \Big\} \\[1ex]
+  % &= (1 - \theta) \sum_{i=1}^{\ell} \Big\{ (q^{\prime} - x_i) - (q - x_i) \Big\} \\
+  % &\hspace{8mm}
+  %   + \theta \sum_{i=\ell+1}^k (x_i - q^{\prime})
+  %   - (1 - \theta) \sum_{i=\ell+1}^k (q - x_i) \\
+  % &\hspace{8mm}
+  %   + (1 - \theta) \sum_{i=\ell+1}^k (q^{\prime} - x_i)
+  %   - (1 - \theta) \sum_{i=\ell+1}^k (q^{\prime} - x_i) \\
+  % &\hspace{8mm}
+  %   + \theta \sum_{i=k+1}^m \Big\{ (x_i - q^{\prime})
+  %   - (x_i - q) \Big\} \\[1ex]
+  &= (1 - \theta) \sum_{i=1}^{\ell} \Big\{ (q^{\prime} - x_i) - (q - x_i) \Big\} \\
+  &\hspace{8mm}
+    + \theta \sum_{i=\ell+1}^k (x_i - q^{\prime})
+    - (1 - \theta) \sum_{i=\ell+1}^k (q - x_i)
+    \pm (1 - \theta) \sum_{i=\ell+1}^k (q^{\prime} - x_i) \\
+  &\hspace{8mm}
+    + \theta \sum_{i=k+1}^m \Big\{ (x_i - q^{\prime})
+    - (x_i - q) \Big\} \\[1ex]
+  &= -(1 - \theta) \sum_{i=1}^{\ell}\, (q - q^{\prime}) \\
+  &\hspace{8mm}
+    + \theta \sum_{i=\ell+1}^k (x_i - q^{\prime})
+    - (1 - \theta) \sum_{i=\ell+1}^k (q - q^{\prime})
+    - (1 - \theta) \sum_{i=\ell+1}^k (q^{\prime} - x_i) \\
+  &\hspace{8mm}
+    + \theta \sum_{i=k+1}^m (q - q^{\prime}) \\[1ex]
+  &= -(1 - \theta) \sum_{i=1}^k\, (q - q^{\prime}) \\
+  &\hspace{8mm}
+    + \theta \sum_{i=\ell+1}^k (x_i - q^{\prime})
+    - (1 - \theta) \sum_{i=\ell+1}^k (q^{\prime} - x_i) \\
+  &\hspace{8mm}
+    + \theta \sum_{i=k+1}^m (q - q^{\prime}) \\[1ex]
+  &= -(1 - \theta) \sum_{i=1}^k\, (q - q^{\prime}) \\
+  &\hspace{8mm}
+    + \sum_{i=\ell+1}^k (x_i - q^{\prime}) \\
+  &\hspace{8mm}
+    + \theta \sum_{i=k+1}^m (q - q^{\prime}) \\[1ex]
+  & = - (1 - \theta)\, k\, (q - q^{\prime})
+    + \sum_{i=\ell+1}^k (x_i - q^{\prime})
+    + \theta (m - k) (q - q^{\prime}) \\
+  &= \sum_{i=\ell+1}^k (x_i - q^{\prime}) - (k - \theta m) (q - q^{\prime}) \\
+  &\geq (x_k - q^{\prime}) - (q - q^{\prime}) \\
+  &= x_k - q \\
+  &= 0
+\end{align*}
+The inequality is due to the fact that $x_i \geq q^{\prime}$ for
+$i \geq \ell + 1$, and also the fact that $k - \theta m < 1$.  Suppose now that
+$\lceil \theta m \rceil = k$ and that $\ell > k$, and let $q = x_k$ and
+$q^{\prime} = x_{\ell}$.  Then comparing the objective function evaluated at $q$
+and $q^{\prime}$, we have
+\begin{align*} 
+  \left\{ \theta \sum_{i=\ell+1}^m \right.
+  & (x_i - q^{\prime}) +
+    \left. (1 - \theta) \sum_{i=1}^{\ell} (q^{\prime} - x_i) \right\} -
+    \left\{ \theta \sum_{i=k+1}^m (x_i - q) +
+    (1 - \theta) \sum_{i=1}^k (q - x_i) \right\} \\[1ex]
+  &= (1 - \theta) \sum_{i=1}^k \Big\{ (q^{\prime} - x_i) - (q - x_i) \Big\} \\
+  &\hspace{8mm}
+    + \theta \sum_{i=k+1}^{\ell} (x_i - q^{\prime})
+    - (1 - \theta) \sum_{i=k+1}^{\ell} (q - x_i) \\
+  &\hspace{8mm}
+    + \theta \sum_{i=\ell+1}^m \Big\{ (x_i - q^{\prime})
+    - (x_i - q) \Big\} \\[1ex]
+  &= (1 - \theta) \sum_{i=1}^k\, (q^{\prime} - q) \\
+  &\hspace{8mm}
+    - \theta \sum_{i=k+1}^{\ell} (q^{\prime} - q)
+    + \sum_{i=k+1}^{\ell} (x_i - q) \\
+  &\hspace{8mm}
+    - \theta \sum_{i=l+1}^m (q^{\prime} - q) \\[1ex]
+  % &= (1 - \theta) \sum_{i=1}^k\, (q^{\prime} - q) \\
+  % &\hspace{8mm}
+  %   + \sum_{i=k+1}^{\ell} (x_i - q) \\
+  % &\hspace{8mm}
+  %   - \theta \sum_{i=k+1}^m (q^{\prime} - q) \\[1ex]
+  &= (1 - \theta) \sum_{i=1}^k\, (q^{\prime} - q)
+    + \sum_{i=k+1}^{\ell} (x_i - q)
+    - \theta \sum_{i=k+1}^m (q^{\prime} - q) \\
+  &= (1 - \theta)\, k\, (q^{\prime} - q)
+    + \sum_{i=k+1}^{\ell} (x_i - q)
+    - \theta\, (m - k) (q^{\prime} - q) \\
+  &= (k - \theta m) (q^{\prime} - q) + \sum_{i=k+1}^{\ell} (x_i - q) \\
+  &\geq 0
+\end{align*}
+There is one basic feasible solution remaining to check, that where $q = 0$.  To
+show that this is not the optimal solution except in the case that
+$x_{\lceil \theta m \rceil} = 0$, we make the following argument.  Note that if
+we add some nonzero value $\tau$ to each $x_i$ and if $q^{*}$ is an optimal
+choice for the original problem, then $q^{*} + \tau$ is an optimal choice for
+the new problem.  Choose $-\tau$ to be one of the $x_i$ for some $i$: then 0 is
+one of the values in the transformed data, which was shown in the previous
+results to be no better than the $\lceil \theta m \rceil$-th largest value of
+the transformed data, so it follows that the $\lceil \theta m \rceil$-th largest
+value is optimal.  Since $\tau$ cannot be better than optimal for the transormed
+data, then by the law of the contrapositive 0 cannot be better than optimal for
+the original data.
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "cqc_paper"
+%%% End:
