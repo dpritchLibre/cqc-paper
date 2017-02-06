@@ -9,14 +9,13 @@
 \usepackage{titlesec}                       % \titlespacing
 \usepackage{bbm}                            % mathbbm (for \ind)
 \usepackage{booktabs}
-\usepackage{natbib}
 \usepackage{bm}
 \usepackage{authblk}
+\usepackage{adjustbox}
 
 
 % natbib bibliography style settings
-\bibliographystyle{humannat}
-\setcitestyle{authoryear,open={(},close={)}}
+\bibliographystyle{amsplain}
 
 
 % create custom commands
@@ -32,8 +31,9 @@
 \newcommand{\normal}{\text{N}}
 \newcommand{\convp}{\stackrel{p}{\longrightarrow}}
 \newcommand{\limtheta}{\lim_{\vec{\theta} \rightarrow \vec{\theta}^{*}}}
-\newcommand{\bigUp}[1]{\text{\kern0.5em\smash{\raisebox{0ex}{\huge #1}}}}
-\newcommand{\bigDown}[1]{\text{\kern-0.5em\smash{\raisebox{-1.5ex}{\huge #1}}}}
+% \newcommand{\colsp}{\extracolsep{5mm}}
+% \newcommand{\bigUp}[1]{\text{\kern0.5em\smash{\raisebox{0ex}{\huge #1}}}}
+% \newcommand{\bigDown}[1]{\text{\kern-0.5em\smash{\raisebox{-1.5ex}{\huge #1}}}}
 
 
 % Sets the document line spacing; 1.6 is double spacing.  See
@@ -104,7 +104,7 @@
 
 \input{numerical_results.tex}
 
-\bibliography{mqc_paper.bib}
+\bibliography{cqc_paper}
 
 \end{document}
 
