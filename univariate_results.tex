@@ -616,7 +616,7 @@ we also need an interval from 0 to the smallest step function change location).
 
 At this point we have all of the concepts that we need to construct an algorithm
 to calculate an empirically optimal choice of quantile level.  The algorithm is
-presented below.
+presented as Algorithm \ref{alg:empirically-optimal-classifier}.
 
 % \begin{enumerate}[label=\arabic*., align=left]
 % \item sort $v_i \in \Pi_V$ and $w_i \in \Pi_W$
@@ -658,52 +658,105 @@ presented below.
 %   \end{enumerate}
 % \end{enumerate}
 
-\begin{enumerate}[label=\arabic*., align=left]
-\item sort $v_i \in \Pi_{0}$ and $w_i \in \Pi_{1}$
-\item calculate the set of quantile levels given by
-  \begin{equation*}
-    \Theta = \Big\{ 0 \Big\} \bigcup
-    \left\{ \frac{k}{n_0}: 1 \leq k \leq n_0 \right\} \bigcup
-    \left\{ \frac{k}{n_1}: 1 \leq k \leq n_1 \right\}
-  \end{equation*}
-\item sort $\Theta$
-\item for $i$ in 2 to $|\Theta|$; do
-  \begin{enumerate}[label=\alph*)]
-  \item calculate $\hat{F}_0^{-1}(\theta_i)$ and $\hat{F}_1^{-1}(\theta_i)$, and
-    find
-    \begin{equation*}
-      a = \min \Big\{ \hat{F}_0^{-1}(\theta_i),~ \hat{F}_1^{-1}(\theta_i) \Big\}
-      \hspace{5mm} \text{and} \hspace{5mm}
-      b = \max \Big\{ \hat{F}_0^{-1}(\theta_i),~ \hat{F}_1^{-1}(\theta_i) \Big\}
-    \end{equation*}
-    % Assume for ease of presentation that
-    % $\hat{F}_0^{-1}(\theta_i) < \hat{F}_1^{-1}(\theta_i)$.
-  \item calculate the interval
-    $G_i = \Big(
-    \theta_i\, a + (1 - \theta_i)\, b,
-    \hspace{3mm}
-    \theta_{i-1}\, a + (1 - \theta_{i-1})\, b\,
-    \Big]$
-  \item find the largest value from $\Pi_{(0)}$ less than or equal to
-    $\inf H_k$, call it $x$, and the smallest value from $\Pi_{(1)}$ greater
-    than $\inf H_k$, call it $y$, and let $\tau = y$
-  \item count the number of observations from $\Pi_{(0)}$ less than or
-    equal to $x$, and the number of observations from $\Pi_{(1)}$ greater than
-    or equal to $y$ to obtain the classification rate for a small value in
-    $G_i$
-  \item while there exists an index $i$ such that either
-    $\tau < v_i \leq \max(G_i)$ or $\tau < w_i \leq \max(G_i)$; do
-    \begin{enumerate}[label=\roman*.]
-    \item let $\tau$ assume the smallest value $v_i$ or $w_i$ greater than the
-      previous value of $\tau$
-    \item calculate the classification rate for the decision rule boundary at
-      $\tau$ by adding to or subtracting from the correct classification rate
-      from the previous calculation depending on whether shifting the boundary
-      switches values from the correct to the incorrect side of the boundary or
-      vice versa
-    \end{enumerate}
-  \end{enumerate}
-\end{enumerate}
+% \begin{enumerate}[label=\arabic*., align=left]
+% \item sort $v_i \in \Pi_{0}$ and $w_i \in \Pi_{1}$
+% \item calculate the set of quantile levels given by
+%   \begin{equation*}
+%     \Theta = \Big\{ 0 \Big\} \bigcup
+%     \left\{ \frac{k}{n_0}: 1 \leq k \leq n_0 \right\} \bigcup
+%     \left\{ \frac{k}{n_1}: 1 \leq k \leq n_1 \right\}
+%   \end{equation*}
+% \item sort $\Theta$
+% \item for $i$ in 2 to $|\Theta|$; do
+%   \begin{enumerate}[label=\alph*)]
+%   \item calculate $\hat{F}_0^{-1}(\theta_i)$ and $\hat{F}_1^{-1}(\theta_i)$, and
+%     find
+%     \begin{equation*}
+%       a = \min \Big\{ \hat{F}_0^{-1}(\theta_i),~ \hat{F}_1^{-1}(\theta_i) \Big\}
+%       \hspace{5mm} \text{and} \hspace{5mm}
+%       b = \max \Big\{ \hat{F}_0^{-1}(\theta_i),~ \hat{F}_1^{-1}(\theta_i) \Big\}
+%     \end{equation*}
+%     % Assume for ease of presentation that
+%     % $\hat{F}_0^{-1}(\theta_i) < \hat{F}_1^{-1}(\theta_i)$.
+%   \item calculate the interval
+%     $G_i = \Big[
+%     \theta_i\, a + (1 - \theta_i)\, b,
+%     \hspace{3mm}
+%     \theta_{i-1}\, a + (1 - \theta_{i-1})\, b\,
+%     \Big)$
+%   \item find a collection of sets $\mathcal{H}_i$ such that the classification
+%     rate is constant for each set.
+%     \begin{itemize}
+%     \item
+%       $[\text{lbnd}, x_k], (x_k, x_{k+1}], \dots, (x_{k+r-1}, x_{k+r}],
+%       (x_{k+r}, \text{hbnd})$
+%     \item
+%       $[\text{lbnd}, x_k), [x_k, x_{k+1}), \dots, [x_{k+r-1}, x_{k+r}),
+%       [x_{k+r}, \text{hbnd})$
+%     \end{itemize}
+%   % \item find the largest value from $\Pi_{(0)}$ less than or equal to
+%   %   $\inf H_k$, call it $x$, and the smallest value from $\Pi_{(1)}$ greater
+%   %   than $\inf H_k$, call it $y$, and let $\tau = y$
+%   % \item count the number of observations from $\Pi_{(0)}$ less than or
+%   %   equal to $x$, and the number of observations from $\Pi_{(1)}$ greater than
+%   %   or equal to $y$ to obtain the classification rate for a small value in
+%   %   $G_i$
+%   \item for each set $H_j$ in $\mathcal{H}_i$; do
+%     \begin{enumerate}[label=\roman*.]
+%     \item calculate the classification rate by counting the number of
+%       observations from each class to to the correct side of an arbitrary point
+%       in $H_i$
+%     \item map the set $H_i$ back to the set of corresponding quantiles on $(0, 1]$
+%     \end{enumerate}
+%   \end{enumerate}
+% \end{enumerate}
+
+% \begin{enumerate}[label=\arabic*., align=left]
+% \item sort $v_i \in \Pi_{0}$ and $w_i \in \Pi_{1}$
+% \item calculate the set of quantile levels given by
+%   \begin{equation*}
+%     \Theta = \Big\{ 0 \Big\} \bigcup
+%     \left\{ \frac{k}{n_0}: 1 \leq k \leq n_0 \right\} \bigcup
+%     \left\{ \frac{k}{n_1}: 1 \leq k \leq n_1 \right\}
+%   \end{equation*}
+% \item sort $\Theta$
+% \item for $i$ in 2 to $|\Theta|$; do
+%   \begin{enumerate}[label=\alph*)]
+%   \item calculate $\hat{F}_0^{-1}(\theta_i)$ and $\hat{F}_1^{-1}(\theta_i)$, and
+%     find
+%     \begin{equation*}
+%       a = \min \Big\{ \hat{F}_0^{-1}(\theta_i),~ \hat{F}_1^{-1}(\theta_i) \Big\}
+%       \hspace{5mm} \text{and} \hspace{5mm}
+%       b = \max \Big\{ \hat{F}_0^{-1}(\theta_i),~ \hat{F}_1^{-1}(\theta_i) \Big\}
+%     \end{equation*}
+%     % Assume for ease of presentation that
+%     % $\hat{F}_0^{-1}(\theta_i) < \hat{F}_1^{-1}(\theta_i)$.
+%   \item calculate the interval
+%     $G_i = \Big(
+%     \theta_i\, a + (1 - \theta_i)\, b,
+%     \hspace{3mm}
+%     \theta_{i-1}\, a + (1 - \theta_{i-1})\, b\,
+%     \Big]$
+%   \item find the largest value from $\Pi_{(0)}$ less than or equal to
+%     $\inf H_k$, call it $x$, and the smallest value from $\Pi_{(1)}$ greater
+%     than $\inf H_k$, call it $y$, and let $\tau = y$
+%   \item count the number of observations from $\Pi_{(0)}$ less than or
+%     equal to $x$, and the number of observations from $\Pi_{(1)}$ greater than
+%     or equal to $y$ to obtain the classification rate for a small value in
+%     $G_i$
+%   \item while there exists an index $i$ such that either
+%     $\tau < v_i \leq \max(G_i)$ or $\tau < w_i \leq \max(G_i)$; do
+%     \begin{enumerate}[label=\roman*.]
+%     \item let $\tau$ assume the smallest value $v_i$ or $w_i$ greater than the
+%       previous value of $\tau$
+%     \item calculate the classification rate for the decision rule boundary at
+%       $\tau$ by adding to or subtracting from the correct classification rate
+%       from the previous calculation depending on whether shifting the boundary
+%       switches values from the correct to the incorrect side of the boundary or
+%       vice versa
+%     \end{enumerate}
+%   \end{enumerate}
+% \end{enumerate}
 
 % \begin{lemma}
 %   The decision rule for the empirically optimal quantile classifier can be
@@ -724,6 +777,118 @@ presented below.
 %   operation.
 % \end{proof}
 
+\begin{algorithm}[p]
+  \label{alg:empirically-optimal-classifier}
+  \DontPrintSemicolon
+  \BlankLine
+  % \KwResult{Write here the result}
+  \SetKwInOut{Input}{Data}
+  % \SetKwInOut{Output}{Output}
+  \Input{$v_1, \dots, v_{n_0}$ from $\Pi_0$ and $w_1, \dots, w_{n_1}$ in
+    $\Pi_W$}
+  % \Output{Write here the output}
+  % \BlankLine
+  
+  sort observations $v_1, \dots, v_{n_0}$ and $w_1, \dots, w_{n_1}$.  Assume
+  that in the case of ties, we classify to $\Pi_W$. \;
+  
+  sort $x_1, \dots, x_r$ a collection of the unique values from among the $v_i$
+  and $w_i$ \;
+  
+  calculate the set of quantile levels given by
+  \begin{equation*}
+    \Theta = \Big\{ 0 \Big\} \bigcup
+    \left\{ \frac{k}{n_0}: 1 \leq k \leq n_0 \right\} \bigcup
+    \left\{ \frac{k}{n_1}: 1 \leq k \leq n_1 \right\}
+  \end{equation*}
+  so that $\Theta$ is sorted \;
+  \BlankLine
+
+  \ForEach{$i$ in 2 to $|\Theta|$}{
+    
+    \BlankLine
+    
+    calculate $\hat{F}_V^{-1}(\theta_i)$ and $\hat{F}_W^{-1}(\theta_i)$, and
+    find
+    \begin{equation*}
+      a = \min \Big\{ \hat{F}_0^{-1}(\theta_i),~ \hat{F}_1^{-1}(\theta_i) \Big\}
+      \hspace{5mm} \text{and} \hspace{5mm}
+      b = \max \Big\{ \hat{F}_0^{-1}(\theta_i),~ \hat{F}_1^{-1}(\theta_i) \Big\}
+    \end{equation*}
+
+    calculate the interval
+    \[
+      G_i = \Big[
+      \theta_i\, a + (1 - \theta_i)\, b,
+      \hspace{3mm}
+      \theta_{i-1}\, a + (1 - \theta_{i-1})\, b\,
+      \Big) := \big[x_{\scriptscriptstyle\text{low}},\,
+      x_{\scriptscriptstyle\text{high}}\big)
+    \]
+    % Let $x_{\scriptscriptstyle\text{low}}$ and
+    % $x_{\scriptscriptstyle\text{high}}$ denote the lower and upper bounds of $G_i$,
+    % respectively.  \;
+
+    find the smallest $x_i \in [x_{\scriptscriptstyle\text{low}}, \infty)$.  If
+    $x_i >= x_{\scriptscriptstyle\text{high}}$ then just calculate the
+    classification rate for $G_i$.
+
+    \BlankLine
+
+    \While{$x_i \in G_i$}{
+
+      calculate the classification rate for the interval with upper and lower
+      bounds determined by $x_i$ and
+      $\min\{x_{i+1}, x_{\scriptscriptstyle\text{high}}\}$, respectively (for
+      whether bounds in interval are open or closed see below)
+
+      \BlankLine
+
+      \uIf{$\hat{F}_V^{-1}(\theta_i) < \hat{F}_V^{-1}(\theta_i)$}{
+        % partition $G_i$ into the following intervals each with a constant
+        % classification rate \vspace{-2mm}
+        map current interval to one of the following for some $s$:
+        \begin{equation*}
+          [x_{\scriptscriptstyle\text{low}}, x_k],\, (x_k, x_{k+1}],\, \dots,\,
+          (x_{k+s-1}, x_{k+s}],\, (x_{k+s},\, x_{\scriptscriptstyle\text{high}})
+        \end{equation*}
+      }
+      \Else{
+        % partition $G_i$ into the following intervals each with a constant
+        % classification rate \vspace{-2mm}
+        map current interval to one of the following for some $s$:
+        \begin{equation*}
+          [x_{\scriptscriptstyle\text{low}}, x_k),\, [x_k, x_{k+1}),\, \dots,\,
+          [x_{k+s-1}, x_{k+s}),\, [x_{k+s},\, x_{\scriptscriptstyle\text{high}})
+        \end{equation*}
+      }
+
+      map interval back to corresponding interval in the quantile levels space \;
+      
+      $x_i \leftarrow x_{i+1}$
+            
+    }
+
+    % \uIf{$\hat{F}_V^{-1}(\theta_i) < \hat{F}_V^{-1}(\theta_i)$}{
+    %   partition $G_i$ into the following intervals each with a constant
+    %   classification rate \vspace{-2mm}
+    %   \begin{equation*}
+    %     [x_{\scriptscriptstyle\text{low}}, x_k],\, (x_k, x_{k+1}],\, \dots,\,
+    %     (x_{k+s-1}, x_{k+s}],\, (x_{k+s},\, x_{\scriptscriptstyle\text{high}})
+    %   \end{equation*}
+    % }
+    % \uElse{
+    %   partition $G_i$ into the following intervals each with a constant
+    %   classification rate \vspace{-2mm}
+    %   \begin{equation*}
+    %     [x_{\scriptscriptstyle\text{low}}, x_k),\, [x_k, x_{k+1}),\, \dots,\,
+    %     [x_{k+s-1}, x_{k+s}),\, [x_{k+s},\, x_{\scriptscriptstyle\text{high}})
+    %   \end{equation*}
+    % }  
+    
+  }
+  \caption{calculate the empirically optimal quantile classifer}
+\end{algorithm}
 
 
 A set of optimal decision rule boundaries and corresponding quantile levels is
