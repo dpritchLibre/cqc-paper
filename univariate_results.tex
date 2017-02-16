@@ -565,43 +565,47 @@ boundary across the range of the data, counting the number of data points for
 either class on the correct side of the boundary to find an optimal choice.
 Furthermore, since the classification rate doesn't change as we slide the
 decision boundary in-between observations, we need only calculate the
-classification rate for some number of calculations that is bounded from above
-by the number of observations.  Also, we note that calculating the
-classification rate requires merely counting the number of observations for each
-class on the correct side of the decision boundary (on sorted data), an
-extremely cheap operation.
+classification rate for some countable number of decision boundary choices.
+Also, we note that calculating the classification rate requires merely counting
+the number of observations for each class on the correct side of the decision
+boundary.
 
 One complication of this basic strategy is that the set of decision rule
 boundaries for a given data set does not span the real line, so a first step
 that must be taken is to obtain this set of valid decision rule boundaries.  In
-other words, let $\phi(\theta; \text{data}){:}~ (0, 1) \mapsto \mathbb{R}$ be
+other words, let $\phi(\theta;\, \text{data}){:}~ (0, 1) \mapsto \mathbb{R}$ be
 the function that maps a quantile level for a given data set to the quantile
 classifier decision rule boundary; then we want to obtain the set
-$\big\{ x \in \mathbb{R}{:} \hspace{3mm} \theta \in (0, 1),~ \phi(\theta;
+$\big\{ x \in \mathbb{R}{:} \hspace{3mm} \theta \in (0, 1),~ \phi(\theta;\,
 \text{data}) = x \big\}$.  This set can be obtained by working backwards from
 the data and by using the expressions that we have for the decision rule
 boundary (i.e. Lemma \ref{lem:decision-boundary} and Lemma
-\ref{lem:empirical-quantlev}).]
+\ref{lem:empirical-quantlev}), as is developed in the following paragraphs.
 
 The key observation that facilitates the calculation of this set is that the
 domain $(0, 1)$ can be partitioned into smaller intervals for which range of the
 decision rule boundary function $\phi$ can be easily calculated.  In more
-detail, consider an interval $(\theta_{\mathit{low}},\, \theta_{\mathit{upp}}]$
-such that $\lceil \theta n_0 \rceil$ and $\lceil \theta n_1 \rceil$ are each
-constant for all $\theta$ in the interval.  As a consequence of Lemma
-\ref{lem:empirical-quantlev} , this implies that there are values $a$ and $b$
-such that $F_{(0)}^{-1}(\theta) = a$ and $F_{(1)}^{-1}(\theta) = b$ for all
-$\theta$ in the interval.  Since by Lemma \ref{lem:decision-boundary} we have
-$\phi(\theta; \text{data}) = \theta a + (1 - \theta) b$ for any $\theta$ in the
-interval we obtain that
-$\Big\{ x \in \mathbb{R}{:} \hspace{3mm} \theta \in (\theta_{\mathit{low}},\,
-\theta_{\mathit{upp}}],~ \phi(\theta; \text{data}) = x \Big\} = \Big(
-\theta_{\mathit{upp}}\, a + (1 - \theta_{\mathit{upp}})\, b, \hspace{3mm}
-\theta_{\mathit{low}}\, a + (1 - \theta_{\mathit{low}})\, b\, \Big]$.
+detail, consider an interval
+$(\theta_{\scriptscriptstyle\text{low}},\,
+\theta_{\scriptscriptstyle\text{high}}]$ such that $\lceil \theta n_0 \rceil$
+and $\lceil \theta n_1 \rceil$ are each constant for all $\theta$ in the
+interval.  As a consequence of Lemma \ref{lem:empirical-quantlev} , this implies
+that there are values $a$ and $b$ such that $F_{(0)}^{-1}(\theta) = a$ and
+$F_{(1)}^{-1}(\theta) = b$ for all $\theta$ in the interval.  Since by Lemma
+\ref{lem:decision-boundary} we have
+$\phi(\theta;\, \text{data}) = \theta a + (1 - \theta) b$ for any $\theta$ in
+the interval we obtain that
+$\Big\{ x \in \mathbb{R}{:} \hspace{3mm} \theta \in
+(\theta_{\scriptscriptstyle\text{low}},\,
+\theta_{\scriptscriptstyle\text{high}}],~ \phi(\theta;\, \text{data}) = x \Big\}
+= \Big[ \theta_{\scriptscriptstyle\text{high}}\, a + (1 -
+\theta_{\scriptscriptstyle\text{high}})\, b, \hspace{3mm}
+\theta_{\scriptscriptstyle\text{low}}\, a + (1 -
+\theta_{\scriptscriptstyle\text{low}})\, b\, \Big)$.
 
-It remains then to decide how to partition $(0, 1)$ into such sets.  For
-notational convenience we actually consider $(0, 1]$: even though the 1-th
-quantile doesn't make sense theoretically, its estimate is well-defined.  Now
+Next we consider how to partition $(0, 1)$ into such sets.  For notational
+convenience we actually consider $(0, 1]$: even though the 1-th quantile doesn't
+make sense theoretically, its estimate is well-defined.  Now
 $\lceil \theta n_0 \rceil$ is a step function with the endpoints for each step
 taking place at $1, \dots, n_0$ and which occur for values of $\theta$ at
 $1 / n_0, 2 / n_0, \dots, n_0 / n_0$.  Similarly, $\lceil \theta n_1 \rceil$ is
@@ -614,6 +618,71 @@ function change locations for one of the classes, and having the upper bound be
 the next smallest step function change location for either of the classes (and
 we also need an interval from 0 to the smallest step function change location).
 
+Consider then one such interval, say
+$[x_{\scriptscriptstyle\text{low}}, x_{\scriptscriptstyle\text{high}})$ such
+that for each
+$x \in [x_{\scriptscriptstyle\text{low}}, x_{\scriptscriptstyle\text{high}})$
+there exists a $\theta \in (0, 1]$ with $\phi(\theta;\, \text{data}) = x$.  At
+this point we would like to calculate the classification rate for all $x$ in the
+interval: we can achieve this by conceptually ``sliding'' the decision rule
+boundary across the interval.  Since the classification rate doesn't change as
+we slide the decision rule boundary in-between observations, we can find the
+values in the data that belong to
+$[x_{\scriptscriptstyle\text{low}}, x_{\scriptscriptstyle\text{high}})$ and
+partition the interval into sub-intervals that each have a constant
+classification rate.  So for example, if $x_k, \dots, x_{k+s}$ are the only
+observations in the data that belong to
+$[x_{\scriptscriptstyle\text{low}}, x_{\scriptscriptstyle\text{high}})$, then
+$[x_{\scriptscriptstyle\text{low}}, x_k),\, [x_k, x_{k+1}),\, \dots,\,
+[x_{k+s-1}, x_{k+s}),\, [x_{k+s},\, x_{\scriptscriptstyle\text{high}})$ may be
+such a partitioning.
+
+The reason we say that this `may be' a partitioning is that whether the
+endpoints of the sub-intervals are open or closed depends on which class we have
+arbitrarily decided to classify an observation to in the event of ties.  Note
+that when the quantile level $\theta$ corresponds to a decision rule boundary
+with a value equal to a point in the data, say $x^{*}$, then the quantile
+distance of that point to the populations' empirical $\theta$-th quantiles is
+the same for either population, so we have to fall back on our classification
+rule in the event of ties.  Whether the decision rule has the same
+classification rate as an open interval with upper bound $x^{*}$ or as an open
+interval with lower bound $x^{*}$ depends on which class has a smaller empirical
+$\theta$-th quantile, and what our tiebreaker rule is.  If the tiebreaker goes
+to the class with a larger empirical $\theta$-th quantile, then the
+classification rate is the same as an open interval with with lower bound
+$x^{*}$, and we get a partitioning of
+$[x_{\scriptscriptstyle\text{low}}, x_{\scriptscriptstyle\text{high}})$ with the
+form
+$[x_{\scriptscriptstyle\text{low}}, x_k),\, [x_k, x_{k+1}),\, \dots,\,
+[x_{k+s-1}, x_{k+s}),\, [x_{k+s},\, x_{\scriptscriptstyle\text{high}})$.  If
+however, the tiebreaker goes to the class with a larger empirical $\theta$-th
+quantile, then the classification rate is the same as an open interval with
+upper bound $x^{*}$, and we get a partitioning of
+$[x_{\scriptscriptstyle\text{low}}, x_{\scriptscriptstyle\text{high}})$ with the
+form
+$[x_{\scriptscriptstyle\text{low}}, x_k],\, (x_k, x_{k+1}],\, \dots,\,
+(x_{k+s-1}, x_{k+s}],\, (x_{k+s},\, x_{\scriptscriptstyle\text{high}})$.
+
+Finally, we note that we may wish to map back the sets from the decision rule
+boundary space to their quantile levels space, for example if we've found a set
+with a good empirical classification rate.  Recall that we started with a set of
+quantile levels
+$(\theta_{\scriptscriptstyle\text{low}},\,
+\theta_{\scriptscriptstyle\text{high}}]$ such that $F_{0}^{-1}$ and $F_{1}^{-1}$
+are each constant for all $\theta$ in the interval, and that each
+$x \in [x_{\scriptscriptstyle\text{low}}, x_{\scriptscriptstyle\text{high}})$
+corresponds to the decision rule boundary for a $\theta$ from that interval.
+Let us write $F_{(0)}^{-1}(\theta) = a$ and $F_{(1)}^{-1}(\theta) = b$ for all
+$\theta$ in the interval, and assume that $a$ is strictly less than $b$.  Then
+for
+$x \in [x_{\scriptscriptstyle\text{low}}, x_{\scriptscriptstyle\text{high}})$,
+we observe the following relation:
+\begin{equation}
+  \label{eq:map-to-quantile}
+  x = \theta\, a + (1 - \theta)\, b
+  \hspace{5mm} \Longleftrightarrow \hspace{5mm}
+  \theta = \frac{b - x}{b - a}.
+\end{equation}
 At this point we have all of the concepts that we need to construct an algorithm
 to calculate an empirically optimal choice of quantile level.  The algorithm is
 presented as Algorithm \ref{alg:empirically-optimal-classifier}.
@@ -758,25 +827,6 @@ presented as Algorithm \ref{alg:empirically-optimal-classifier}.
 %   \end{enumerate}
 % \end{enumerate}
 
-% \begin{lemma}
-%   The decision rule for the empirically optimal quantile classifier can be
-%   obtained in $\mathcal{O}(n \log n)$ time.
-% \end{lemma}
-
-% \begin{proof}
-%   Sorting the data is an $\mathcal{O}(n \log n)$ operation.  Steps 2-3 each take
-%   $\mathcal{O}(n)$ time.  Step 4 requires for each iteration estimating
-%   $F_V^{-1}$ and $F_W^{-1}$ and then calculating the interval $G_i$ each of
-%   which is a constant time operation, for a number of iterations bounded from
-%   above by $n - 1$.  Step 5 requires a constant time operation for a number of
-%   sets bounded from above by $n - 1$.
-
-%   For step 5, essentially for each iteration
-%   finding the initial values of $v_i$ and $w_j$ are a $\mathcal{O}(\log n)$
-%   operation, and the sum of the operations in step 5c is an $\mathcal{O}(n)$
-%   operation.
-% \end{proof}
-
 \begin{algorithm}[p]
   \label{alg:empirically-optimal-classifier}
   \DontPrintSemicolon
@@ -793,16 +843,15 @@ presented as Algorithm \ref{alg:empirically-optimal-classifier}.
   that in the case of ties, we classify to $\Pi_W$. \;
   
   sort $x_1, \dots, x_r$ a collection of the unique values from among the $v_i$
-  and $w_i$ \;
+  and $w_i$, and track how many $v_i$ and how many $w_i$ are less than each
+  $x_j$ \;
   
-  calculate the set of quantile levels given by
+  calculate in such a way so as to produce a sorted set of quantile levels given by
   \begin{equation*}
     \Theta = \Big\{ 0 \Big\} \bigcup
     \left\{ \frac{k}{n_0}: 1 \leq k \leq n_0 \right\} \bigcup
     \left\{ \frac{k}{n_1}: 1 \leq k \leq n_1 \right\}
   \end{equation*}
-  so that $\Theta$ is sorted \;
-  \BlankLine
 
   \ForEach{$i$ in 2 to $|\Theta|$}{
     
@@ -822,7 +871,7 @@ presented as Algorithm \ref{alg:empirically-optimal-classifier}.
       \theta_i\, a + (1 - \theta_i)\, b,
       \hspace{3mm}
       \theta_{i-1}\, a + (1 - \theta_{i-1})\, b\,
-      \Big) := \big[x_{\scriptscriptstyle\text{low}},\,
+      \Big) = \big[x_{\scriptscriptstyle\text{low}},\,
       x_{\scriptscriptstyle\text{high}}\big)
     \]
     % Let $x_{\scriptscriptstyle\text{low}}$ and
@@ -830,7 +879,7 @@ presented as Algorithm \ref{alg:empirically-optimal-classifier}.
     % respectively.  \;
 
     find the smallest $x_i \in [x_{\scriptscriptstyle\text{low}}, \infty)$.  If
-    $x_i >= x_{\scriptscriptstyle\text{high}}$ then just calculate the
+    $x_i \geq x_{\scriptscriptstyle\text{high}}$ then calculate the
     classification rate for $G_i$.
 
     \BlankLine
@@ -844,10 +893,11 @@ presented as Algorithm \ref{alg:empirically-optimal-classifier}.
 
       \BlankLine
 
-      \uIf{$\hat{F}_V^{-1}(\theta_i) < \hat{F}_V^{-1}(\theta_i)$}{
+      \uIf{$\hat{F}_V^{-1}(\theta_i) < \hat{F}_W^{-1}(\theta_i)$}{
         % partition $G_i$ into the following intervals each with a constant
         % classification rate \vspace{-2mm}
-        map current interval to one of the following for some $s$:
+        calculate classification rate for the interval with bounds $x_i$ and
+        $x_{i+1}$ among the following:
         \begin{equation*}
           [x_{\scriptscriptstyle\text{low}}, x_k],\, (x_k, x_{k+1}],\, \dots,\,
           (x_{k+s-1}, x_{k+s}],\, (x_{k+s},\, x_{\scriptscriptstyle\text{high}})
@@ -856,7 +906,8 @@ presented as Algorithm \ref{alg:empirically-optimal-classifier}.
       \Else{
         % partition $G_i$ into the following intervals each with a constant
         % classification rate \vspace{-2mm}
-        map current interval to one of the following for some $s$:
+        calculate classification rate for the interval with bounds $x_i$ and
+        $x_{i+1}$ among the following:
         \begin{equation*}
           [x_{\scriptscriptstyle\text{low}}, x_k),\, [x_k, x_{k+1}),\, \dots,\,
           [x_{k+s-1}, x_{k+s}),\, [x_{k+s},\, x_{\scriptscriptstyle\text{high}})
@@ -890,14 +941,51 @@ presented as Algorithm \ref{alg:empirically-optimal-classifier}.
   \caption{calculate the empirically optimal quantile classifer}
 \end{algorithm}
 
+\begin{lemma}
+  \label{lem:optimal-quantile}
+  The decision rule for the empirically optimal quantile classifier can be
+  obtained in $\mathcal{O}(n^2)$ time.
+\end{lemma}
 
-A set of optimal decision rule boundaries and corresponding quantile levels is
-obtained by performing above algorithm, so the empirically optimal quantile
-classifier can be efficiently calculated.  In practice, we might be willing to
-approximate the empirically optimal quantile classifier by simply calculating
-the empirical classification rate over a grid of quantile levels.  This reduces
-the complexity to an $\mathcal{O}(Kn)$ operation, where $K$ is the number of
-points in the grid.
+\begin{proof}
+  Sorting the data is an $\mathcal{O}(n \log n)$ operation.  The operations
+  performed in lines 2 and 3 each take $\mathcal{O}(n)$ time.
+
+  The outer loop beginning on line 4 requires some number of iterations that is
+  bounded from above by $n - 1$.  Within each iteration, calculating $F_V^{-1}$
+  and $F_W^{-1}$ are each constant time operations, and then calculating the
+  interval $G_i$ is also a constant time operation.  Finding the appropriate
+  $x_i$ in line 7 is an $\mathcal{O}(\log n)$ operation.
+
+  Next, the inner loop starting on line 14 requires some number of iterations
+  that is bounded from above by $n - 1$.  Calculating the classification rate
+  for the corresponding interval is a constant time operation, as is mapping the
+  interval back to the quantile levels space.
+
+  So combining the worst-case bound for the outer and inner loops, we find that
+  the total number of intervals for which we calculate the classification rate
+  for has a worst-case bound on the order of $n^2$ intervals, and that each
+  calculation is a constant time operation for a total cost of
+  $\mathcal{O}(n^2)$ time.  The initial operations performed in lines 1-3 have
+  an aggregate cost with $\mathcal{O}(n \log n)$ time, so in total the algorithm
+  runs in $\mathcal{O}(n^2)$ time.
+\end{proof}
+
+It remains an open question as to whether the bound obtained in Lemma
+\ref{lem:optimal-quantile} is actually achievable.  In practice, for both
+simulated and real data we typically see less than $n$ total intervals that need
+to be considered in the outer and inner loops, so when this is the case the
+algorithm runs in $\mathcal{O}(n \log n)$ time.  As an alternative, we might be
+willing to approximate the empirically optimal quantile classifier by simply
+calculating the empirical classification rate over a fine grid of quantile
+levels, which reduces the complexity to an $\mathcal{O}(Kn)$ operation where $K$
+is the number of points in the grid.  This complexity is the case because each
+choice of quantile level requires calculating the decision rule boundary by
+finding the $k_0$-th and $k_1$-th largest value of each class for the
+appropriate values of $k_0$ and $k_1$, and then counting the number of
+observations on the correct side of the boundary, each of which is an
+$\mathcal{O}(n)$ operation.
+
 
 
 
