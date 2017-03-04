@@ -76,7 +76,7 @@ propose using a linear combination of the $\Lambda_j(z_j, \theta_j)$'s as
 follows.  We call this family of classifiers \emph{composite quantile-based
   classifiers}.
 \begin{equation}
-  \label{eq:varying-coefficient-classifier}
+  \label{eq:composite-classifier}
   \text{For an observation $\vec{z}$, classify to:} \hspace{3mm}
   \left\{
     \begin{array}{lll}
@@ -90,7 +90,7 @@ follows.  We call this family of classifiers \emph{composite quantile-based
     \end{array}
   \right.
 \end{equation}
-for $\vec{\alpha} = (\alpha_0, \dots, \alpha_p) \in \mathbb{R}^p$. By
+for $\vec{\alpha} = (\alpha_0, \dots, \alpha_p) \in \mathbb{R}^{p+1}$. By
 introducing the coefficients to the classification model this in principle
 provides the ability to both handle the differences in scale of the features and
 to provide more or less weight to variables as a function of their
@@ -275,7 +275,7 @@ constant.
 
 If we write $z_j^{*} = \Lambda_j (z_j, \theta_j),~ j = 1, \dots, p$, then we can
 express the classification rule in equation
-(\ref{eq:varying-coefficient-classifier}) as follows:
+(\ref{eq:composite-classifier}) as follows:
 \begin{equation}
   \label{eq: classifier transformed data}
   \text{For an observation $\vec{z}$, classify to:} \hspace{3mm} \left\{ 
@@ -829,6 +829,284 @@ choices for the number of folds and the size of the penalty parameter grid
 100, respectively.
 
 
+
+
+\subsection{Composite quantile-based classifiers discussion}
+\label{sec:classifier-discussion}
+
+The composite quantile-based family of classifiers is defined as expression
+(\ref{eq:composite-classifier}).  From this expression we see that the decision
+rule boundary is given by
+\begin{equation}
+  \label{eq:composite-classifiers-boundary}
+  \alpha_0 + \sum_{j=1}^p \alpha_j\, \Lambda_j (z_j, \theta_j) = 0.
+\end{equation}
+In the above equality it is implicit that the linear combination coefficients
+and quantile levels are such that there exist a set of $z_1, \dots, z_p$ that
+satisfy the equation.  We note that this need not be the case as
+$\sum_{j=1}^p \alpha_j\, \Lambda_j (\,\cdot\,, \,\theta_j)$ is bounded for fixed
+$\alpha_1, \dots, \alpha_p$ and $\theta_1, \dots, \theta_p$.
+
+If the linear combination coefficients and quantile levels are chosen such that
+the solution set for $z_1, \dots, z_p$ is indeed nonempty, then it turns out
+that this decision rule boundary is a piecewise linear function with a
+particularly simple form, as is discussed in what follows.  Let us define the
+component-wise quantile classifier decision boundary $\tau_j$ to be the unique
+point satisfying $\Lambda_j (\tau_j, \theta_j) = 0,~ j = 1, \dots, p$.  We can
+assume without loss of generality that $\tau_j$ is unique because it is only
+non-unique when $\Lambda(\,\cdot\,,\, \theta_j)$ is identically zero, in which
+case the problem is effectively reduced to $p - 1$ dimensions.  It follows then
+that
+\begin{equation}
+  \label{eq:lambda}
+  \sign\Big(F_1^{-1}(\theta_j) - F_0^{-1}(\theta_j)\Big)~ \Lambda_j(z, \theta) =
+  \left\{
+    \begin{array}{lll}
+      \tau_j - F_{(0)}^{-1}(\theta),
+      & \hspace{5mm}
+      & z \leq F_{(0)}^{-1}(\theta) \\[0.5ex]
+      \tau_j - z,
+      & \hspace{5mm}
+      & F_{(0)}^{-1}(\theta) < z < F_{(1)}^{-1}(\theta) \\[0.5ex]
+      \tau_j - F_{(1)}^{-1} (\theta)),
+      & \hspace{5mm}
+      & \text{otherwise} \\
+    \end{array}
+  \right.
+\end{equation}
+% Next, let $a_j = \tau_j - F_{(0)}^{-1}(\theta_j)$ and
+% $b_j = F_{(1)}^{-1}(\theta_p) - \tau_p,~ j = 1, \dots, p$.
+Define
+$\alpha_j^{*} = \alpha_j\, \sign\!\Big(F_1^{-1}(\theta_j) -
+F_0^{-1}(\theta_j)\Big)$, then for $(z_1, \dots, z_p)$ close to
+$(\tau_1, \dots, \tau_p)$, the decision rule boundary is the (possibly empty)
+affine set given by
+% \begin{equation}
+%   \alpha_0 + \sum_{j=1}^p \alpha_j (z_j - \tau_j) = 0
+%   \hspace{5mm} \text{for } \hspace{5mm}
+%   z \in [\tau_1 - a_{1}, \tau_1 + b_{1}]
+%   \times \dots \times
+%   [\tau_p - a_{p}, \tau_p + b_{p}].
+% \end{equation}
+\begin{equation}
+  \label{eq:composite-classifiers-close}
+  \mathcal{D}_{{\scriptstyle \text{close}}} = \left\{
+    \vec{z} \in [F_{(0),1}^{-1},\, F_{(1),1}^{-1}]
+    \times \dots \times
+    [F_{(0),p}^{-1},\, F_{(1),p}^{-1}] :
+    \hspace{3mm}
+    \alpha_0 + \sum_{j=1}^p \alpha_j^{*} (z_j - \tau_j) = 0
+  \right\} .
+\end{equation}
+Next we consider what happens outside of the set described in
+(\ref{eq:composite-classifiers-close}).  Write
+$\vec{\tau} = (\tau_1, \dots, \tau_p)$, and suppose that we pick a direction
+$\vec{d} = (d_1, \dots, d_p)$ and $\gamma > 0$ such that
+$\vec{\tau} + \gamma \vec{d}$ is an element of
+(\ref{eq:composite-classifiers-close}).  Then let $\gamma^{*} > 0$ be chosen
+such that $\vec{\tau} + \gamma^{*} \vec{d}$ is a boundary point of the set
+$[F_{(0),1}^{-1},\, F_{(1),1}^{-1}] \times \dots \times [F_{(0),p}^{-1},\,
+F_{(1),p}^{-1}]$ and is on the boundary for some component $k$, and for the sake
+of argument let's suppose that the $k$-th component of
+$\vec{\tau} + \gamma^{*} \vec{d} = F_{(1),k}^{-1}(\theta_k)$, as opposed to
+$F_{(0),k}^{-1}(\theta_k)$.  We note that continuing in the direction $\vec{d}$
+will take us outside of the the decision rule boundary set.  Instead, for
+$\vec{z}$ taking values inside the newly entered hypercube, the decision rule
+boundary set is of the following form:
+\begin{equation}
+  \label{eq:composite-classifiers-outside}
+  \begin{split}
+    \mathcal{D}_{\vec{d}} = \left\{
+      \vec{z} \in [F_{(0),1}^{-1},\, F_{(1),1}^{-1}]
+      \times \dots \times
+      [F_{(1),k}^{-1}(\theta_k),\, \infty]
+      \times \dots \times
+      [F_{(0),p}^{-1},\, F_{(1),p}^{-1}] :
+      \phantom{\hspace{30mm} \sum_{j=1}^p}
+    \right.  \\
+    \left.
+      \hfill
+      \alpha_0 +
+      \alpha_k^{*} \Big(\tau_k - F_{(1),k}^{-1}(\theta_k)\Big) +
+      \sum_{j\ne k} \alpha_j^{*} (z_j - \tau_j) = 0
+    \right\}
+  \end{split}
+\end{equation}
+Next, if we head in a new direction $\vec{d}'$ that yields a line with points in
+the set given by (\ref{eq:composite-classifiers-outside}), then we will
+eventually reach a boundary point of the set.  Once again we will enter another
+hypercube, and now the affine set will be a linear system with $p - 2$
+variables.  This process can be repeated until all only 1 variable remains in
+the affine set.
+
+In general, we can divide $\mathcal{R}^p$ into $3^p$ hypercubes so that the
+decision rule boundary set is either empty or is an affine set within each
+hypercube.  Let $L$, $M$, and $U$ (for lower, middle and upper) be sets that
+partition the set of indices $\{1, \dots, p\}$.  Then
+\begin{equation}
+  \label{eq:composite-classifiers-outside}
+  \begin{split}
+    \mathcal{D}_{L,M,U} = \left\{
+      \vec{z} \in
+      \prod_{k \in L} \big[ -\infty,~ F_{(0),k}^{-1}(\theta_k) \big]
+      \prod_{\ell \in U} \big[ F_{(1),\ell}^{-1}(\theta_{\ell}),~ \infty \big]
+      \prod_{j \in M} \big[ F_{(0),j}^{-1}(\theta_j),~ F_{(1),j}^{-1}(\theta_j) \big] :
+      \phantom{\hspace{15mm}}
+    \right.  \\
+    \left.
+      \left[
+        \alpha_0 + 
+        \sum_{k \in L} \alpha_k^{*} \Big(\tau_k - F_{(0),k}^{-1}(\theta_k)\Big) +
+        \sum_{\ell \in U} \alpha_j^{*} \Big(\tau_{\ell} - F_{(1),\ell}^{-1}(\theta_{\ell})\Big)
+      \right] +
+        \sum_{j \in M} \alpha_j^{*} (z_j - \tau_j) ~=~ 0
+    \right\}
+  \end{split}
+\end{equation}
+where in this context the products are meant to denote the usual Cartesian
+product.  Finally, we note that the piecewise linear portions of the decision
+rule boundary are connected, which can be seen since points on the boundary are
+solutions for either system.
+
+
+\subsubsection{Classifier examples in two dimensions}
+\label{sec:classifier-examples}
+
+Having described the general form of the composite quantile-based classifiers,
+we new consider a few simple examples of the classifiers in two dimensions.  In
+each of the examples, the classifier model that is presented is that for the
+optimal choice of quantile level for each of the features in terms of the
+feature's ability to discriminate between the classes.  These are the quantile
+levels that are chosen by the composite quantile-based classifiers in the limit
+with probability 1 as the sample size goes to infinity (as a consequence of
+Lemma \ref{lem:univariate-consistency}).  In each of the examples we arbitrarily
+choose linear combination coefficients of 0, 1, and 1 for the offset and feature
+1 and feature 2 components, respectively.  In each example, we presume that the
+prior probability for each class is 1/2.
+
+In the first example, shown as Figure \ref{fig:gaussian-classify}, we consider
+the classical setting of two Gaussian distributions.  The first class, shown in
+yellow, follows a $N \big( (0, 0),\, \vec{I} \big)$ distribution, while the
+second class, shown in light red, follows a $N \big( (2, 1),\, \vec{I} \big)$
+distribution.  In the left-hand figure, the inner circles for each class
+represent a contour line for 68\% of the mass of the distribution, while the
+outer circles represent a contour line for 95\% of the mass of the distribution.
+These same circles are shown on the right-hand figure, but are zoomed to focus
+on the upper-right quadrant of the coordinate system, and as a result we can
+only see a portion of the contour lines for each class.
+
+In the left-hand figure, the decision rule boundary lines are shown for both the
+composite quantile-based classifiers method and the Bayes rule.  The composite
+quantile-based classifiers rule has a classification rate of 0.82, while the
+Bayes rule classification rate is 0.87.
+
+In the right-hand figure, the composite quantile-based classifiers decision rule
+is shown at a more granular level of detail.  Firstly, the marginal
+distributions' Bayes rules have values 1 and 1/2 for components 1 and 2,
+respectively (in this setting they are the midpoints between the class means for
+each component).  This corresponds to the median quantile for each component
+(i.e. $\theta_1 = \theta_2 = 0.5$), and it follows that
+$F_{01}^{-1}(\theta_1) = 0$, $F_{11}^{-1}(\theta_1) = 2$,
+$F_{02}^{-1}(\theta_2) = 0$, and $F_{11}^{-1}(\theta_2) = 1$.
+
+Thus for $\theta_1$ and $\theta_2$ corresponding to these values, we have
+$\Lambda_1(1, \theta_1) = 0$ and $\Lambda_2(0.5, \theta_2) = 0$.  In the set
+$[0.5, 1.5] \times [0, 1]$, we observe that the decision rule boundary is given
+by the line
+$\{(x_1, x_2) : (x_1 - 1) + (x_2 - 0.5) = 0 \} = \{(x_1, x_2) : x_2 = -x_1 +
+1.5\}$.  Traveling in the direction $\vec{d} = (-1, 1)$, we find that for
+$x_2 \geq 1$ we have $\Lambda_2(x_2, \theta_2) = 0.5$.  Thus the decision rule
+boundary line for $x_2 \geq 1$ is given by
+$\{(x_1, x_2) : (x_1 - 1) + 0.5 = 0\} = \{(x_1, x_2) : x_1 = 0.5\} $.
+Similarly, traveling in the direction $\vec{d} = (1, -1)$, we find that for
+$x_2 \leq 0$ we have $\Lambda_2(x_2, \theta_2) = -0.5$.  Thus the decision rule
+boundary line for $x_2 \leq 1$ is given by
+$\{(x_1, x_2) : (x_1 - 1) - 0.5 = 0\} = \{(x_1, x_2) : x_1 = 1.5\}$.
+
+\begin{figure}[h]
+  \caption{Gaussian distributions classifier}
+  \label{fig:gaussian-classify}
+  \centering
+  \vspace{5mm}
+
+  \begin{minipage}[t]{0.55\linewidth}
+    \flushleft
+    \includegraphics[width=0.96\textwidth]{gauss_ci}
+  \end{minipage}
+  \begin{minipage}[t]{0.44\linewidth}
+    \flushright
+    \includegraphics[width=1\textwidth]{gauss_quant_rule}
+  \end{minipage}
+\end{figure}
+
+In a second example, shown as Figure \ref{fig:exponentiated-gaussian}, we
+consider the setting of two location-shifted exponentiated Gaussian
+distributions.  In more detail, if $(W_1, W_2) \sim N(\vec{0}, \vec{I})$, then
+class 0 follows a distribution given by $(e^{W_1},\, e^{W_2})$ and class 1
+follows a distribution given by $(e^{W_1} + 1,\, e^{W_2} + 1)$.  It turns out
+that under this setting, the component-wise Bayes rule decision boundaries are
+given by the location shift, which in this case is 1 for each component.  The
+corresponding quantile level yields within-class quantiles of 0.5 and 1.5 for
+the two classes for each component, so we obtain the decision boundary line
+$\{(x_1, x_2) : x_2 = -x_1 + 2\}$ in the region $[0.5, 1.5]^2$.  Outside of this
+region is a little bit more subtle.  The decision rule boundary lines shown in
+Figure \ref{fig:exponentiated-gaussian} are contingent on the fact that we have
+favorably chosen that tied distances be classified to the correct class
+(i.e. the distribution with the yellow color).  Had we had chosen that the
+tiebreaker had gone in the other direction then the decision rule boundary lines
+outside of the region $[0.5, 1.5]^2$ would switch from going up and right to
+left and down.  This unfavorable tiebreaker policy results in a 2.4\% decrease
+in the composite quantile-based classifiers classification rate.  Otherwise the
+classification rate for the composite quantile-based classifier is 0.71, while
+the classification rate for the Bayes rule classifier is 0.75.
+
+% This setting is
+% interesting to consider because although this looks like a difficult case for
+% quantile-based classifiers to handle, the classifier actually does really well
+% in comparison to competitors in higher dimensions, as is shown in the numerical
+% studies.
+
+\begin{figure}[h]
+  \caption{Exponentiated Gaussian distributions classifier}
+  \label{fig:exponentiated-gaussian}
+  \centering
+  \vspace{5mm}
+
+  \begin{minipage}[t]{0.49\linewidth}
+    \flushleft
+    \includegraphics[width=0.95\textwidth]{exp_gauss_ci}
+  \end{minipage}
+  \begin{minipage}[t]{0.49\linewidth}
+    \flushright
+    \includegraphics[width=0.95\textwidth]{exp_gauss_rule}
+  \end{minipage}
+\end{figure}
+
+
+
+\subsubsection{Potential instabilities in quantile-based methods}
+\label{sec:instabilities}
+
+% One potential instability of composite quantile-based classifiers is that the
+% direction of the decision rule boundary lines are dependent on the magnitude of
+% the difference between the component-wise class quantiles.  This causes raises
+% two concerns.  Firstly, changes in scale of the features can fundamentally
+% affect the classifier by changing which components are part of the linear
+% systems in the piecewise affine sets.  As a result, when some of the features in
+% the data are very different in scale to other features then we recommend some
+% sort of data transformations to try to keep the features at a similar scale
+% before performing classification.
+
+One potential source of instability for composite quantile-based classifiers
+occurs when the magnitude of the differences between the within-class quantiles
+is very similar for two or more features.  When this is the case, small changes
+in the within-class quantile estimates can fundamentally affect the classifier
+by changing which components are part of the linear systems in the piecewise
+affine sets.  When the number of features is small this can dramatically change
+the classifier; when the number of features is larger, we expect such changes to
+have a diminished effect.  We also expect averaging the model as discussed in
+Section \ref{sec:classifier-algorithm} to help protect against this type of
+instability.
 
 
 %%% Local Variables:

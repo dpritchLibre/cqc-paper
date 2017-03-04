@@ -3,6 +3,7 @@
 
 \usepackage[fleqn]{amsmath}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage[margin=2.54cm]{geometry}
 \usepackage{graphicx}
 \usepackage{enumitem}
@@ -10,7 +11,7 @@
 \usepackage{bbm}                            % mathbbm (for \ind)
 \usepackage{booktabs}
 \usepackage{bm}
-\usepackage{authblk}
+\usepackage{authblk}                        % author, affil
 \usepackage{adjustbox}
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \usepackage{mathtools}
@@ -28,6 +29,7 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\minimize}{minimize}
+\DeclareMathOperator{\sign}{sign}
 \newcommand{\ind}{\mathbbm{1}\,}
 \newcommand{\normal}{\text{N}}
 \newcommand{\convp}{\stackrel{p}{\longrightarrow}}
@@ -60,8 +62,8 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
-\newenvironment{proof}[1][Proof]{\begin{trivlist}
-  \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+% \newenvironment{proof}[1][Proof]{\begin{trivlist}
+%   \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 
 
 
