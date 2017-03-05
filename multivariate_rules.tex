@@ -659,7 +659,7 @@ presented in its entirety as Algorithm \ref{alg:classifier}.
   
 % \end{enumerate}
 
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
   \label{alg:classifier}
   \caption{composite quantile-based classifiers model selection algorithm}
   \DontPrintSemicolon
@@ -944,7 +944,7 @@ decision rule boundary set is either empty or is an affine set within each
 hypercube.  Let $L$, $M$, and $U$ (for lower, middle and upper) be sets that
 partition the set of indices $\{1, \dots, p\}$.  Then
 \begin{equation}
-  \label{eq:composite-classifiers-outside}
+  \label{eq:composite-classifiers-general}
   \begin{split}
     \mathcal{D}_{L,M,U} = \left\{
       \vec{z} \in
@@ -1023,7 +1023,7 @@ $x_2 \leq 0$ we have $\Lambda_2(x_2, \theta_2) = -0.5$.  Thus the decision rule
 boundary line for $x_2 \leq 1$ is given by
 $\{(x_1, x_2) : (x_1 - 1) - 0.5 = 0\} = \{(x_1, x_2) : x_1 = 1.5\}$.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \caption{Gaussian distributions classifier}
   \label{fig:gaussian-classify}
   \centering
@@ -1066,7 +1066,7 @@ the classification rate for the Bayes rule classifier is 0.75.
 % in comparison to competitors in higher dimensions, as is shown in the numerical
 % studies.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \caption{Exponentiated Gaussian distributions classifier}
   \label{fig:exponentiated-gaussian}
   \centering
@@ -1087,26 +1087,26 @@ the classification rate for the Bayes rule classifier is 0.75.
 \subsubsection{Potential instabilities in quantile-based methods}
 \label{sec:instabilities}
 
-% One potential instability of composite quantile-based classifiers is that the
-% direction of the decision rule boundary lines are dependent on the magnitude of
-% the difference between the component-wise class quantiles.  This causes raises
-% two concerns.  Firstly, changes in scale of the features can fundamentally
-% affect the classifier by changing which components are part of the linear
-% systems in the piecewise affine sets.  As a result, when some of the features in
-% the data are very different in scale to other features then we recommend some
-% sort of data transformations to try to keep the features at a similar scale
-% before performing classification.
+One potential instability of composite quantile-based classifiers is that the
+direction of the decision rule boundary lines are dependent on the magnitude of
+the difference between the component-wise class quantiles.  This causes raises
+two concerns.  Firstly, changes in scale of the features can fundamentally
+affect the classifier by changing which components are part of the linear
+systems in the piecewise affine sets.  As a result, when some of the features in
+the data are very different in scale to other features then we recommend some
+sort of data transformations to try to keep the features at a similar scale
+before performing classification.
 
-One potential source of instability for composite quantile-based classifiers
-occurs when the magnitude of the differences between the within-class quantiles
-is very similar for two or more features.  When this is the case, small changes
-in the within-class quantile estimates can fundamentally affect the classifier
-by changing which components are part of the linear systems in the piecewise
-affine sets.  When the number of features is small this can dramatically change
-the classifier; when the number of features is larger, we expect such changes to
-have a diminished effect.  We also expect averaging the model as discussed in
-Section \ref{sec:classifier-algorithm} to help protect against this type of
-instability.
+On the other hand, a second potential source of instability for composite
+quantile-based classifiers occurs when the magnitude of the differences between
+the within-class quantiles is very similar for two or more features.  When this
+is the case, small changes in the within-class quantile estimates can
+fundamentally affect the classifier by changing which components are part of the
+linear systems in the piecewise affine sets.  When the number of features is
+small this can dramatically change the classifier; when the number of features
+is larger, we expect such changes to have a diminished effect.  We also expect
+averaging the model as discussed in Section \ref{sec:classifier-algorithm} to
+help protect against this type of instability.
 
 
 %%% Local Variables:
