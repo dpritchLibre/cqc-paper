@@ -1089,13 +1089,13 @@ the classification rate for the Bayes rule classifier is 0.75.
 
 One potential instability of composite quantile-based classifiers is that the
 direction of the decision rule boundary lines are dependent on the magnitude of
-the difference between the component-wise class quantiles.  This causes raises
-two concerns.  Firstly, changes in scale of the features can fundamentally
-affect the classifier by changing which components are part of the linear
-systems in the piecewise affine sets.  As a result, when some of the features in
-the data are very different in scale to other features then we recommend some
-sort of data transformations to try to keep the features at a similar scale
-before performing classification.
+the difference between the component-wise class quantiles.  This raises two
+concerns.  Firstly, changes in scale of the features can fundamentally affect
+the classifier by changing which components are part of the linear systems in
+the piecewise affine sets.  As a result, when some of the features in the data
+are very different in scale to other features then we recommend some sort of
+data transformations to try to keep the features at a similar scale before
+performing classification.
 
 On the other hand, a second potential source of instability for composite
 quantile-based classifiers occurs when the magnitude of the differences between
