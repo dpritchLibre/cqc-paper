@@ -5,25 +5,29 @@
 \subsection{Consistency of the aggregate quantile classifier}
 \label{sec:aggregate-classifier-consistency}
 
+Having established the theoretical optimality of the quantile classifier, we now
+consider the consistency of the empirical version.  For the next lemma, we will
+need the following assumptions.  Let $\delta$ be a small positive constant.
+
 \begin{enumerate}[label=\emph{Assumption \arabic*.}, align=left]
 \item $F_{ij}^{-1}$ is a continuous function of
   $\theta,~ i=0,1,~ j=1, \dots, p$.
-\item For all
-  $\vec{\theta} \in T, \hspace{3mm} \prob\Big(
+\item $\prob\Big(
   \sum_{j=1}^p \Lambda_j (Z_j, \theta_j) = 0
-  \Big) = 0$.
+  \Big) = 0$ for all
+  $\theta \in [\delta, 1 - \delta]$.
 \item There is a unique $\tilde{\theta}_j$ that satisfies
-  $\tilde{\theta} = \argmax_{\theta \in T} \Psi_j(\theta)$.
+  $\tilde{\theta} = \argmax_{\theta \in T} \Psi_j(\theta), j = 1, \dots, p$.
 \end{enumerate}
-Let $\widetilde{\theta}_j$ denote the unique maximizer of
+Let $\tilde{\theta}_j$ denote the unique maximizer of
 $\Psi_j(\theta),~ j=1, \dots, p$, and further denote
-$\widetilde{\vec{\theta}} = \Big( \widetilde{\theta}_1, \dots,
-\widetilde{\theta}_P \Big)$.
+$\tilde{\vec{\theta}} = \Big( \tilde{\theta}_1, \dots,
+\tilde{\theta}_P \Big)$.
 \vspace{5mm}
 
 \begin{theorem}
   Under assumptions 1-3 it follows that
-  $\Psi(\widehat{\vec{\theta}}_n) \convp \Psi(\widetilde{\vec{\theta}})$.
+  $\Psi(\hat{\vec{\theta}}_n) \convp \Psi(\tilde{\vec{\theta}})$.
 \end{theorem}
 
 \begin{proof}
@@ -72,12 +76,12 @@ $\widetilde{\vec{\theta}} = \Big( \widetilde{\theta}_1, \dots,
   $\Psi$ is continuous in $\vec{\theta}$.
 
   It was established in Lemma \ref{lem:univariate-consistency} that
-  $\widehat{\theta}_{jn} \convp \widetilde{\theta}_j$, so by Slutsky's theorem
-  it follows that $\widehat{\vec{\theta}}_n \convp \widetilde{\vec{\theta}}$.
+  $\hat{\theta}_{jn} \convp \tilde{\theta}_j$, so by Slutsky's theorem
+  it follows that $\hat{\vec{\theta}}_n \convp \tilde{\vec{\theta}}$.
   Then by the result obtained in equation
   (\ref{eq:multivariate-phi-continuity}), a second application of Slutsky's
   theorem yields
-  $\Psi(\widehat{\vec{\theta}}_n) \convp \Psi(\widetilde{\vec{\theta}})$.
+  $\Psi(\hat{\vec{\theta}}_n) \convp \Psi(\tilde{\vec{\theta}})$.
 \end{proof}
 
 

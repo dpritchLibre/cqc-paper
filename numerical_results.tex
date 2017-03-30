@@ -3,209 +3,196 @@
 \section{Numerical results}
 \label{sec:numerical-results}
 
-
-\subsection{Simulation studies}
-\label{sec:simulation-studies}
-
 In this section we consider the performance of the composite quantile-based
-classifiers compared to other related and popular classification methods.  A
-total number of 8 scenarios are considered.  Within each scenario, we consider
-combinations of sample sizes $n = 500, 250, 50$ and data dimension
-$p = 50, 250, 500$.  Here $n$ is taken to be the total number of samples and in
-every setting we consider equal numbers of observations for each class, so that
-the number of samples from each class is $n / 2$.  Additionally, although the
-number of features varies for different simulations, the number of
-discriminatory features remains fixed at 50 throughout all of the simulations.
-That is to say, that for every simulation there are 50 features such that the
-distribution of the features varies across the classes, and the remaining
-features (if any) are noise variables drawn from the same distribution for each
-class.  The noise variables were drawn independently of each other from a
-Gaussian distribution for each scenario.
-
-
-\subsubsection{Simulated data scenarios}
-\label{sec:simulated-data-scenarios}
-
-Consider the following framework for each of the scenarios.  Let
-$\vec{Z} = (Z_1, \dots, Z_p) \sim N(\vec{0},\, \vec{\Sigma})$, and let
-$\vec{V}_i = (V_{i1}, \dots, V_{ip})$ and $\vec{W}_i = (W_{i1}, \dots, W_{ip})$
-be observations from two populations, $i = 1, \dots, n / 2$, and where the
-$\vec{V}_i$ and $\vec{W}_i$ are all mutually independent.  There are two choices
-of covariance matrices considered for $\vec{\Sigma}$.  In some scenarios we
-consider independent data where the covariance matrix is the identity matrix,
-and in other scenarios we consider the correlated data with an autoregressive
-lag 1 covariance matrix (abbreviated as AR1).  The AR1 matrix is specified with
-variance parameters identically 1 on the diagonal, and correlation parameter
-0.8.  In the interest of continuity, the scenarios are designed to be similar to
-the simulation settings presented in \cite{hennig2016}.
-
-In the first and second scenarios, we consider two classes each with features
-drawn from a multivariate Gaussian distribution and with one class given a
-location shift.  In more detail then, for each feature we consider
-$V_{ij} \sim Z_j$ and $W_{ij} \sim Z_j + 0.35$.  In the first scenario we
-consider uncorrelated data for the underlying Gaussian distribution, and in the
-second scenario we consider autoregressive correlation.
-
-In the third and fourth scenarios, we consider highly skewed data by
-exponentiating the components of a Gaussian distribution.  That is to say that
-$V_{ij} \sim \exp(Z_j)$ and $W_{ij} \sim \exp(Z_j) + 0.35$.  In the third
-scenario we consider uncorrelated data for the underlying Gaussian distribution,
-and in the fourth scenario we consider autoregressive correlation.
-
-In the fifth and sixth scenarios we consider different distributions for each of
-5 blocks of features.  In more detail, the data is sampled from a Gaussian
-distribution and then $p$ features are evenly split into 5 blocks and the
-following transformations performed to each block: (i) $V_{ij} \sim Z_j$ and
-$W_{ij} \sim Z_j + 0.2$, (ii) $V_{ij} \sim \exp(Z_j)$ and
-$W_{ij} \sim \exp(Z_j) + 0.2$, (iii) $V_{ij} \sim \log |Z_j|$ and
-$W_{ij} \sim \log |Z_j| + 0.1$, (iv) $V_{ij} \sim Z_j^2$ and
-$W_{ij} \sim Z_j^2 + 0.2$, and (v) $V_{ij} \sim |Z_j|^{1/2}$ and
-$W_{ij} \sim |Z_j|^{1/2} + 0.1$.  In the fifth scenario we consider uncorrelated
-data for the underlying Gaussian distribution, and in the sixth scenario we
-consider autoregressive correlation.
-
-In the seventh and eight scenarios, we considered data with different
-distributional shapes within each feature.  In the seventh scenario we
-considered data with independent beta distributed features and in the eight
-scenario we considered data with independent gamma distributed features.  The
-beta distribution parameters were sampled as follows.  Two shape parameters were
-sampled for each feature each from a $\mathit{unif}(0.1, 3)$ and
-$\mathit{unif}(0.5, 3)$ distribution for each shape parameter, respectively.
-Then for each class and feature, each parameter was transformed by taking the
-absolute value of some additive Gaussian random noise.  So for example, suppose
-that $\alpha_j$ and $\beta_j$ are the shape parameters drawn for the $j$-th
-feature.  Then for each class the distributional parameters are each sampled
-from $|\alpha_j + N(0, \sigma_j^2)|$ and $|\beta_j + N(0, \sigma_j^2)|$
-distributions.  $\sigma_1, \dots, \sigma_{50}$ were given by a fixed sequence
-each with values between 0.05 and 0.20.  Once the shape parameters were sampled,
-the same parameters were used for every replicate and every simulation study.
-Finally, the gamma distribution parameters in the eight scenario were sampled in
-essentially the same manner.
-
-
-\subsubsection{Hybrid CQC and quantile-based classifiers}
-\label{sec:hybid-cqc}
-
-One disadvantage of the CQC approach is that the data is partitioned into two
-parts: one for selecting quantile levels and estimating quantiles, and the other
-for training the linear combination coefficients, so that each of these tasks is
-performed using only a subset of the data.  When data is abundant, there is
-typically not a great loss of efficiency when performing these tasks as compared
-to using all of the available data.  However, when data is limited, losing a
-portion of the data can result in a large loss of efficiency.  As a concrete
-example, suppose $n = 50$ and we split the data into two equal parts.  Then
-estimating the within-class quantiles is limited to 25 points so that the
-quantiles are estimated for at least one class with no more than 12 data points
-- a big difference to estimating the quantiles from 25 data points.  When data
-is limited as in this example, we find that CQC can suffer from instability in
-the choice of quantile levels.  As a result, we suggest using the quantile
-levels as selected by the quantile-based classifiers method and then applying
-the linear combination step on the transformed variables as in the usual CQC
-method.  This has the result in choosing quantile levels that are far more
-stable at the cost of some flexibility.  Our suggestion is that when data is
-relatively small, say less than 100, to perform cross-validation with the
-regular CQC and hybrid approach to select the better model.  It is noted in the
-discussion of the simulations whenever the hybrid approach is used.
-
-
-\subsubsection{Classifier implementations and settings}
-\label{sec:classifier-implementations}
-
-We compared the misclassification rate from the composite quantile-based
-classifiers model with that of nine other classification methods: quantile-based
+classifiers with that of nine other classification methods: quantile-based
 classifiers \cite{hennig2016}, FANS \cite{fan2016}, penalized linear regression
 ($\ell_1$ penalty) \cite{park2007}, support vector machine (radial kernel)
 \cite{cortes1995}, k-nearest neighbor \cite{cover1967}, naive Bayes
 \cite{hastie2009}, nearest shrunken centroids \cite{tibshirani2002}, penalized
-LDA \cite{witten2011}, and decision trees \cite{breiman1984}.  
+LDA \cite{witten2011}, and decision trees \cite{breiman1984}.  Detailed
+descriptions of the settings and software implementations for each of these
+methods is provided in the supplementary materials.
 
-The composite quantiles-based classifier is implemented using the \r/
-programming language; the source code is available from the authors upon
-request.  Quantile-based methods is implemented as the \r/ package
-\texttt{quantileDA}.  There are several methods of quantifying distributional
-skew provided by the package; we used the default Galton skewness measure.  FANS
-is implemented as \matlab/ \cite{matlab} source code and is available upon
-request by the authors of \cite{fan2016}.  Results from both the FANS method and
-FANS2 method are shown since FANS2 is similar to the augmented version of
-composite quantile-based classifiers.  Penalized linear regression is
-implemented as the \r/ package \texttt{glmnet} and uses the $\ell_1$ penalty
-with 10-fold cross validation to select the penalty parameter.  Support vector
-machine is implemented in the \r/ package \texttt{e1071} through the C++ library
-\texttt{libsvm}.  The tuning parameters for each simulation were selected by
-using the function \texttt{tune.svm} over the kernel coefficient parameter from
-among $\{0.001, 0.01, 0.1, 1, 2\}$, and constraints violation cost from among
-$\{1, 2, 4, 8, 16\}$.  k-nearest neighbors is implemented in the \r/ package
-\texttt{class} and uses leave-one-out cross validation to choose the number of
-neighbors considered from among $\{1, \dots, 9\}$.  Naive Bayes is implemented
-in the \r/ package \texttt{e1071}.  Nearest shrunken centroids is implemented as
-the \r/ package \texttt{pamr} with 10-fold cross validation used to select the
-threshold parameter.  The version of penalized linear discriminant analysis
-compared in the simulation studies is that proposed in \cite{witten2011}, and is
-implemented as the \r/ package \texttt{PenalizedLDA} using 6-fold cross
-validation and 1 discriminant vector.  Decision trees is implemented as the \r/
-package \texttt{rpart}.  All packages used in the numerical analysis are
-available from the Comprehensive \r/ Archive Network.
+
+\subsection{Simulated data scenarios}
+\label{sec:simulated-data-scenarios}
+
+We consider two simulated data scenarios in the paper; additional simulated data
+scenarios and results are provided in the supplementary materials.  Within each
+scenario, we consider combinations of sample sizes $n = 500, 250, 50$ and data
+dimension $p = 50, 250, 500$.  In every setting we consider equal numbers of
+observations for each class, so that the number of samples from each class is
+$n / 2$.  Additionally, although the number of features varies for different
+simulations, the number of discriminatory features remains fixed at 50
+throughout all of the simulations.  That is to say, that for every simulation
+there are 50 features such that the distribution of the features varies across
+the classes, and the remaining features (if any) are noise variables drawn from
+the same distribution for each class.  The noise variables were drawn
+independently of each other from a Gaussian distribution for each scenario.
+
+% Consider the following framework for each of the scenarios.  Let
+% $\vec{Z} = (Z_1, \dots, Z_p) \sim N(\vec{0},\, \vec{\Sigma})$, and let
+% $\vec{V}_i = (V_{i1}, \dots, V_{ip})$ and $\vec{W}_i = (W_{i1}, \dots, W_{ip})$
+% be observations from two populations, $i = 1, \dots, n / 2$, and where the
+% $\vec{V}_i$ and $\vec{W}_i$ are all mutually independent.  There are two choices
+% of covariance matrices considered for $\vec{\Sigma}$.  In some scenarios we
+% consider independent data where the covariance matrix is the identity matrix,
+% and in other scenarios we consider the correlated data with an autoregressive
+% lag 1 covariance matrix (abbreviated as AR1).  The AR1 matrix is specified with
+% variance parameters identically 1 on the diagonal, and correlation parameter
+% 0.8.  In the interest of continuity, the scenarios are designed to be similar to
+% the simulation settings presented in \cite{hennig2016}.
+
+In the first scenario we consider different distributions for each of 5 blocks
+of features.  In more detail, the data is sampled from a Gaussian distribution
+with components $(Z_1, \dots, Z_{50})$, and then the features are evenly split
+into 5 blocks of 10 and the following transformations performed to each block:
+(i) $V_{ij} \sim Z_j$ and $W_{ij} \sim Z_j + 0.2$, (ii) $V_{ij} \sim \exp(Z_j)$
+and $W_{ij} \sim \exp(Z_j) + 0.2$, (iii) $V_{ij} \sim \log |Z_j|$ and
+$W_{ij} \sim \log |Z_j| + 0.1$, (iv) $V_{ij} \sim Z_j^2$ and
+$W_{ij} \sim Z_j^2 + 0.2$, and (v) $V_{ij} \sim |Z_j|^{1/2}$ and
+$W_{ij} \sim |Z_j|^{1/2} + 0.1$.  In one setting we consider uncorrelated data
+for the underlying Gaussian distribution, and in another setting we consider
+autoregressive correlation.
+
+In the second scenario, we considered data with different distributional shapes
+within each feature.  In one setting we considered data with independent beta
+distributed features and in another setting we considered data with independent
+gamma distributed features.  The beta distribution parameters were sampled as
+follows.  Two shape parameters were sampled for each feature each from a
+$\mathit{unif}(0.1, 3)$ and $\mathit{unif}(0.5, 3)$ distribution for each shape
+parameter, respectively.  Then for each class and feature, each parameter was
+transformed by taking the absolute value of some additive Gaussian random noise.
+So for example, suppose that $\alpha_j$ and $\beta_j$ are the shape parameters
+drawn for the $j$-th feature.  Then for each class the distributional parameters
+are each sampled from $|\alpha_j + N(0, \sigma_j^2)|$ and
+$|\beta_j + N(0, \sigma_j^2)|$ distributions.  $\sigma_1, \dots, \sigma_{50}$
+were given by a fixed sequence each with values between 0.05 and 0.20.  Once the
+shape parameters were sampled, the same parameters were used for every replicate
+and every simulation study.  The gamma distribution parameters in the other
+setting were sampled in essentially the same manner.
+
+
+\subsubsection{Hybrid quantile-based classifiers}
+\label{sec:hybid-cqc}
+
+One disadvantage of the composite quantile-based classifiers approach is that
+the data is partitioned into two parts: one for selecting quantile levels and
+estimating quantiles, and the other for training the linear combination
+coefficients, so that each of these tasks is performed using only a subset of
+the data.  When data is abundant, there is typically not a great loss of
+efficiency when performing these tasks as compared to using all of the available
+data.  However, when data is limited, losing a portion of the data can result in
+a large loss of efficiency.  As a concrete example, suppose $n = 50$ and we
+split the data into two equal parts.  Then estimating the within-class quantiles
+is limited to 25 points so that the quantiles for one of the classes are
+estimated using no more than 12 data points - a big difference to estimating the
+quantiles from 25 data points.  When data is limited as in this example, we find
+that composite quantile-based classifiers can suffer from instability in the
+choice of quantile levels.  As a result, we suggest using the quantile levels as
+selected by the quantile-based classifiers method and then applying the linear
+combination step on the transformed variables as in the usual composite
+quantile-based classifiers method.  This has the result in choosing quantile
+levels that are far more stable at the cost of some flexibility.  Our suggestion
+is that when data is relatively small, say less than 100, to perform
+cross-validation with the regular composite quantile-based classifiers and
+hybrid approach to select the better model.  It is noted in the discussion of
+the simulations whenever the hybrid approach is used.
+
+
+% \subsubsection{Classifier implementations and settings}
+% \label{sec:classifier-implementations}
+
+% We compared the misclassification rate from the composite quantile-based
+% classifiers model with that of nine other classification methods: quantile-based
+% classifiers \cite{hennig2016}, FANS \cite{fan2016}, penalized linear regression
+% ($\ell_1$ penalty) \cite{park2007}, support vector machine (radial kernel)
+% \cite{cortes1995}, k-nearest neighbor \cite{cover1967}, naive Bayes
+% \cite{hastie2009}, nearest shrunken centroids \cite{tibshirani2002}, penalized
+% LDA \cite{witten2011}, and decision trees \cite{breiman1984}.  
+
+% The composite quantiles-based classifier is implemented using the \r/
+% programming language; the source code is available from the authors upon
+% request.  Quantile-based methods is implemented as the \r/ package
+% \texttt{quantileDA}.  There are several methods of quantifying distributional
+% skew provided by the package; we used the default Galton skewness measure.  FANS
+% is implemented as \matlab/ \cite{matlab} source code and is available upon
+% request by the authors of \cite{fan2016}.  Results from both the FANS method and
+% FANS2 method are shown since FANS2 is similar to the augmented version of
+% composite quantile-based classifiers.  Penalized linear regression is
+% implemented as the \r/ package \texttt{glmnet} and uses the $\ell_1$ penalty
+% with 10-fold cross validation to select the penalty parameter.  Support vector
+% machine is implemented in the \r/ package \texttt{e1071} through the C++ library
+% \texttt{libsvm}.  The tuning parameters for each simulation were selected by
+% using the function \texttt{tune.svm} over the kernel coefficient parameter from
+% among $\{0.001, 0.01, 0.1, 1, 2\}$, and constraints violation cost from among
+% $\{1, 2, 4, 8, 16\}$.  k-nearest neighbors is implemented in the \r/ package
+% \texttt{class} and uses leave-one-out cross validation to choose the number of
+% neighbors considered from among $\{1, \dots, 9\}$.  Naive Bayes is implemented
+% in the \r/ package \texttt{e1071}.  Nearest shrunken centroids is implemented as
+% the \r/ package \texttt{pamr} with 10-fold cross validation used to select the
+% threshold parameter.  The version of penalized linear discriminant analysis
+% compared in the simulation studies is that proposed in \cite{witten2011}, and is
+% implemented as the \r/ package \texttt{PenalizedLDA} using 6-fold cross
+% validation and 1 discriminant vector.  Decision trees is implemented as the \r/
+% package \texttt{rpart}.  All packages used in the numerical analysis are
+% available from the Comprehensive \r/ Archive Network.
 
 
 \subsubsection{Simulation results}
 \label{sec:simulation-results}
 
 The classifer proposed in this paper is abbreviated as CQC.  Results for the
-second variant of composite quantile-based classifiers are also shown and are
-abbreviated as CQC augmented.  This is the variant where transformed quantile
-distances data is augmented by the original data when constructing the decision
-rule.
+second variant of composite quantile-based classifiers where the transformed
+quantile distances data is augmented by the original data are also shown and are
+abbreviated as CQC augmented.
 
-Simulation results for the Gaussian setting are shown in Table
-\ref{tab:gauss-corr0} and Table \ref{tab:gauss-corr08}.  We would expect
-composite quantile-based classifiers to be suboptimal in this setting compared
-to LDA and similar classifiers since they do not make use of the distributional
-information, and are interested in the magnitude of the loss of efficiency.  One
-thing to notice is that the augmented version of CQC performs better nearly
-everywhere as compared to the non-augmented version.  This is to be expected
-since the Bayes rule decision boundary is linear in the original features, and
-is also the case for FANS2 as compared to FANS.  In this setting, nearest
-shrunken centroids and penalized LDA show the best performance.  When $n$ is
-large compared to $p$, marginal quantile-based classifiers perform reasonably
-well, although performance deteriorates relative to other methods when
-conditions are less ideal.
+% Simulation results for the Gaussian setting are shown in Table
+% \ref{tab:gauss-corr0} and Table \ref{tab:gauss-corr08}.  We would expect
+% composite quantile-based classifiers to be suboptimal in this setting compared
+% to LDA and similar classifiers since they do not make use of the distributional
+% information, and are interested in the magnitude of the loss of efficiency.  One
+% thing to notice is that the augmented version of CQC performs better nearly
+% everywhere as compared to the non-augmented version.  This is to be expected
+% since the Bayes rule decision boundary is linear in the original features, and
+% is also the case for FANS2 as compared to FANS.  In this setting, nearest
+% shrunken centroids and penalized LDA show the best performance.  When $n$ is
+% large compared to $p$, marginal quantile-based classifiers perform reasonably
+% well, although performance deteriorates relative to other methods when
+% conditions are less ideal.
 
-Simulation results for the exponentiated Gaussian setting are shown in Table
-\ref{tab:exp-gauss-corr0} and Table \ref{tab:exp-gauss-corr08}.  As we saw in
-Section \ref{sec:classifier-examples}, that in this setting quantile-based
-classifiers are nearly optimal and this is borne out in the simulation study
-results.  CQC performs well also, although never as well as quantile-based
-classifiers.  We see this as being due to several reasons.  Firstly,
-quantile-based classifiers composite quantile-based classifiers sacrifice part
-of the data set in order to train the linear combination coefficients; this has
-the effect of reducing the sample size to both choose good quantile levels and
-to estimate the within-class quantiles.  Secondly, since the optimal quantile
-level is the same for every quantile, quantile-based classifiers is able to
-borrow information across all of the features to estimate the optimal quantile
-level, while composite quantile-based classifiers selects the quantile level one
-feature at-a-time.  Thirdly, the freedom to select linear combination
-coefficients for the composite quantile-based classifiers method can result in
-additional variation.  These points highlight the trade-off between the two
-methods.  When the optimal quantile levels and discriminatory information are
-the same across the components then quantile-based classifiers perform better
-than CQC, and when this is not the case then CQC may perform better in some
-settings.
+% Simulation results for the exponentiated Gaussian setting are shown in Table
+% \ref{tab:exp-gauss-corr0} and Table \ref{tab:exp-gauss-corr08}.  As we saw in
+% Section \ref{sec:classifier-examples}, that in this setting quantile-based
+% classifiers are nearly optimal and this is borne out in the simulation study
+% results.  CQC performs well also, although never as well as quantile-based
+% classifiers.  We see this as being due to several reasons.  Firstly,
+% quantile-based classifiers composite quantile-based classifiers sacrifice part
+% of the data set in order to train the linear combination coefficients; this has
+% the effect of reducing the sample size to both choose good quantile levels and
+% to estimate the within-class quantiles.  Secondly, since the optimal quantile
+% level is the same for every quantile, quantile-based classifiers is able to
+% borrow information across all of the features to estimate the optimal quantile
+% level, while composite quantile-based classifiers selects the quantile level one
+% feature at-a-time.  Thirdly, the freedom to select linear combination
+% coefficients for the composite quantile-based classifiers method can result in
+% additional variation.  These points highlight the trade-off between the two
+% methods.  When the optimal quantile levels and discriminatory information are
+% the same across the components then quantile-based classifiers perform better
+% than CQC, and when this is not the case then CQC may perform better in some
+% settings.
 
 Simulation results for the block transformed Gaussian setting are shown in Table
 \ref{tab:block-transformed-corr0} and Table \ref{tab:block-transformed-corr08}.
-In contrast to scenarios 1-4, in this setting the optimal quantile levels and
-discriminatory information vary across the components, and in this setting CQC
-typically performs better than quantile-based classifiers.  FANS and decision
-trees are the other best-performing classifiers in this scenario.  The inclusion
-of decision trees suggests that there are some relatively discriminative
+In these settings composite quantile-based classifiers and FANS typically
+perform better than other classifiers.  Decision trees also performs well in
+some settings, which suggests that there are some relatively discriminative
 features.  When the quantity of the training data decreases to $n = 50$ we see a
 sharp rise in the misclassification rates for all methods.  It is in this
-setting that the hybrid CQC and quantile-based classifiers do well.  For
-example, when $n = 50$ and $p = 500$ with uncorrelated data, using the hybrid
-approach reduces the misclassification rate from 0.351 to 0.215.  Both CQC and
-quantile-based classifiers perform well in this setting compared to other
-methods.  We attribute this in part to the relative simplicity of the models in
-this data-sparse setting.  Additionally, the reason that the hybrid approach
+setting that the hybrid quantile-based classifiers do well.  For example, when
+$n = 50$ and $p = 500$ with uncorrelated data, using the hybrid approach reduces
+the misclassification rate from 0.351 to 0.215 as compared to composite
+quantile-based classifiers.  We believe the reason that the hybrid approach
 works well here is that we may have a number of relatively discriminative
 features that the quantile-based methods approach of selecting quantile levels
 can effectively key in on, and then the additional linear combination step can
@@ -215,16 +202,17 @@ between the blocks.
 Simulation results for the beta distributed and gamma distributed data settings
 are shown in Table \ref{tab:block-transformed-corr0} and Table
 \ref{tab:block-transformed-corr08}.  In the case of the beta distributed data,
-CQC and decision trees performed the best.  We see this as a sign of a few
-features having some degree of separability across the two classes.  In this
-setting where the optimal quantile level varies across all of the features, we
-see that CQC having more flexibility to select quantile levels results in better
-performance as compared to quantile-based classifiers.  We see similar results
-for the gamma distributed data, although in this case quantile-based classifiers
-perform about as well as CQC.  We see this as suggesting that there happen to be
-a number of features with similar optimal quantile levels that quantile-based
-classifiers can select to achieve similar performance as the more flexible
-approach.
+composite quantile-based classifiers and decision trees performed the best.  We
+see this as a sign of a few features having some degree of separability across
+the two classes.  In this setting where the optimal quantile level varies across
+all of the features, the additional flexibility of composite quantile-based
+classifiers to select varying quantile levels results in better performance as
+compared to quantile-based classifiers.  Similar results are exhibited for the
+gamma distributed data, although in this case quantile-based classifiers perform
+about as well as composite quantile-based classifiers.  We see this as
+suggesting that there happen to be a number of features with similar optimal
+quantile levels that quantile-based classifiers can select to achieve similar
+performance as the more flexible approach.
 
 
 
@@ -232,63 +220,108 @@ approach.
 \subsection{Real data study}
 \label{sec:real-data-study}
 
-For a real data study, we considered a spam data with a total of 4,601
+For a real data study, we considered a spam email data set with a total of 4,601
 observations and 57 features.  The attributes are, for example, the percentage
-of specific words or phrases in the email, the average and maximum run lengths
-of uppercase letters, and the total number of uppercase letters.  The proportion
-of data used to train the methods is varied from 5\% to 80\%.  We see that for
-this data set, CQC performs at least as well as the best at every level, with
-SVM the next best competitor.
+of specific words or phrases in the email (e.g. money, free, order), the average
+and maximum run lengths of uppercase letters, and the total number of uppercase
+letters.  The features for this data are typically highly skewed: often 90\% of
+the data have no occurrences of a word while a few emails have a high rate.
+39\% of the emails in the data set were spam emails, versus 61\% non-spam
+emails.
+
+Various settings were considered for this data as follows.  For each setting, a
+certain amount of data was randomly selected to be the training data, and the
+misclassification rate was then based on the remaining holdout data.  The number
+of observations used to train the classifiers for the various settings was 100,
+250, 500, and 1000 observations, respectively.  The misclassification rate for
+more than 1,000 training observations was basically constant across the
+classifiers and is not shown.
+
+We observe that augmented quantile-based classifiers has nearly the lowest
+misclassification rate across all of the settings.  Penalized logistic
+regression is one of the better competitors which suggests that a linear
+decision rule boundary is a reasonable choice of boundary for this problem.  The
+augmented FANS classifier is another strong competitor which makes sense given
+that it also uses the original features, and has a close relationship to
+composite quantile-based classifiers.
 
 
+% \subsection{Real data considerations}
 
-\subsection{Real data considerations}
+% In practice, one often encounters data that has variables with both continuous
+% as well as categorical data.  In problems such as these categorical data is
+% typically reformulated into so-called dummy-coded variables.  However, the
+% quantile-based classifier is inherently ill-conditioned to handle such data.
+% When categorical variables are present in the data, we propose including them in
+% the classifier as untransformed dummy-coded variables.
 
-In practice, one often encounters data that has variables with both continuous
-as well as categorical data.  In problems such as these categorical data is
-typically reformulated into so-called dummy-coded variables.  However, the
-quantile-based classifier is inherently ill-conditioned to handle such data.
-When categorical variables are present in the data, we propose including them in
-the classifier as untransformed dummy-coded variables.
+% A second type of data can also cause problems:  one where the data is a mixture
+% of point masses as well as continuous data.  As an example, consider univariate
+% data where the the quantiles of the underlying populations are given as follows.
+% \begin{center}
+%   \begin{tabular}{lrrrrrrrrrrr}
+%     \toprule
+%     & \multicolumn{11}{c}{\underline{Quantile levels}} \\
+%     & 0.89 & 0.90 & 0.91 & 0.92 & 0.93 & 0.94 & 0.95 & 0.96 & 0.97 & 0.98 & 0.99 \\
+%     \midrule
+%     Class 0 & 0.00 & 0.02 & 0.14 & 0.23 & 0.33 & 0.42 & 0.55 & 0.68 & 0.87 & 1.05 & 1.41 \\
+%     Class 1 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.06 & 0.08 & 0.18 & 0.20 \\
+%     \bottomrule
+%   \end{tabular}
+% \end{center}
+% This example raises the question as to what the quantile distances would be for
+% a fixed choice of quantile level.  Suppose first that we consider a quantile
+% level with nonzero quantiles for both classes, say 0.97.  In this case, the
+% quantile distances for the data in class 0 with value 0 than the data quantile
+% distances for the data in class 1 with value 0.  As a result, the quantile-based
+% data will have spuriously introduced differences in the data for 90\% of the
+% data, when in fact there is no discriminative data in those quantiles.
+% Conversely, suppose now that we select a quantile level with quantiles for both
+% classes with value 0.  Doing so has the effect of simply multiplying the nonzero
+% values in the data by a constant factor.  While this is less disastrous then the
+% previous scenario, we are not using the quantile-based data approach consistent
+% with the rest of the paper.
 
-A second type of data can also cause problems:  one where the data is a mixture
-of point masses as well as continuous data.  As an example, consider univariate
-data where the the quantiles of the underlying populations are given as follows.
-\begin{center}
-  \begin{tabular}{lrrrrrrrrrrr}
-    \toprule
-    & \multicolumn{11}{c}{\underline{Quantile levels}} \\
-    & 0.89 & 0.90 & 0.91 & 0.92 & 0.93 & 0.94 & 0.95 & 0.96 & 0.97 & 0.98 & 0.99 \\
-    \midrule
-    Class 0 & 0.00 & 0.02 & 0.14 & 0.23 & 0.33 & 0.42 & 0.55 & 0.68 & 0.87 & 1.05 & 1.41 \\
-    Class 1 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.06 & 0.08 & 0.18 & 0.20 \\
-    \bottomrule
-  \end{tabular}
-\end{center}
-This example raises the question as to what the quantile distances would be for
-a fixed choice of quantile level.  Suppose first that we consider a quantile
-level with nonzero quantiles for both classes, say 0.97.  In this case, the
-quantile distances for the data in class 0 with value 0 than the data quantile
-distances for the data in class 1 with value 0.  As a result, the quantile-based
-data will have spuriously introduced differences in the data for 90\% of the
-data, when in fact there is no discriminative data in those quantiles.
-Conversely, suppose now that we select a quantile level with quantiles for both
-classes with value 0.  Doing so has the effect of simply multiplying the nonzero
-values in the data by a constant factor.  While this is less disastrous then the
-previous scenario, we are not using the quantile-based data approach consistent
-with the rest of the paper.
+% What we propose to do for such a scenario is the following.  When mixture data
+% such as the example given above is present for a variable, we try to separate
+% the parts of the data that belong to the point mass contribution to the mixture,
+% and those that belong to the continuous part of the mixture.  Then for the point
+% mass data, we create a categorical variable that includes a reference category
+% for the continuous part of the data, and for the continuous part we perform the
+% quantile-based classification using only the reduced subset of the data.
 
-What we propose to do for such a scenario is the following.  When mixture data
-such as the example given above is present for a variable, we try to separate
-the parts of the data that belong to the point mass contribution to the mixture,
-and those that belong to the continuous part of the mixture.  Then for the point
-mass data, we create a categorical variable that includes a reference category
-for the continuous part of the data, and for the continuous part we perform the
-quantile-based classification using only the reduced subset of the data.
+\begin{table}[ht]
+  \caption{Spam data}
+  \label{tab:spam}
+  \centering
+  \vspace{5mm}
+
+  \begin{adjustbox}{max size={\textwidth}{10cm}}
+    \begin{tabular}{l@{\extracolsep{15mm}}rrrr}
+      \toprule
+      & \multicolumn{4}{c}{Number of observations used to train} \\[1ex]
+      \cline{2-5}
+      \rule{0mm}{5mm} & $n = 100$ & $n = 250$ & $n = 500$ & $n = 1000$ \\
+      \midrule
+      CQC & 0.130 (0.04) & \bn{0.088 (0.01)} & 0.080 (0.01) & 0.068 (0.01) \\ 
+      CQC augmented & \bn{0.123 (0.03)} & 0.090 (0.01) & \bn{0.079 (0.01)} & \bn{0.064 (0.00)} \\ 
+      Quantile-based classifiers & 0.319 (0.03) & 0.307 (0.01) & 0.305 (0.01) & 0.302 (0.01) \\ 
+      FANS & 0.153 (0.03) & 0.101 (0.01) & 0.095 (0.01) & 0.079 (0.00) \\ 
+      FANS2 & 0.146 (0.02) & 0.102 (0.01) & 0.089 (0.01) & 0.074 (0.00) \\ 
+      Penalized logistic regression & 0.140 (0.03) & 0.116 (0.01) & 0.100 (0.01) & 0.081 (0.01) \\ 
+      Support vector machine & 0.249 (0.11) & 0.130 (0.05) & 0.100 (0.01) & 0.081 (0.00) \\ 
+      k-nearest neighbor & 0.315 (0.01) & 0.299 (0.01) & 0.282 (0.01) & 0.251 (0.01) \\ 
+      Naive Bayes & 0.391 (0.03) & 0.352 (0.02) & 0.314 (0.02) & 0.295 (0.02) \\ 
+      Nearest shrunken centroids & 0.148 (0.03) & 0.152 (0.02) & 0.153 (0.02) & 0.134 (0.01) \\ 
+      Penalized LDA & 0.138 (0.02) & 0.129 (0.01) & 0.121 (0.01) & 0.113 (0.01) \\ 
+      Decision trees & 0.204 (0.03) & 0.156 (0.02) & 0.133 (0.02) & 0.108 (0.01) \\ 
+      \bottomrule
+    \end{tabular}
+  \end{adjustbox}
+\end{table}
 
 
-
-\input{tables.tex}
+\input{tables_paper.tex}
 
 
 

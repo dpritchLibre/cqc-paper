@@ -2,10 +2,10 @@
 \section{Quantile-based classifiers for multivariate data}
 \label{sec:multivariate-classifier}
 
-Having presented and characterized the (inherently univariate) quantile
-classifier, our goal then is to construct a classification method for data with
-multivariate features based upon the quantile classifier.  We begin by extending
-some of the notation from the previous section to the multivariate setting.
+Having characterized the inherently univariate quantile classifier, our goal
+then is to construct a classification method for data with multivariate features
+based upon the quantile classifier.  We begin by extending some of the notation
+from the previous section to the multivariate setting.
 
 First, consider two populations $\Pi_0$ and $\Pi_1$ with corresponding
 distribution functions $F_0$ and $F_1$ each on $\mathbb{R}^{p}$, and further let
@@ -30,12 +30,15 @@ next section is to aggregate the discriminatory information contained in each of
 the $\Lambda_j$'s so as to construct a classification method for data with
 multivariate features.
 
+
 \subsection{Composite quantile-based classifiers}
 \label{sec:varying-coefficient}
 
-Consider a point $\vec{z} = (z_1, \dots, z_p) \in \mathbb{R}^p$ and quantile
-levels $\vec{\theta} = (\theta_1, \dots, \theta_p) \in (0, 1)^p$.  Then the
-difference of the quantile distances of the $j$-th component of $\vec{z}$ to the
+In this section we propose the composite quantile-based classifiers
+family; we start by motivating the the form of the classifiers.  Consider a
+point $\vec{z} = (z_1, \dots, z_p) \in \mathbb{R}^p$ and quantile levels
+$\vec{\theta} = (\theta_1, \dots, \theta_p) \in (0, 1)^p$.  Then the difference
+of the quantile distances of the $j$-th component of $\vec{z}$ to the
 populations' $\theta_j$-th quantile of the $j$-th component
 $\Lambda_j(z_j, \theta_j)$ provides some discriminatory information for the
 classification of $\vec{z}$.  In more detail, if $\Lambda_j(z_j, \theta_j)$ is a
@@ -90,7 +93,7 @@ follows.  We call this family of classifiers \emph{composite quantile-based
     \end{array}
   \right.
 \end{equation}
-for $\vec{\alpha} = (\alpha_0, \dots, \alpha_p) \in \mathbb{R}^{p+1}$. By
+for $\vec{\alpha} = (\alpha_0, \dots, \alpha_p) \in \mathbb{R}^{p+1}$.  By
 introducing the coefficients to the classification model this in principle
 provides the ability to both handle the differences in scale of the features and
 to provide more or less weight to variables as a function of their
@@ -106,6 +109,102 @@ is the case, we can require a higher threshold of closeness for an observation
 to a population that has a low prior probability before we are willing to
 classify the observation as belonging to that population.
 
+
+\subsubsection{Consistency of the aggregate quantile classifier}
+\label{sec:aggregate-classifier-consistency}
+
+Having presented the theoretical form of the composite quantile-based
+classifiers, we now consider the consistency of the empirical version.  Firstly,
+we note that the correct classification rate for composite quantile-based
+classifiers as is given by:
+\begin{equation}
+  \label{eq:multivariate-theoretical-rate}
+  \Psi(\vec{\theta}) =
+  \pi_0 \int \ind\bigg(
+  \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j) > 0
+  \bigg)\, dP_0(\vec{z}) +
+  \pi_1 \int \ind\bigg(
+  \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j) \leq 0
+  \bigg)\, dP_1(\vec{z}).
+\end{equation}
+For the following theorem, we will need the following assumptions.  Let $\delta$
+be a small positive constant.
+\begin{enumerate}[label=\emph{Assumption \arabic*.}, align=left]
+\item $F_{ij}^{-1}$ is a continuous function of
+  $\theta,~ i=0,1,~ j=1, \dots, p$.
+\item $\prob\Big(
+  \sum_{j=1}^p \Lambda_j (Z_j, \theta_j) = 0
+  \Big) = 0$ for all
+  $\theta \in [\delta, 1 - \delta]$.
+\item There is a unique $\tilde{\theta}_j$ that satisfies
+  $\tilde{\theta}_j = \argmax_{\theta \in T} \Psi_j(\theta), j = 1, \dots, p$.
+\end{enumerate}
+% Let $\tilde{\theta}_j$ denote the unique maximizer of
+% $\Psi_j(\theta),~ j=1, \dots, p$, and further denote
+% $\tilde{\vec{\theta}} = \Big( \tilde{\theta}_1, \dots,
+% \tilde{\theta}_P \Big)$.
+Further denote
+$\tilde{\vec{\theta}} = \Big( \tilde{\theta}_1, \dots, \tilde{\theta}_P \Big)$.
+\vspace{5mm}
+
+\begin{theorem}
+  Under assumptions 1-3 it follows that
+  $\Psi(\hat{\vec{\theta}}_n) \convp \Psi(\tilde{\vec{\theta}})$.
+\end{theorem}
+
+\begin{proof}
+  The following upper bound on the difference between the component-wise
+  quantile distances was established in the proof of Theorem 1 in Hennig and
+  Viroli (2016).  For $z \in \mathbb{R}$ and
+  $\theta, \theta^{\prime} \in (0, 1)$ then
+  \begin{equation}
+    \label{eq:quantile-distance-ubnd}
+    \big| \Phi_{ij}(z, \theta) - \Phi_{ij}(z, \theta^{\prime}) \big|
+    \leq |z|\, | \theta - \theta^{\prime} | +
+    4 | F_{ij}^{-1}(\theta) - F_{ij}^{-1}(\theta^{\prime}) |,
+    \hspace{5mm} i = 1, 2,~ j = 1, \dots, p
+  \end{equation}
+  Since $F_{ij}^{-1}$ is continuous by assumption, it follows that for arbitrary
+  fixed $z$, $\Phi_{ij}(z, \theta)$ is continuous in $\theta$ for every
+  $\{i, j\}$.  This in turn implies that for arbitrary fixed $\vec{z}$,
+  $\Lambda(\vec{z}, \vec{\theta})$ is also continuous in $\vec{\theta}$, since
+  $\Lambda$ is just the sum of the differences of the
+  $\Phi_{ij}(z_j, \theta_j)$'s.  Then we observe that
+  \begin{align}
+    \label{eq:multivariate-phi-continuity}
+    \begin{split}
+      \limtheta \Psi(\vec{\theta})
+      & = \limtheta \left\{
+        \pi_0 \int \ind\Big( \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z}) +
+        \pi_1 \int \ind\Big(\Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+      \right\} \\[1ex]
+      & = \pi_0 \int \limtheta \ind\Big( \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z})
+      + \pi_1 \int \limtheta \ind\Big(\Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+      \\[1ex]
+      & = \pi_0 \int \ind \Big( \limtheta \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z})
+      + \pi_1 \int \ind \Big( \limtheta \Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+      \\[1ex]
+      & = \pi_0 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) > 0 \Big)\, dP_0(\vec{z})
+      + \pi_1 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) \leq 0 \Big)\, dP_1(\vec{z})
+      \\[1ex]
+      & = \Psi(\vec{\theta}^{*})
+    \end{split}
+  \end{align}
+  The justification for bringing the limit inside of the integral is due to the
+  dominated convergence theorem.  The justification for bringing the limit
+  inside of the indicator function is that the indicator function is continuous
+  everywhere except at 0, which by Assumption 2 occurs with probability 0, and
+  hence does not change the value of the integral.  This result establishes that
+  $\Psi$ is continuous in $\vec{\theta}$.
+
+  It was established in Lemma \ref{lem:univariate-consistency} that
+  $\hat{\theta}_{jn} \convp \tilde{\theta}_j$, so by Slutsky's theorem
+  it follows that $\hat{\vec{\theta}}_n \convp \tilde{\vec{\theta}}$.
+  Then by the result obtained in equation
+  (\ref{eq:multivariate-phi-continuity}), a second application of Slutsky's
+  theorem yields
+  $\Psi(\hat{\vec{\theta}}_n) \convp \Psi(\tilde{\vec{\theta}})$.
+\end{proof}
 
 
 
@@ -129,7 +228,7 @@ in \cite{hennig2016}, a distance-based classifier has the following form:
                  d(z_j, \xi_{1j}) - d(z_j, \xi_{0j})
                  \Big\} > 0 \\[1ex]
       \Pi_1, & & \text{otherwise}
-    \end{array}
+    \end{array}.
   \right.
 \end{equation}
 Some examples of distance-based classifiers include nearest centroid
@@ -150,48 +249,72 @@ below.
 % $d(z_j, \vec{\xi}_i) = \rho_{\theta_j}(z_j - \xi_{ij})$.  Under these choices of
 % $d(\cdot)$ and $\vec{\xi}_i$,
 
-To see this, let
-$\vec{\xi}_i = \Big(F_{i1}^{-1}(\theta), \dots, F_{ip}^{-1}(\theta) \Big),~ i =
-0, 1$, and further let
-$d_\theta(z_j, \xi_{ij}) = \rho_{\theta}(z_j - \xi_{ij})$.  Additionally,
-restrict the coefficient values of the linear combination of the differences in
-component-wise quantile distances so that $\alpha_0 = 0$, and further require
-$\alpha_1 = \dots = \alpha_p = \alpha$ where $\alpha > 0$, and also require
-$\theta_1 = \dots = \theta_p = \theta$.  Then under these specifications we
-obtain the following equality:
-\begin{align}
+To see this, restrict the linear combination coefficients so that $\alpha_0 = 0$
+and $\alpha_1 = \dots = \alpha_p = \alpha$ for $\alpha > 0$, and finally require
+that $\theta_1 = \dots = \theta_p = \theta$.  Then under these specifications we
+obtain:
+% \begin{align}
+%   \label{eq:composite-is-distance}
+%   \begin{split}
+%   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j)
+%   &= \alpha \sum_{j=1}^p \Lambda_j (z_j, \theta) \\[1ex]
+%   &= \alpha \sum_{j=1}^p \Big\{
+%   \Phi_{1j} (z_j, \theta) - \Phi_{0j} (z_j, \theta)
+%   \Big\} \\[1ex]
+%   &= \alpha \sum_{j=1}^p \Big\{
+%   \rho_{\theta} \Big(z_j - F_{1j}^{-1}(\theta) \Big) -
+%   \rho_{\theta} \Big(z_j - F_{0j}^{-1}(\theta) \Big)
+%   \Big\} \\[1ex]
+%   &= \alpha \sum_{j=1}^p \Big\{
+%   \rho_{\theta} (z_j - \xi_{1j} ) -
+%   \rho_{\theta} (z_j - \xi_{0j} )
+%   \Big\} \\[1ex]
+%   &= \alpha \sum_{j=1}^p \Big\{
+%   d_\theta(z_j, \xi_{1j}) -
+%   d_\theta(z_j, \xi_{0j})
+%   \Big\} \\[1ex]
+%   \end{split}
+    %   \end{align}
+\begin{equation}
   \label{eq:composite-is-distance}
-  \begin{split}
   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j)
-  &= \alpha \sum_{j=1}^p \Lambda_j (z_j, \theta) \\[1ex]
-  &= \alpha \sum_{j=1}^p \Big\{
-  \Phi_{1j} (z_j, \theta) - \Phi_{0j} (z_j, \theta)
-  \Big\} \\[1ex]
-  &= \alpha \sum_{j=1}^p \Big\{
-  \rho_{\theta} \Big(z_j - F_{1j}^{-1}(\theta) \Big) -
-  \rho_{\theta} \Big(z_j - F_{0j}^{-1}(\theta) \Big)
-  \Big\} \\[1ex]
-  &= \alpha \sum_{j=1}^p \Big\{
-  \rho_{\theta} (z_j - \xi_{1j} ) -
-  \rho_{\theta} (z_j - \xi_{0j} )
-  \Big\} \\[1ex]
-  &= \alpha \sum_{j=1}^p \Big\{
-  d_\theta(z_j, \xi_{1j}) -
-  d_\theta(z_j, \xi_{0j})
-  \Big\} \\[1ex]
-  \end{split}
-\end{align}
-so that by dividing through by $\alpha$, we obtain
+  = \alpha \sum_{j=1}^p \Lambda_j (z_j, \theta).
+\end{equation}
+% \begin{equation}
+%   \label{eq:composite-is-distance}
+%   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j)
+%   = \alpha_1 \sum_{j=1}^p \Big\{
+%   d_\theta(z_j, \xi_{1j}) -
+%   d_\theta(z_j, \xi_{0j})
+%   \Big\}.
+% \end{equation}
+From this it follows that by dividing through by $\alpha$ we obtain
+% \begin{equation}
+%   \label{eq:boundary-equivalence}
+%   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j) ~>~ 0
+%   \hspace{5mm} \Longleftrightarrow \hspace{5mm}
+%   \sum_{j=1}^p \Big\{ d_{\theta}(z_j, \xi_{1j}) - d_{\theta}(z_j, \xi_{0j}) \Big\} > 0.
+% \end{equation}
 \begin{equation}
   \label{eq:boundary-equivalence}
   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j) ~>~ 0
   \hspace{5mm} \Longleftrightarrow \hspace{5mm}
-  \sum_{j=1}^p \Big\{ d(z_j, \xi_{1j}) - d(z_j, \xi_{0j}) \Big\} > 0
+  \sum_{j=1}^p \Lambda_j (z_j, \theta) > 0
 \end{equation}
-So we see that by allowing varying choices of quantile levels and an arbitrary
-linear combination of the differences in component-wise quantile distances, the
-composite quantile-based classifiers do not satisfy this definition of a
-distance-based classifier.
+which is the form of quantile-based classifiers.  Quantile-based classifiers
+belong to the family of distance based classifiers, which can be seen by letting
+$\vec{\xi}_i = \Big(F_{i1}^{-1}(\theta), \dots, F_{ip}^{-1}(\theta) \Big),~ i =
+0, 1$, and further letting
+$d_\theta(z_j, \xi_{ij}) = \rho_{\theta}(z_j - \xi_{ij})$, in which case
+\begin{equation}
+  \label{eq:quantile-is-distance-subset}
+  \sum_{j=1}^p \Lambda_j (z_j, \theta) = \sum_{j=1}^p \Big\{ d_{\theta}(z_j,
+  \xi_{1j}) - d_{\theta}(z_j, \xi_{0j}) \Big\}.
+\end{equation}
+So from this we see that composite quantile-based classifiers cover
+quantile-based classifiers.  Furthermore, although composite quantile-based
+classifiers are not in general distance based classifiers, we see that a subset
+of the family of classifiers belongs to the set of distance based classifiers.
 
 
 
@@ -200,14 +323,12 @@ distance-based classifier.
 \label{sec:model-selection}
 
 Having introduced a family of classifiers in Section
-\ref{sec:varying-coefficient}, we now need to propose a method by which to
-select a particular model based to the data in hand; this requires selection of
-both a vector of component-wise quantile levels, and a vector of component
-coefficients.  Ideally, we might wish to jointly select both the quantile levels
-and the component coefficients so as to maximize the classification rate of
-e.g.\ a test set of data.  Unfortunately this is computationally infeasible, so
-instead we propose a two-step process as described in Section
-\ref{sec:choice-of-quantile-lev} and Section \ref{sec:variable-coefficients}.
+\ref{sec:varying-coefficient}, we now need a method by which to select a
+particular model based upon the data in hand; this requires selection of both a
+vector of component-wise quantile levels, and a vector of component
+coefficients.  To perform model selection, we propose a two-step process as
+described in Section \ref{sec:choice-of-quantile-lev} and Section
+\ref{sec:variable-coefficients}.
 
 
 
@@ -215,10 +336,11 @@ instead we propose a two-step process as described in Section
 \subsubsection{Choice of quantile levels}
 \label{sec:choice-of-quantile-lev}
 
-As has been noted before, the primary motivation for this paper is the result
-that for univariate data and the optimal choice of quantile level, the decision
-rule based upon the distances of an observation to the corresponding
-within-class quantiles is the Bayes rule.  Thus, we propose using these most
+As has been noted before, the fundamental motivation for the family of
+classifiers proposed in this paper is the result that for univariate data and
+under some assumptions, that the decision rule based upon the distances of an
+observation to the corresponding within-class quantiles for the optimal choice
+of quantile levels is the Bayes rule.  Thus, we propose using these most
 powerful choices of quantile level with respect to each feature's discriminatory
 ability, taken one-at-a-time.  This statement is developed more precisely in the
 following paragraphs.
@@ -264,18 +386,19 @@ feature to be any solution to the equation
   \hat{\theta}_{jn} = \argmax_{\theta \in T} \Psi_{jn}(\theta)
 \end{equation}
 for $T = [ \delta, 1 - \delta]$ where $\delta$ is an arbitrarily small positive
-constant.
-
-% $\Lambda_{jn}$ be the empirical difference of the quantile distances of a point $z \in \mathbb{R}$
-
+constant.  Then $\hat{\theta}_{jn}$ is the choice of quantile level,
+$j = 1, \dots, p$.
 
 
-\subsubsection{Choice of variable coefficients}
+
+
+\subsubsection{Choice of linear combination coefficients}
 \label{sec:variable-coefficients}
 
-If we write $z_j^{*} = \Lambda_j (z_j, \theta_j),~ j = 1, \dots, p$, then we can
-express the classification rule in equation
-(\ref{eq:composite-classifier}) as follows:
+To motivate the choice of linear combination coefficients, we note the following
+observation.  If we write
+$z_j^{*} = \Lambda_j (z_j, \theta_j),~ j = 1, \dots, p$, then we can express the
+classification rule in equation (\ref{eq:composite-classifier}) as follows:
 \begin{equation}
   \label{eq: classifier transformed data}
   \text{For an observation $\vec{z}$, classify to:} \hspace{3mm} \left\{ 
@@ -299,25 +422,24 @@ level in terms of class prediction, and then for these fixed choices of quantile
 levels (ii) use penalized logistic regression on the transformed training data
 to select a choice of coefficients for the linear combination of the differences
 in the quantile distances for each component.  A full presentation of the
-two-step parameter selection process is provided Section
+two-step parameter selection process is provided in Section
 \ref{sec:classifier-algorithm}.
 
 
 
 
-\subsubsection{Connection to the Feature Augmentation via Nonparametrics and
-  Selection (FANS) method}
+\subsubsection{Connection to Feature Augmentation via Nonparametrics and
+  Selection (FANS)}
 \label{sec:similarites-to-fans}
 
 At this point it is very interesting to note that the proposed choice of
 quantile levels (Section \ref{sec:choice-of-quantile-lev}) and variable
-coefficients selects (Section \ref{sec:variable-coefficients}) a model from the
+coefficients (Section \ref{sec:variable-coefficients}) selects a model from the
 composite quantile-based classifiers that bears a number of similarities to the
-FANS classifier proposed in \cite{fan2016}, although the motivations for the two
-methods come from quite different perspectives.  The FANS method is starts from
-the idea that for data with an equal prior probability of being a member from
-one of two classes with corresponding class conditional densities $f_0$ and
-$f_1$, that the Bayes rule decision boundary is given by
+FANS classifier proposed in \cite{fan2016} The FANS classifier starts from the
+idea that for data with an equal prior probability of being a member from one of
+two classes with corresponding class conditional densities $f_0$ and $f_1$, that
+the Bayes rule decision boundary is given by
 $\left\{ \vec{z}{:}~ \log \frac{ f_0(\vec{z}) }{ f_1(\vec{z}) } = 0 \right\}$.
 Then, if it is the case that conditional on class membership the features are
 mutually independent, the Bayes rule decision boundary becomes
@@ -332,8 +454,8 @@ mutually independent, the Bayes rule decision boundary becomes
   \right\}
 \end{equation}
 where $f_{ij}$ corresponds to the class conditional marginal density for the
-$j$-th feature of the $i$-th class.  The FANS method then proposes the following
-generalization of the decision boundary:
+$j$-th feature of the $i$-th class.  The FANS classifier then proposes the
+following generalization of the decision boundary:
 \begin{equation}
   \label{eq:fans-rule}
   \mathcal{D}_{\scriptscriptstyle \text{FANS}} = \left\{
@@ -344,7 +466,7 @@ generalization of the decision boundary:
     ~=~ 0
   \right\}.
 \end{equation}
-The FANS method then estimates class conditional marginal densities $f_{ij}$
+The classifier then estimates class conditional marginal densities $f_{ij}$
 using nonparametric kernel density estimation, and selects the choice of
 coefficients $\alpha_0, \dots, \alpha_p$ by using the penalized logistic
 regression coefficient estimates obtained from the transformed training data
@@ -586,10 +708,9 @@ $\ell_1$ penalty.
 \label{sec:classifier-algorithm}
 
 In this section, we present an algorithm used to select a composite
-quantile-based classifier model, based on a set of training data, from among the
-family of composite quantile-based classifiers.  This algorithm is in large part
-adapted from the algorithm proposed in \cite{fan2016}, but is presented here
-also in the interest of completeness.
+quantile-based classifier model, and where selection is based upon a set of
+training data.  This algorithm is in large part adapted from the algorithm
+proposed in \cite{fan2016}.
 
 We begin with some observations that motivate the form of the algorithm.  One
 issue that needs some consideration is the fact that the proposed choices of
@@ -601,7 +722,7 @@ ability to predict class membership, and then secondly the linear combination
 coefficients are chosen based upon the transformed data where the transformation
 is performed with respect to the choices of quantile levels from the first step.
 Because of this two-step process, the second step is particularly prone to
-overfitting the model to the training data.  To combat this undesirable
+overfitting the model to the training data.  To mitigate this undesirable
 behavior, the data is split into two parts: one part to train for the choice of
 quantile levels and corresponding within-class quantiles, and one part to train
 for the choice of penalty parameter used to select the linear combination
@@ -660,20 +781,20 @@ presented in its entirety as Algorithm \ref{alg:classifier}.
 % \end{enumerate}
 
 \begin{algorithm}[ht]
-  \label{alg:classifier}
   \caption{composite quantile-based classifiers model selection algorithm}
+  \label{alg:classifier}
   \DontPrintSemicolon
   \BlankLine
   \SetKwInOut{Input}{Data}
   \Input{$n$ pairs of observations
     $D = \left\{ (\vec{x}_i, y_i),~ i = 1, \dots, n \right\}$}
 
-  \ForEach{$\ell$ in 1 to $L$}{
+  \For{$\ell$ in 1 to $L$}{
     
     randomly split the data into two parts:
     $D_{\ell} = (D_{\ell 1}, D_{\ell 2})$
 
-    \ForEach{$j$ in $1$ to $p$}{
+    \For{$j$ in $1$ to $p$}{
 
       $\hat{\theta}_{jn_{
           \raisebox{-0.5mm}{$\scriptscriptstyle \ell 1$}
@@ -688,7 +809,7 @@ presented in its entirety as Algorithm \ref{alg:classifier}.
       % in terms of the feature's ability to predict the class of the training
       % data in $D_{\ell 1}$ absent other features \;
 
-      \ForEach{$x_{ij}$\! in $D_{\ell 2}$}{
+      \For{$x_{ij}$\! in $D_{\ell 2}$}{
 
         $x_{ij}^{*} \leftarrow \Lambda_{jn_{
             \raisebox{-0.5mm}{$\scriptscriptstyle \ell 1$}
@@ -724,33 +845,38 @@ presented in its entirety as Algorithm \ref{alg:classifier}.
 
 \begin{proof}
   Consider the operations performed inside the outer-level for loop spanning
-  lines 1-10.  Splitting the data into two parts is an $\mathcal{O}(n)$
-  operation.  Next, consider the second-level for loop iterating over the
-  features.  We saw in Lemma \ref{lem:optimal-quantile} that the decision rule
-  for the empirically optimal quantile classifier for the $j$-th feature can be
-  obtained in $\mathcal{O}(n^2)$ time.  Next, calculating $x_{ij}^{*}$ is a
-  constant-time operation for an $\mathcal{O}(n)$ number of calculations, which
-  in total is an $\mathcal{O}(n)$ operation.
+  lines 1-10 in Algorithm \ref{alg:classifier}.  Splitting the data into two
+  parts is an $\mathcal{O}(n)$ operation.  Next, consider the second-level for
+  loop iterating over the features.  We saw in Lemma \ref{lem:optimal-quantile}
+  that the decision rule for the empirically optimal quantile classifier for the
+  $j$-th feature can be obtained in $\mathcal{O}(n^2)$ time.  Next, calculating
+  $x_{ij}^{*}$ is a constant-time operation for an $\mathcal{O}(n)$ number of
+  calculations, which in total is an $\mathcal{O}(n)$ operation.
 
-  Next, we break down the steps required in line 9 to select the linear
-  combination coefficients via penalized logistic regression.  Using the
-  coordinate descent algorithm proposed in \cite{friedman2007, friedman2010}
-  yields an $\mathcal{O}(np)$ run time for a fixed choice of penalty parameter.
-  Thus for a grid of size $T$ penalty parameters and performing $k$-fold
-  cross-validation for a total of $K$ folds yields a total run time bound of
-  $\mathcal{O}(KTnp)$.
+  Next, we break down the steps required in line 9 of \ref{alg:classifier} to
+  select the linear combination coefficients via penalized logistic regression.
+  Using the coordinate descent algorithm proposed in \cite{friedman2007,
+    friedman2010} yields an $\mathcal{O}(np)$ run time for a fixed choice of
+  penalty parameter.  Thus for a grid of size $T$ penalty parameters and
+  performing $k$-fold cross-validation for a total of $K$ folds yields a total
+  run time bound of $\mathcal{O}(KTnp)$.
 
   Then, since the outer loop is performed a total of $L$ times, we obtain the
   following run time bound:
-  \begin{align}
+  % \begin{align}
+  %   \label{eq:classifier-runtime}
+  %   \begin{split} \MoveEqLeft
+  %     \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big) \\
+  %     &= \mathcal{O}\Big( L \Big[ n + n^2 p + np + KTnp \Big] \Big) \\
+  %     &= \mathcal{O}\Big( L \Big[ n^2 p + KTnp \Big] \Big) \\
+  %     &= \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
+  %   \end{split}
+  % \end{align}
+  \begin{equation}
     \label{eq:classifier-runtime}
-    \begin{split} \MoveEqLeft
-      \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big) \\
-      &= \mathcal{O}\Big( L \Big[ n + n^2 p + np + KTnp \Big] \Big) \\
-      &= \mathcal{O}\Big( L \Big[ n^2 p + KTnp \Big] \Big) \\
-      &= \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
-    \end{split}
-  \end{align}
+    \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big)
+    = \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
+  \end{equation}
   Furthermore, if we consider $L$ and $T$ to be constants then the bound further
   simplifies to $\mathcal{O}(n^2 p)$.
 \end{proof}
@@ -789,9 +915,7 @@ we will not consider these lower-level opportunities further.
   If further it holds that $CT \geq n$, then the bound can be expressed as
   \begin{equation}
     \label{eq:parallel-runtime-ass2}
-    \mathcal{O}\Big(
-    pT (n + KT)
-    \Big)
+    \mathcal{O}\Big(  pT (n + KT) \Big)
   \end{equation}
   which is the same complexity as a penalized logistic regression with
   $\max\{n, KT\}$ observations.
@@ -804,19 +928,26 @@ we will not consider these lower-level opportunities further.
   perform the parallelism over first the features (i.e. lines 3-8 of Algorithm
   \ref{alg:classifier}), and then over the cross-validation folds (i.e. line 9
   of Algorithm \ref{alg:classifier}), then the run time bound is as follows:
-  \begin{align}
+  % \begin{align}
+  %   \label{eq:classifier-runtime-parallel}
+  %   \begin{split} \MoveEqLeft
+  %     \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) \\
+  %     &= \mathcal{O}\left( \frac{p}{C} n^2 + \frac{K}{C} Tnp \right) \\
+  %     &= \mathcal{O}\Big( \frac{np}{C} (n + KT) \Big) \\
+  %     &= \mathcal{O}\Big( \frac{np}{n/T} (n + KT) \Big) \\
+  %     &= \mathcal{O}\Big( pT (n + KT) \Big).
+  %   \end{split}
+  % \end{align}
+  \begin{equation}
     \label{eq:classifier-runtime-parallel}
-    \begin{split} \MoveEqLeft
-      \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) \\
-      &= \mathcal{O}\left( \frac{p}{C} n^2 + \frac{K}{C} Tnp \right) \\
-      &= \mathcal{O}\Big( \frac{np}{C} (n + KT) \Big) \\
-      &= \mathcal{O}\Big( \frac{np}{n/T} (n + KT) \Big) \\
-      &= \mathcal{O}\Big( pT (n + KT) \Big).
-    \end{split}
-  \end{align}
-  Since a penalized logistic regression model has an $\mathcal{O}(npT)$
-  complexity to fit, we see that when adequate computing resources are
-  available, calculating the composite quantile-based classifier model is of
+    \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) 
+    = \mathcal{O}\Big( \frac{np}{C} (n + KT) \Big).
+  \end{equation}
+  Then by replacing $C$ with $n/T$ under the assumption that $CT \geq n$ we
+  obtain the expression in (\ref{eq:parallel-runtime-ass2}).  We further note
+  that since a penalized logistic regression model has an $\mathcal{O}(npT)$
+  complexity to fit, it follows that when adequate computing resources are
+  available calculating the composite quantile-based classifier model is of
   similar complexity as a (non-parallelized) penalized logistic regression model
   fit.
 \end{proof}
@@ -831,7 +962,7 @@ choices for the number of folds and the size of the penalty parameter grid
 
 
 
-\subsection{Composite quantile-based classifiers discussion}
+\subsection{Composite quantile-based classifiers decision rule form}
 \label{sec:classifier-discussion}
 
 The composite quantile-based family of classifiers is defined as expression
@@ -871,7 +1002,7 @@ that
       \tau_j - F_{(1)}^{-1} (\theta)),
       & \hspace{5mm}
       & \text{otherwise} \\
-    \end{array}
+    \end{array}.
   \right.
 \end{equation}
 % Next, let $a_j = \tau_j - F_{(0)}^{-1}(\theta_j)$ and
@@ -907,7 +1038,7 @@ $\vec{\tau} + \gamma \vec{d}$ is an element of
 such that $\vec{\tau} + \gamma^{*} \vec{d}$ is a boundary point of the set
 $[F_{(0),1}^{-1},\, F_{(1),1}^{-1}] \times \dots \times [F_{(0),p}^{-1},\,
 F_{(1),p}^{-1}]$ and is on the boundary for some component $k$, and for the sake
-of argument let's suppose that the $k$-th component of
+of exposition let's suppose that the $k$-th component of
 $\vec{\tau} + \gamma^{*} \vec{d} = F_{(1),k}^{-1}(\theta_k)$, as opposed to
 $F_{(0),k}^{-1}(\theta_k)$.  We note that continuing in the direction $\vec{d}$
 will take us outside of the the decision rule boundary set.  Instead, for
@@ -969,7 +1100,7 @@ rule boundary are connected, which can be seen since points on the boundary are
 solutions for either system.
 
 
-\subsubsection{Classifier examples in two dimensions}
+\subsection{Classifier examples in two dimensions}
 \label{sec:classifier-examples}
 
 Having described the general form of the composite quantile-based classifiers,
@@ -983,6 +1114,10 @@ Lemma \ref{lem:univariate-consistency}).  In each of the examples we arbitrarily
 choose linear combination coefficients of 0, 1, and 1 for the offset and feature
 1 and feature 2 components, respectively.  In each example, we presume that the
 prior probability for each class is 1/2.
+
+
+\subsubsection{Classifier examples in two dimensions: Gaussian data}
+\label{sec:classifier-examples-gaussian}
 
 In the first example, shown as Figure \ref{fig:gaussian-classify}, we consider
 the classical setting of two Gaussian distributions.  The first class, shown in
@@ -1007,21 +1142,29 @@ respectively (in this setting they are the midpoints between the class means for
 each component).  This corresponds to the median quantile for each component
 (i.e. $\theta_1 = \theta_2 = 0.5$), and it follows that
 $F_{01}^{-1}(\theta_1) = 0$, $F_{11}^{-1}(\theta_1) = 2$,
-$F_{02}^{-1}(\theta_2) = 0$, and $F_{11}^{-1}(\theta_2) = 1$.
+$F_{02}^{-1}(\theta_2) = 0$, and $F_{11}^{-1}(\theta_2) = 1$.  Thus for
+$\theta_1$ and $\theta_2$ corresponding to these values, we have
+$\Lambda_1(1, \theta_1) = 0$ and $\Lambda_2(0.5, \theta_2) = 0$.  The slope of
+the line within the box bounded by the within-class quantiles is -1.  Once the
+second component (on the vertical axis) is either no less than 1 or no greater
+than 0 then $\Lambda_2$ becomes a fixed value and the second component becomes a
+free variable, while the first component is fixed at 0.5 or 1.5, respectively.
 
-Thus for $\theta_1$ and $\theta_2$ corresponding to these values, we have
-$\Lambda_1(1, \theta_1) = 0$ and $\Lambda_2(0.5, \theta_2) = 0$.  In the set
-$[0.5, 1.5] \times [0, 1]$, we observe that the decision rule boundary is given
-by the line
-$\{(x_1, x_2) : (x_1 - 1) + (x_2 - 0.5) = 0 \} = \{(x_1, x_2) : x_2 = -x_1 +
-1.5\}$.  Traveling in the direction $\vec{d} = (-1, 1)$, we find that for
-$x_2 \geq 1$ we have $\Lambda_2(x_2, \theta_2) = 0.5$.  Thus the decision rule
-boundary line for $x_2 \geq 1$ is given by
-$\{(x_1, x_2) : (x_1 - 1) + 0.5 = 0\} = \{(x_1, x_2) : x_1 = 0.5\} $.
-Similarly, traveling in the direction $\vec{d} = (1, -1)$, we find that for
-$x_2 \leq 0$ we have $\Lambda_2(x_2, \theta_2) = -0.5$.  Thus the decision rule
-boundary line for $x_2 \leq 1$ is given by
-$\{(x_1, x_2) : (x_1 - 1) - 0.5 = 0\} = \{(x_1, x_2) : x_1 = 1.5\}$.
+% Thus for $\theta_1$ and $\theta_2$ corresponding to these values, we have
+% $\Lambda_1(1, \theta_1) = 0$ and $\Lambda_2(0.5, \theta_2) = 0$.  In the set
+% $[0.5, 1.5] \times [0, 1]$, we observe that the decision rule boundary is given
+% by the line
+% $\{(x_1, x_2) : (x_1 - 1) + (x_2 - 0.5) = 0 \} = \{(x_1, x_2) : x_2 = -x_1 +
+% 1.5\}$.  Traveling in the direction $\vec{d} = (-1, 1)$, we find that for
+% $x_2 \geq 1$ we have $\Lambda_2(x_2, \theta_2) = 0.5$.  Thus the decision rule
+% boundary line for $x_2 \geq 1$ is given by
+% $\{(x_1, x_2) : (x_1 - 1) + 0.5 = 0\} = \{(x_1, x_2) : x_1 = 0.5\} $.
+% Similarly, traveling in the direction $\vec{d} = (1, -1)$, we find that for
+% $x_2 \leq 0$ we have $\Lambda_2(x_2, \theta_2) = -0.5$.  Thus the decision rule
+% boundary line for $x_2 \leq 1$ is given by
+% $\{(x_1, x_2) : (x_1 - 1) - 0.5 = 0\} = \{(x_1, x_2) : x_1 = 1.5\}$.
+
+
 
 \begin{figure}[ht]
   \caption{Gaussian distributions classifier}
@@ -1039,13 +1182,18 @@ $\{(x_1, x_2) : (x_1 - 1) - 0.5 = 0\} = \{(x_1, x_2) : x_1 = 1.5\}$.
   \end{minipage}
 \end{figure}
 
+
+\subsubsection{Classifier examples in two dimensions: Exponentiated Gaussian
+  data}
+\label{sec:classifier-examples-exp-gaussian}
+
 In a second example, shown as Figure \ref{fig:exponentiated-gaussian}, we
 consider the setting of two location-shifted exponentiated Gaussian
 distributions.  In more detail, if $(W_1, W_2) \sim N(\vec{0}, \vec{I})$, then
 class 0 follows a distribution given by $(e^{W_1},\, e^{W_2})$ and class 1
 follows a distribution given by $(e^{W_1} + 1,\, e^{W_2} + 1)$.  It turns out
 that under this setting, the component-wise Bayes rule decision boundaries are
-given by the location shift, which in this case is 1 for each component.  The
+given by the location shift, which in this example is 1 for each component.  The
 corresponding quantile level yields within-class quantiles of 0.5 and 1.5 for
 the two classes for each component, so we obtain the decision boundary line
 $\{(x_1, x_2) : x_2 = -x_1 + 2\}$ in the region $[0.5, 1.5]^2$.  Outside of this
@@ -1087,26 +1235,30 @@ the classification rate for the Bayes rule classifier is 0.75.
 \subsubsection{Potential instabilities in quantile-based methods}
 \label{sec:instabilities}
 
-One potential instability of composite quantile-based classifiers is that the
-direction of the decision rule boundary lines are dependent on the magnitude of
-the difference between the component-wise class quantiles.  This raises two
-concerns.  Firstly, changes in scale of the features can fundamentally affect
-the classifier by changing which components are part of the linear systems in
-the piecewise affine sets.  As a result, when some of the features in the data
-are very different in scale to other features then we recommend some sort of
-data transformations to try to keep the features at a similar scale before
-performing classification.
+One potential source of instability of composite quantile-based classifiers is
+that the direction of the decision rule boundary lines are dependent on the
+magnitude of the difference between the component-wise class quantiles.  This
+raises two concerns.  Firstly, changes in scale of the features can
+fundamentally affect the classifier by changing which components are part of the
+linear systems in the piecewise affine sets.  As a result, when some of the
+features in the data are very different in scale to other features then we
+recommend some sort of data transformations to try to keep the features at a
+similar scale before performing classification.
 
 On the other hand, a second potential source of instability for composite
 quantile-based classifiers occurs when the magnitude of the differences between
 the within-class quantiles is very similar for two or more features.  When this
 is the case, small changes in the within-class quantile estimates can
 fundamentally affect the classifier by changing which components are part of the
-linear systems in the piecewise affine sets.  When the number of features is
-small this can dramatically change the classifier; when the number of features
-is larger, we expect such changes to have a diminished effect.  We also expect
+linear systems in the piecewise affine sets.  On the other hand, when the
+within-class quantiles are similar for a given component, this has the effect
+that the component contributes very little information to the classifier
+aggregate, so that although the form of the classifier may show some instability
+the classification rate will typically remain unaffected.  We also expect
 averaging the model as discussed in Section \ref{sec:classifier-algorithm} to
 help protect against this type of instability.
+
+
 
 
 %%% Local Variables:

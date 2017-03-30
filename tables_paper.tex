@@ -1,0 +1,262 @@
+
+\begin{table}[p]
+  \caption{Block transformed data}
+  \label{tab:block-transformed}
+
+  \begin{subtable}{\textwidth}
+    \centering
+    \caption{Correlation coefficient = 0}
+    \label{tab:block-transformed-corr0}
+    \vspace{5mm}
+    
+    \begin{tabular}{l@{\extracolsep{15mm}}rrr}
+      
+      \hline
+      & $n=500$ & $n=250$ & $n=50$ \\ 
+      \hline
+      & $p = 50$ \\
+      \hline
+
+      CQC & \bn{0.029 (0.01)} & \bn{0.043 (0.01)} & 0.181 (0.03) \\ 
+      CQC augmented & 0.030 (0.01) & 0.048 (0.01) & \bn{0.176 (0.05)} \\ 
+      Quantile-based classifiers & 0.085 (0.01) & 0.112 (0.02) & 0.223 (0.03) \\ 
+      FANS  & 0.027 (0.01) & 0.068 (0.01) & 0.320 (0.08) \\
+      FANS2 & 0.028 (0.01) & 0.063 (0.01) & 0.323 (0.06) \\
+      Penalized logistic regression & 0.291 (0.02) & 0.322 (0.02) & 0.431 (0.03) \\ 
+      Support vector machine & 0.284 (0.01) & 0.306 (0.02) & 0.386 (0.02) \\ 
+      k-nearest neighbor & 0.431 (0.02) & 0.448 (0.02) & 0.464 (0.02) \\ 
+      Naive Bayes & 0.374 (0.02) & 0.396 (0.02) & 0.452 (0.01) \\ 
+      Nearest shrunken centroids & 0.330 (0.02) & 0.339 (0.01) & 0.422 (0.05) \\ 
+      Penalized LDA & 0.283 (0.01) & 0.301 (0.02) & 0.374 (0.03) \\ 
+      Decision trees & 0.040 (0.01) & 0.078 (0.01) & 0.374 (0.08) \\
+
+      \hline
+      
+    \end{tabular}
+  \end{subtable}
+  \vspace{10mm}
+
+  \begin{subtable}{\textwidth}
+
+    \centering
+    \caption{Correlation coefficient = 0.8}
+    \label{tab:block-transformed-corr08}
+    \vspace{5mm}
+    
+    \begin{tabular}{l@{\extracolsep{15mm}}rrr}
+      
+      \hline
+      & $n=500$ & $n=250$ & $n=50$ \\ 
+      \hline
+      & $p = 250$ \\
+      \hline
+
+      CQC & 0.091 (0.00) & \bn{0.115 (0.01)} & \bn{0.228 (0.03)} \\ 
+      CQC augmented & 0.092 (0.00) & 0.118 (0.01) & 0.293 (0.05) \\ 
+      Quantile-based classifiers & 0.126 (0.03) & 0.154 (0.02) & 0.263 (0.02) \\ 
+      FANS  & \bn{0.079 (0.01)} & 0.128 (0.01) & 0.428 (0.08) \\
+      FANS2 & 0.085 (0.01) & 0.139 (0.01) & 0.402 (0.07) \\
+      Penalized logistic regression & 0.421 (0.02) & 0.432 (0.03) & 0.477 (0.03) \\ 
+      Support vector machine & 0.416 (0.02) & 0.428 (0.03) & 0.452 (0.02) \\ 
+      k-nearest neighbor & 0.452 (0.03) & 0.450 (0.02) & 0.463 (0.02) \\ 
+      Naive Bayes & 0.435 (0.02) & 0.436 (0.02) & 0.466 (0.02) \\ 
+      Nearest shrunken centroids & 0.392 (0.02) & 0.388 (0.02) & 0.434 (0.02) \\ 
+      Penalized LDA & 0.397 (0.02) & 0.403 (0.02) & 0.460 (0.03) \\ 
+      Decision trees & 0.081 (0.01) & 0.118 (0.02) & 0.443 (0.07) \\
+
+      \hline
+      
+    \end{tabular}
+  \end{subtable}
+\end{table}
+
+
+
+
+% \begin{table}[ht]
+%   \centering
+%   \caption{Block transformed data, correlation coefficient = 0.8}
+%   \label{tab:block-transformed-corr08}
+%   \vspace{5mm}  
+
+%   \begin{subcaption}{width=\textwidth}
+%     \begin{tabular}{l@{\extracolsep{15mm}}rrr}
+      
+%       \hline
+%       & $n=500$ & $n=250$ & $n=50$ \\ 
+%       \hline
+%       & $p = 250$ \\
+%       \hline
+
+%       CQC & 0.091 (0.00) & 0.115 (0.01) & 0.228 (0.03) \\ 
+%       CQC augmented & 0.092 (0.00) & 0.118 (0.01) & 0.293 (0.05) \\ 
+%       Quantile-based classifiers & 0.126 (0.03) & 0.154 (0.02) & 0.263 (0.02) \\ 
+%       FANS  & 0.079 (0.01) & 0.128 (0.01) & 0.428 (0.08) \\
+%       FANS2 & 0.085 (0.01) & 0.139 (0.01) & 0.402 (0.07) \\
+%       Penalized logistic regression & 0.421 (0.02) & 0.432 (0.03) & 0.477 (0.03) \\ 
+%       Support vector machine & 0.416 (0.02) & 0.428 (0.03) & 0.452 (0.02) \\ 
+%       k-nearest neighbor & 0.452 (0.03) & 0.450 (0.02) & 0.463 (0.02) \\ 
+%       Naive Bayes & 0.435 (0.02) & 0.436 (0.02) & 0.466 (0.02) \\ 
+%       Nearest shrunken centroids & 0.392 (0.02) & 0.388 (0.02) & 0.434 (0.02) \\ 
+%       Penalized LDA & 0.397 (0.02) & 0.403 (0.02) & 0.460 (0.03) \\ 
+%       Decision trees & 0.081 (0.01) & 0.118 (0.02) & 0.443 (0.07) \\
+
+%       \hline
+      
+%     \end{tabular}
+%   \end{subcaption}
+% \end{table}
+
+
+\begin{table}[p]
+  \caption{Varying within-class distributional shapes}
+  \label{tab:varying-distributional}
+
+  \begin{subtable}{\textwidth}
+    \centering
+    \caption{Beta distributed data}
+    \label{tab:beta}
+    \vspace{5mm}
+    
+    \begin{tabular}{l@{\extracolsep{15mm}}rrr}
+      
+      \hline
+      & $n=500$ & $n=250$ & $n=50$ \\ 
+      \hline
+      & $p = 50$ \\
+      \hline
+
+      CQC & \bn{0.011 (0.01)} & \bn{0.019 (0.01)} & 0.075 (0.03) \\ 
+      CQC augmented & 0.012 (0.00) & 0.021 (0.01) & 0.068 (0.03) \\ 
+      Quantile-based classifiers & 0.164 (0.02) & 0.228 (0.03) & 0.356 (0.02) \\ 
+      FANS  & 0.020 (0.01) & 0.028 (0.01) & 0.073 (0.07) \\
+      FANS2 & 0.022 (0.01) & 0.031 (0.01) & 0.072 (0.05) \\
+      Penalized logistic regression & 0.506 (0.01) & 0.485 (0.02) & 0.460 (0.13) \\ 
+      Support vector machine & 0.506 (0.02) & 0.501 (0.02) & 0.497 (0.02) \\ 
+      k-nearest neighbor & 0.495 (0.02) & 0.498 (0.01) & 0.499 (0.02) \\ 
+      Naive Bayes & 0.459 (0.06) & 0.441 (0.05) & 0.462 (0.03) \\ 
+      Nearest shrunken centroids & 0.500 (0.01) & 0.492 (0.02) & 0.497 (0.01) \\ 
+      Penalized LDA & 0.498 (0.01) & 0.498 (0.02) & 0.491 (0.02) \\ 
+      Decision trees & 0.013 (0.01) & 0.030 (0.01) & \bn{0.060 (0.03)} \\ 
+
+      \hline
+      
+    \end{tabular}
+  \end{subtable}
+  \vspace{10mm}
+
+  \begin{subtable}{\textwidth}
+
+    \centering
+    \caption{Gamma distributed data}
+    \label{tab:gamma}
+    \vspace{5mm}
+    
+    \begin{tabular}{l@{\extracolsep{15mm}}rrr}
+      
+      \hline
+      & $n=500$ & $n=250$ & $n=50$ \\ 
+      \hline
+      & $p = 250$ \\
+      \hline
+
+      CQC & 0.035 (0.01) & \bn{0.052 (0.01)} & \bn{0.128 (0.03)} \\ 
+      CQC augmented & \bn{0.034} (0.01) & 0.054 (0.01) & 0.153 (0.04) \\ 
+      Quantile-based classifiers & 0.045 (0.01) & 0.062 (0.02) & 0.156 (0.01) \\ 
+      FANS  & 0.069 (0.01) & 0.107 (0.02) & 0.389 (0.10) \\
+      FANS2 & 0.073 (0.01) & 0.116 (0.02) & 0.363 (0.09) \\
+      Penalized logistic regression & 0.501 (0.02) & 0.500 (0.02) & 0.493 (0.01) \\ 
+      Support vector machine & 0.424 (0.01) & 0.462 (0.02) & 0.492 (0.01) \\ 
+      k-nearest neighbor & 0.486 (0.02) & 0.489 (0.02) & 0.495 (0.01) \\ 
+      Naive Bayes & 0.341 (0.02) & 0.369 (0.02) & 0.424 (0.02) \\ 
+      Nearest shrunken centroids & 0.503 (0.01) & 0.506 (0.02) & 0.506 (0.02) \\ 
+      Penalized LDA & 0.501 (0.01) & 0.506 (0.02) & 0.498 (0.00) \\ 
+      Decision trees & 0.038 (0.01) & 0.060 (0.01) & 0.272 (0.11) \\
+
+      \hline
+      
+    \end{tabular}
+  \end{subtable}
+\end{table}
+
+
+
+
+% \begin{table}[ht]
+%   \centering
+%   \caption{Beta distributed data}
+%   \label{tab:beta}
+%   \vspace{5mm}
+  
+%   % \begin{adjustbox}{width=\textwidth}
+%     \begin{tabular}{l@{\extracolsep{15mm}}rrr}
+      
+%       \hline
+%       & $n=500$ & $n=250$ & $n=50$ \\ 
+%       \hline
+%       & $p = 500$ \\
+%       \hline
+
+%       CQC & 0.011 (0.01) & 0.019 (0.01) & 0.075 (0.03) \\ 
+%       CQC augmented & 0.012 (0.00) & 0.021 (0.01) & 0.068 (0.03) \\ 
+%       Quantile-based classifiers & 0.164 (0.02) & 0.228 (0.03) & 0.356 (0.02) \\ 
+%       FANS  & 0.020 (0.01) & 0.028 (0.01) & 0.073 (0.07) \\
+%       FANS2 & 0.022 (0.01) & 0.031 (0.01) & 0.072 (0.05) \\
+%       Penalized logistic regression & 0.506 (0.01) & 0.485 (0.02) & 0.460 (0.13) \\ 
+%       Support vector machine & 0.506 (0.02) & 0.501 (0.02) & 0.497 (0.02) \\ 
+%       k-nearest neighbor & 0.495 (0.02) & 0.498 (0.01) & 0.499 (0.02) \\ 
+%       Naive Bayes & 0.459 (0.06) & 0.441 (0.05) & 0.462 (0.03) \\ 
+%       Nearest shrunken centroids & 0.500 (0.01) & 0.492 (0.02) & 0.497 (0.01) \\ 
+%       Penalized LDA & 0.498 (0.01) & 0.498 (0.02) & 0.491 (0.02) \\ 
+%       Decision trees & 0.013 (0.01) & 0.030 (0.01) & 0.060 (0.03) \\ 
+
+%       \hline
+      
+%     \end{tabular}
+%   % \end{adjustbox}
+% \end{table}
+
+
+
+
+% \begin{table}[ht]
+%   \centering
+%   \caption{Gamma distributed data}
+%   \label{tab:gamma}
+%   \vspace{5mm}
+  
+%   % \begin{adjustbox}{width=\textwidth}
+%     \begin{tabular}{l@{\extracolsep{15mm}}rrr}
+      
+%       \hline
+%       & $n=500$ & $n=250$ & $n=50$ \\ 
+%       \hline
+%       & $p = 50$ \\
+%       \hline
+
+%       CQC & 0.035 (0.01) & 0.052 (0.01) & 0.128 (0.03) \\ 
+%       CQC augmented & 0.034 (0.01) & 0.054 (0.01) & 0.153 (0.04) \\ 
+%       Quantile-based classifiers & 0.045 (0.01) & 0.062 (0.02) & 0.156 (0.01) \\ 
+%       FANS  & 0.069 (0.01) & 0.107 (0.02) & 0.389 (0.10) \\
+%       FANS2 & 0.073 (0.01) & 0.116 (0.02) & 0.363 (0.09) \\
+%       Penalized logistic regression & 0.501 (0.02) & 0.500 (0.02) & 0.493 (0.01) \\ 
+%       Support vector machine & 0.424 (0.01) & 0.462 (0.02) & 0.492 (0.01) \\ 
+%       k-nearest neighbor & 0.486 (0.02) & 0.489 (0.02) & 0.495 (0.01) \\ 
+%       Naive Bayes & 0.341 (0.02) & 0.369 (0.02) & 0.424 (0.02) \\ 
+%       Nearest shrunken centroids & 0.503 (0.01) & 0.506 (0.02) & 0.506 (0.02) \\ 
+%       Penalized LDA & 0.501 (0.01) & 0.506 (0.02) & 0.498 (0.00) \\ 
+%       Decision trees & 0.038 (0.01) & 0.060 (0.01) & 0.272 (0.11) \\ [2ex]
+      
+%       \hline
+      
+%     \end{tabular}
+%   % \end{adjustbox}
+% \end{table}
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "cqc_paper"
+%%% End:

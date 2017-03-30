@@ -13,8 +13,9 @@
 \usepackage{bm}
 \usepackage{authblk}                        % author, affil
 \usepackage{adjustbox}
-\usepackage[ruled,linesnumbered]{algorithm2e}
 \usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage[ruled,linesnumbered]{algorithm2e}
 
 % natbib bibliography style settings
 \bibliographystyle{amsplain}
@@ -39,6 +40,8 @@
 % \newcommand{\bigDown}[1]{\text{\kern-0.5em\smash{\raisebox{-1.5ex}{\huge #1}}}}
 \def\r/{\textsf{R}}
 \def\matlab/{\textsf{MATLAB}}
+
+\newcommand{\bn}{\fontseries{b}\selectfont} % Bold Number, for highlighting numbers in tables
 
 % Sets the document line spacing; 1.6 is double spacing.  See
 % https://www.sharelatex.com/learn/Paragraph_formatting#Line_spacing
@@ -88,12 +91,10 @@
   \input{abstract.tex}
 \end{abstract}
 
-\renewcommand{\abstractname}{Keywords}
-\begin{abstract}
-  \noindent
-  classification, high-dimensional data, quantile-based classifier, decision
-  boundary
-\end{abstract}
+\noindent {
+  \small
+  \textbf{Keywords:} classification, high-dimensional data, quantile-based classifier
+}
 
 
 
@@ -104,10 +105,12 @@
 
 \input{multivariate_rules.tex}
 
-\input{asymptotic_results.tex}
+% folded into multivariate rules
+% \input{asymptotic_results.tex}
 
 \input{numerical_results.tex}
 
+\newpage
 \bibliography{cqc_paper}
 
 \end{document}
