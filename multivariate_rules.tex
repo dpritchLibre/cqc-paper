@@ -1183,30 +1183,30 @@ free variable, while the first component is fixed at 0.5 or 1.5, respectively.
 \end{figure}
 
 
-\subsubsection{Classifier examples in two dimensions: Exponentiated Gaussian
-  data}
-\label{sec:classifier-examples-exp-gaussian}
+% \subsubsection{Classifier examples in two dimensions: Exponentiated Gaussian
+%   data}
+% \label{sec:classifier-examples-exp-gaussian}
 
-In a second example, shown as Figure \ref{fig:exponentiated-gaussian}, we
-consider the setting of two location-shifted exponentiated Gaussian
-distributions.  In more detail, if $(W_1, W_2) \sim N(\vec{0}, \vec{I})$, then
-class 0 follows a distribution given by $(e^{W_1},\, e^{W_2})$ and class 1
-follows a distribution given by $(e^{W_1} + 1,\, e^{W_2} + 1)$.  It turns out
-that under this setting, the component-wise Bayes rule decision boundaries are
-given by the location shift, which in this example is 1 for each component.  The
-corresponding quantile level yields within-class quantiles of 0.5 and 1.5 for
-the two classes for each component, so we obtain the decision boundary line
-$\{(x_1, x_2) : x_2 = -x_1 + 2\}$ in the region $[0.5, 1.5]^2$.  Outside of this
-region is a little bit more subtle.  The decision rule boundary lines shown in
-Figure \ref{fig:exponentiated-gaussian} are contingent on the fact that we have
-favorably chosen that tied distances be classified to the correct class
-(i.e. the distribution with the yellow color).  Had we had chosen that the
-tiebreaker had gone in the other direction then the decision rule boundary lines
-outside of the region $[0.5, 1.5]^2$ would switch from going up and right to
-left and down.  This unfavorable tiebreaker policy results in a 2.4\% decrease
-in the composite quantile-based classifiers classification rate.  Otherwise the
-classification rate for the composite quantile-based classifier is 0.71, while
-the classification rate for the Bayes rule classifier is 0.75.
+% In a second example, shown as Figure \ref{fig:exponentiated-gaussian}, we
+% consider the setting of two location-shifted exponentiated Gaussian
+% distributions.  In more detail, if $(W_1, W_2) \sim N(\vec{0}, \vec{I})$, then
+% class 0 follows a distribution given by $(e^{W_1},\, e^{W_2})$ and class 1
+% follows a distribution given by $(e^{W_1} + 1,\, e^{W_2} + 1)$.  It turns out
+% that under this setting, the component-wise Bayes rule decision boundaries are
+% given by the location shift, which in this example is 1 for each component.  The
+% corresponding quantile level yields within-class quantiles of 0.5 and 1.5 for
+% the two classes for each component, so we obtain the decision boundary line
+% $\{(x_1, x_2) : x_2 = -x_1 + 2\}$ in the region $[0.5, 1.5]^2$.  Outside of this
+% region is a little bit more subtle.  The decision rule boundary lines shown in
+% Figure \ref{fig:exponentiated-gaussian} are contingent on the fact that we have
+% favorably chosen that tied distances be classified to the correct class
+% (i.e. the distribution with the yellow color).  Had we had chosen that the
+% tiebreaker had gone in the other direction then the decision rule boundary lines
+% outside of the region $[0.5, 1.5]^2$ would switch from going up and right to
+% left and down.  This unfavorable tiebreaker policy results in a 2.4\% decrease
+% in the composite quantile-based classifiers classification rate.  Otherwise the
+% classification rate for the composite quantile-based classifier is 0.71, while
+% the classification rate for the Bayes rule classifier is 0.75.
 
 % This setting is
 % interesting to consider because although this looks like a difficult case for
@@ -1230,6 +1230,36 @@ the classification rate for the Bayes rule classifier is 0.75.
 %   \end{minipage}
 % \end{figure}
 
+
+
+
+\subsubsection{Classifier examples in two dimensions: beta and gamma distributed data}
+\label{sec:beta-gamma-example}
+
+In the following examples we consider settings where the shape of the
+component-wise within-class marginal distributions varies across populations.
+In the first example, we consider populations where the within-class
+distributions follow independent beta distributions, and in the second example
+we consider populations where the within-class distributions follow independent
+gamma distributions.  The parameters of the beta and gamma distributions were
+chosen arbitrarily.  As in the previous example, contour lines denoting 68\% and
+95\% percent of the distributional mass for each population are shown.  The
+Bayes rule decision boundary is shown as the black line and the composite
+quantile-based decision rule boundary is shown as the blue line.  The composite
+quantile-based classifiers rule has a classification rate of 0.84 compared to
+0.87 for the Bayes rule for the beta distributed data, and a classification rate
+of 0.75 compared to 0.76 for the gamma distributed data.
+
+In both examples we see that the Bayes rule decision boundary is nonlinear, so
+we can only at best hope to approximate it.  Fortunately, in both examples the
+composite quantile-based decision rule boundary follows the Bayes rule decision
+boundary well in the higher-density regions of the distributions.  As the Bayes
+rule decision boundary moves into low-density distributional regions the
+approximation is less accurate due to the form of the composite quantile-based
+classifiers.  In our experience this is typical of composite quantile-based
+classifiers: the approximation of the Bayes rule is often good at the center of
+the data and is less accurate at the edges.
+
 \begin{figure}[ht]
   \caption{Exponentiated Gaussian distributions classifier}
   \label{fig:exponentiated-gaussian}
@@ -1237,18 +1267,21 @@ the classification rate for the Bayes rule classifier is 0.75.
   \vspace{5mm}
 
   \begin{minipage}[t]{0.49\linewidth} \vspace{0mm}
-    \flushleft
-    \includegraphics[width=0.95\textwidth]{beta_cqc}
+    \centering
+    Beta distributed data \\[2ex]
+    \includegraphics[width=0.975\textwidth]{beta_cqc}
   \end{minipage}
   \begin{minipage}[t]{0.49\linewidth} \vspace{0mm}
-    \flushright
-    \includegraphics[width=0.95\textwidth]{gamma_cqc}
+    \centering
+    Gamma distributed data \\[2ex]
+    \includegraphics[width=0.975\textwidth]{gamma_cqc}
   \end{minipage}
 \end{figure}
 
 
 
-\subsubsection{Potential instabilities in quantile-based methods}
+
+\subsubsection{Potential instabilities of composite quantile-based methods}
 \label{sec:instabilities}
 
 One potential source of instability of composite quantile-based classifiers is
@@ -1273,6 +1306,34 @@ aggregate, so that although the form of the classifier may show some instability
 the classification rate will typically remain unaffected.  We also expect
 averaging the model as discussed in Section \ref{sec:classifier-algorithm} to
 help protect against this type of instability.
+
+
+
+
+\subsubsection{Limitations of composite quantile-based classifiers}
+\label{sec:limitations}
+
+There are two main limitations of composite quantile-based classifiers that are
+evident based upon the form of the classifiers.  The first limitation is that
+the classifiers decision rule boundaries are piecewise linear and consequently
+can only hope to approximate nonlinear decision rule boundaries.  For some
+problems this can result in a loss of efficiency when compared to more flexible
+methods.
+
+A second limitation of composite quantile-based classifiers is that there can
+only be a single decision rule boundary for any dimension.  Consider an example
+where the densities of two populations are perfectly separated into two
+concentric circles.  The Bayes rule can perfectly classify this situation, but
+any composite quantile-based classifiers decision rule boundary is totally
+unable to capture both sides of the inner circle.
+
+We view the limitations of composite quantile-based classifiers as a trade-off
+between simplicity of the classifier and its ability to perform well in all
+situations.  No single classifier can be expected to perform well in all
+settings.  Due to the simple nature of the classifier it is well-suited for
+high-dimensional problems, even in the presence of limited data.  However, it is
+important to recognize that there are settings for which composite
+quantile-based classifiers are ill-suited.
 
 
 

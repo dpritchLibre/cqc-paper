@@ -126,10 +126,17 @@ Theorem \ref{thm:quantile-classifier-is-bayes}.
 \end{figure}
 
 
-\begin{figure}[ht]
+\begin{figure}[p]
   \caption[cccc]{Example within-class quantile distances and differences for two
-    choices of quantiles.  The quantile classifier decision rule boundary is
-    denoted as $\tau$.}
+    choices of quantiles.  The left column and right column show the quantile
+    distances and differences for the 0.25-th and 0.75th quantile levels,
+    respectively (and for arbitrary choices of $F_0^{-1}(\theta)$ and
+    $F_1^{-1}(\theta)$).  In all figures the quantile classifier decision rule
+    boundary is denoted as $\tau$.  The first row plots the quantile distances
+    $\Phi_{(0)}$ and $\Phi_{(1)}$.  The second and third rows plot the quantile
+    distance differences for two cases.  In the first case,
+    $F_0^{-1}(\theta) < F_1^{-1}(\theta)$, while in the second case
+    $F_0^{-1}(\theta) > F_1^{-1}(\theta)$.}
   \label{fig:phi-lambda}
   \vspace{5mm}
   
