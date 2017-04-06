@@ -73,6 +73,17 @@
 
 \begin{document}
 
+% title and author specifications
+\title{Supplementary Material for Composite Quantile-Based Classifiers}
+\author[1]{David A. Pritchard}
+\author[2]{Yufeng Liu}
+\affil[1]{Department of Biostatistics, University of North Carolina, Chapel
+  Hill, NC 27599, USA}
+\affil[2]{Department of Statistics and Operations Research, University of North
+  Carolina, Chapel Hill, NC 27599, USA}
+\date{}
+\maketitle
+
 \section{Theoretical proofs}
 \label{sec:theoretical-proofs}
 
@@ -102,44 +113,26 @@
 \section{Calculating the empirically optimal quantile classifier}
 \label{sec:empirically-optimal-algo}
 
-Given the availability of a closed-form expression for the decision rule
-boundary at a fixed quantile level, an immediately apparent question is whether
-an empirically optimal quantile classifier can be efficiently obtained.
-Intuitively, we can sort the data and simply ``slide'' the decision rule
-boundary across the range of the data, counting the number of data points for
-either class on the correct side of the boundary to find an optimal choice.
-Furthermore, since the classification rate doesn't change as we slide the
-decision boundary in-between observations, we need only calculate the
-classification rate for some countable number of decision boundary choices.
-Also, we note that calculating the classification rate requires merely counting
-the number of observations for each class on the correct side of the decision
-boundary.
-
-One complication of this basic strategy is that the set of decision rule
-boundaries for a given data set does not span the real line, so a first step
-that must be taken is to obtain this set of valid decision rule boundaries.  In
-other words, let $\phi(\theta;\, \text{data}){:}~ (0, 1) \mapsto \mathbb{R}$ be
-the function that maps a quantile level for a given data set to the quantile
-classifier decision rule boundary; then we want to obtain the set
+In order to calculate the empirical classification rate as a function of
+quantile level, the first step is to obtain the set of valid decision rule
+boundaries.  In other words, let
+$\phi(\theta;\, \text{data}){:}~ (0, 1) \mapsto \mathbb{R}$ be the function that
+maps a quantile level for a given data set to the quantile classifier decision
+rule boundary; then we wish to obtain the set
 $\big\{ x \in \mathbb{R}{:} \hspace{3mm} \theta \in (0, 1),~ \phi(\theta;\,
-\text{data}) = x \big\}$.  This set can be obtained by working backwards from
-the data and by using the expressions that we have for the decision rule
-boundary (i.e. Lemma \ref{lem:decision-boundary} and Lemma
-\ref{lem:empirical-quantlev}), as is developed in the following paragraphs.
-
-The key observation that facilitates the calculation of this set is that the
-domain $(0, 1)$ can be partitioned into smaller intervals for which range of the
-decision rule boundary function $\phi$ can be easily calculated.  In more
-detail, consider an interval
+\text{data}) = x \big\}$.  The key observation that facilitates the calculation
+of this set is that the domain $(0, 1)$ can be partitioned into smaller
+intervals for which range of the decision rule boundary function $\phi$ can be
+easily calculated.  In more detail, consider an interval
 $(\theta_{\scriptscriptstyle\text{low}},\,
 \theta_{\scriptscriptstyle\text{high}}]$ such that $\lceil \theta n_0 \rceil$
 and $\lceil \theta n_1 \rceil$ are each constant for all $\theta$ in the
-interval.  As a consequence of Lemma \ref{lem:empirical-quantlev} , this implies
+interval.  As a consequence of the form of the quantile estimator, it follows
 that there are values $a$ and $b$ such that $F_{(0)}^{-1}(\theta) = a$ and
-$F_{(1)}^{-1}(\theta) = b$ for all $\theta$ in the interval.  Since by Lemma
-\ref{lem:decision-boundary} we have
+$F_{(1)}^{-1}(\theta) = b$ for all $\theta$ in the interval.  Thus by the result
+on the form of the decision rule boundary, we have
 $\phi(\theta;\, \text{data}) = \theta a + (1 - \theta) b$ for any $\theta$ in
-the interval we obtain that
+the interval, and it follows that
 $\Big\{ x \in \mathbb{R}{:} \hspace{3mm} \theta \in
 (\theta_{\scriptscriptstyle\text{low}},\,
 \theta_{\scriptscriptstyle\text{high}}],~ \phi(\theta;\, \text{data}) = x \Big\}
@@ -158,13 +151,13 @@ a step function with the endpoint for each step taking place at $1, \dots, n_1$
 and which occurs for values of $\theta$ at $1 / n_1, 2 / n_1, \dots, n_1 / n_1$.
 Thus any interval that doesn't include one of those values of $\theta$ except as
 its upper bound is constant for each of these functions.  So we can partition
-$(0, 1]$, by letting each interval have an open lower bound be one of the step
+$(0, 1]$ by letting each interval have an open lower bound be one of the step
 function change locations for one of the classes, and having the upper bound be
 the next smallest step function change location for either of the classes (and
 we also need an interval from 0 to the smallest step function change location).
 
 Consider then one such interval, say
-$[x_{\scriptscriptstyle\text{low}}, x_{\scriptscriptstyle\text{high}})$ such
+$[x_{\scriptscriptstyle\text{low}}, x_{\scriptscriptstyle\text{high}})$, such
 that for each
 $x \in [x_{\scriptscriptstyle\text{low}}, x_{\scriptscriptstyle\text{high}})$
 there exists a $\theta \in (0, 1]$ with $\phi(\theta;\, \text{data}) = x$.  At
@@ -182,7 +175,7 @@ $[x_{\scriptscriptstyle\text{low}}, x_k),\, [x_k, x_{k+1}),\, \dots,\,
 [x_{k+s-1}, x_{k+s}),\, [x_{k+s},\, x_{\scriptscriptstyle\text{high}})$ may be
 such a partitioning.
 
-The reason we say that this `may be' a partitioning is that whether the
+The reason we say that this `may' be a partitioning is that whether the
 endpoints of the sub-intervals are open or closed depends on which class we have
 arbitrarily decided to classify an observation to in the event of ties.  Note
 that when the quantile level $\theta$ corresponds to a decision rule boundary
@@ -229,17 +222,8 @@ we observe the following relation:
   \theta = \frac{b - x}{b - a}.
 \end{equation}
 At this point we have all of the concepts that we need to construct an algorithm
-to calculate an empirically optimal choice of quantile level. 
-
-
-
-
-
-
-\vspace{30mm}
-
-A sketch of an algorithm was presented in the main paper.  A fuller version of
-the algorithm is presented as Table \ref{alg:empirically-optimal-classifier}.
+to calculate an empirically optimal choice of quantile level.  The corresponding
+algorithm is presented as Algorithm \ref{alg:empirically-optimal-classifier}.
 
 \begin{algorithm}[p]
   \label{alg:empirically-optimal-classifier}
@@ -382,22 +366,23 @@ the simulation settings presented in \cite{hennig2016}.
 
 In the first and second scenarios, we consider two classes each with features
 drawn from a multivariate Gaussian distribution and with one class given a
-location shift.  In more detail then, for each feature we consider
+location shift.  That is to say that for each feature we consider
 $V_{ij} \sim Z_j$ and $W_{ij} \sim Z_j + 0.35$.  In the first scenario we
 consider uncorrelated data for the underlying Gaussian distribution, and in the
 second scenario we consider autoregressive correlation.
 
 In the third and fourth scenarios, we consider highly skewed data by
 exponentiating the components of a Gaussian distribution.  That is to say that
-$V_{ij} \sim \exp(Z_j)$ and $W_{ij} \sim \exp(Z_j) + 0.35$.  In the third
-scenario we consider uncorrelated data for the underlying Gaussian distribution,
-and in the fourth scenario we consider autoregressive correlation.
+for each feature we consider $V_{ij} \sim \exp(Z_j)$ and
+$W_{ij} \sim \exp(Z_j) + 0.35$.  In the third scenario we consider uncorrelated
+data for the underlying Gaussian distribution, and in the fourth scenario we
+consider autoregressive correlation.
 
 In the fifth and sixth scenarios we consider different distributions for each of
 5 blocks of features.  In more detail, the data is sampled from a Gaussian
-distribution and then $p$ features are evenly split into 5 blocks and the
-following transformations performed to each block: (i) $V_{ij} \sim Z_j$ and
-$W_{ij} \sim Z_j + 0.2$, (ii) $V_{ij} \sim \exp(Z_j)$ and
+distribution and then $p$ features are evenly split into 5 blocks, with the
+following transformations performed to the various blocks: (i) $V_{ij} \sim Z_j$
+and $W_{ij} \sim Z_j + 0.2$, (ii) $V_{ij} \sim \exp(Z_j)$ and
 $W_{ij} \sim \exp(Z_j) + 0.2$, (iii) $V_{ij} \sim \log |Z_j|$ and
 $W_{ij} \sim \log |Z_j| + 0.1$, (iv) $V_{ij} \sim Z_j^2$ and
 $W_{ij} \sim Z_j^2 + 0.2$, and (v) $V_{ij} \sim |Z_j|^{1/2}$ and
@@ -420,7 +405,7 @@ from $|\alpha_j + N(0, \sigma_j^2)|$ and $|\beta_j + N(0, \sigma_j^2)|$
 distributions.  $\sigma_1, \dots, \sigma_{50}$ were given by a fixed sequence
 each with values between 0.05 and 0.20.  Once the shape parameters were sampled,
 the same parameters were used for every replicate and every simulation study.
-Finally, the gamma distribution parameters in the eight scenario were sampled in
+Finally, the gamma distribution parameters in the eighth scenario were sampled in
 essentially the same manner.
 
 
@@ -449,7 +434,7 @@ essentially the same manner.
 % discussion of the simulations whenever the hybrid approach is used.
 
 
-\subsubsection{Classifier implementations and settings}
+\subsection{Classifier implementations and settings}
 \label{sec:classifier-implementations}
 
 We compared the misclassification rate from the composite quantile-based
@@ -461,8 +446,8 @@ classifiers \cite{hennig2016}, FANS \cite{fan2016}, penalized linear regression
 LDA \cite{witten2011}, and decision trees \cite{breiman1984}.  
 
 The composite quantiles-based classifier is implemented using the \r/
-programming language; the source code is available from the authors upon
-request.  Quantile-based methods is implemented as the \r/ package
+programming language \cite{rlang}; the source code is available from the authors
+upon request.  Quantile-based methods is implemented as the \r/ package
 \texttt{quantileDA}.  There are several methods of quantifying distributional
 skew provided by the package; we used the default Galton skewness measure.  FANS
 is implemented as \matlab/ \cite{matlab} source code and is available upon
@@ -483,19 +468,18 @@ the \r/ package \texttt{pamr} with 10-fold cross validation used to select the
 threshold parameter.  The version of penalized linear discriminant analysis
 compared in the simulation studies is that proposed in \cite{witten2011}, and is
 implemented as the \r/ package \texttt{PenalizedLDA} using 6-fold cross
-validation and 1 discriminant vector.  Decision trees is implemented as the \r/
-package \texttt{rpart}.  All packages used in the numerical analysis are
-available from the Comprehensive \r/ Archive Network.
+validation.  Decision trees is implemented as the \r/ package \texttt{rpart}.
+All packages used in the numerical analysis are available from the Comprehensive
+\r/ Archive Network.
 
 
 \subsection{Simulation results}
 \label{sec:simulation-results}
 
-The classifer proposed in this paper is abbreviated as CQC.  Results for the
-second variant of composite quantile-based classifiers are also shown and are
-abbreviated as CQC augmented.  This is the variant where transformed quantile
-distances data is augmented by the original data when constructing the decision
-rule.
+The composite quantile-based classifier is abbreviated as CQC.  Results for the
+second variant of composite quantile-based classifiers where the transformed
+quantile distances data is augmented by the original data are also shown and are
+abbreviated as CQC augmented.
 
 Simulation results for the Gaussian setting are shown in Table
 \ref{tab:gauss-corr0} and Table \ref{tab:gauss-corr08}.  We would expect
@@ -554,8 +538,8 @@ help to deal with some of the differences in scale and discriminatory power
 between the blocks.
 
 Simulation results for the beta distributed and gamma distributed data settings
-are shown in Table \ref{tab:block-transformed-corr0} and Table
-\ref{tab:block-transformed-corr08}.  In the case of the beta distributed data,
+are shown in Table \ref{tab:beta} and Table
+\ref{tab:gamma}.  In the case of the beta distributed data,
 CQC and decision trees performed the best.  We see this as a sign of a few
 features having some degree of separability across the two classes.  In this
 setting where the optimal quantile level varies across all of the features, we
@@ -566,10 +550,6 @@ perform about as well as CQC.  We see this as suggesting that there happen to be
 a number of features with similar optimal quantile levels that quantile-based
 classifiers can select to achieve similar performance as the more flexible
 approach.
-
-\input{tables_supp.tex}
-
-
 
 
 
@@ -587,13 +567,13 @@ A second type of data can also cause problems:  one where the data is a mixture
 of point masses as well as continuous data.  As an example, consider univariate
 data where the the quantiles of the underlying populations are given as follows.
 \begin{center}
-  \begin{tabular}{lrrrrrrrrrrr}
+  \begin{tabular}{lrrrrrrrrrrrrr}
     \toprule
-    & \multicolumn{11}{c}{\underline{Quantile levels}} \\
-    & 0.89 & 0.90 & 0.91 & 0.92 & 0.93 & 0.94 & 0.95 & 0.96 & 0.97 & 0.98 & 0.99 \\
+    & \multicolumn{13}{c}{\underline{Quantile levels}} \\
+    & 0.01 & $\cdots$ & 0.89 & 0.90 & 0.91 & 0.92 & 0.93 & 0.94 & 0.95 & 0.96 & 0.97 & 0.98 & 0.99 \\
     \midrule
-    Class 0 & 0.00 & 0.02 & 0.14 & 0.23 & 0.33 & 0.42 & 0.55 & 0.68 & 0.87 & 1.05 & 1.41 \\
-    Class 1 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.06 & 0.08 & 0.18 & 0.20 \\
+    Class 0 \hspace{5mm} & 0.00 & $\cdots$ & 0.00 & 0.02 & 0.14 & 0.23 & 0.33 & 0.42 & 0.55 & 0.68 & 0.87 & 1.05 & 1.41 \\
+    Class 1 & 0.00 & $\cdots$ & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.06 & 0.08 & 0.18 & 0.20 \\
     \bottomrule
   \end{tabular}
 \end{center}
@@ -603,12 +583,12 @@ level with nonzero quantiles for both classes, say 0.97.  In this case, the
 quantile distances for the data in class 0 with value 0 than the data quantile
 distances for the data in class 1 with value 0.  As a result, the quantile-based
 data will have spuriously introduced differences in the data for 90\% of the
-data, when in fact there is no discriminative data in those quantiles.
+data, when in fact there is no discriminative information in those quantiles.
 Conversely, suppose now that we select a quantile level with quantiles for both
 classes with value 0.  Doing so has the effect of simply multiplying the nonzero
-values in the data by a constant factor.  While this is less disastrous then the
-previous scenario, we are not using the quantile-based data approach consistent
-with the rest of the paper.
+values in the data by a constant factor (i.e. the chosen quantile level).  While
+this is less disastrous then the previous scenario, we are not using the
+quantile-based data approach consistent with the rest of the paper.
 
 What we propose to do for such a scenario is the following.  When mixture data
 such as the example given above is present for a variable, we try to separate
@@ -619,7 +599,10 @@ for the continuous part of the data, and for the continuous part we perform the
 quantile-based classification using only the reduced subset of the data.
 
 
+\input{tables_supp.tex}
 
+\newpage
+\bibliography{cqc_paper}
 
 \end{document}
 

@@ -1279,7 +1279,51 @@ the data and is less accurate at the edges.
 \end{figure}
 
 
+\subsection{Augmented composite quantile-based classifiers}
+\label{sec:augmented}
 
+In addition to the composite quantile-based classifiers proposed in this paper,
+we propose a variant of these classifiers called augmented composite
+quantile-based classifiers.  In this variant, the transformed features upon
+which the decision rule boundary are constructed are augmented by the original
+features.  In other words, the decision rule for an observation $\vec{z}$ is
+based upon
+\begin{equation}
+  \label{eq:augmented-rule}
+  % \alpha_0 + \sum_{j=1}^p \alpha_j \,\Lambda_j (z_j, \theta_j) + \sum_{j=1}^p \alpha_{2j} z_j
+  \alpha_0 +
+  \alpha_1 \,\Lambda_1 (z_1, \theta_1) +
+  \dots +
+  \alpha_p \,\Lambda_p (z_p, \theta_p) +
+  \alpha_{p + 1} z_1 +
+  \dots +
+  \alpha_{2p} z_p.
+\end{equation}
+There are two main motivations for considering this variant.  The first reason
+is mostly performance-based.  When the decision rule boundary is approximately
+linear in the original features, then augmenting the transformed data can result
+in a better classification rate.
+
+A second motivation for augmented composite quantile-based classifiers is an
+issue that can arise due to the component-wise form of composite quantile-based
+classifiers.  If the marginal densities for a given feature are identically
+equal then the feature does not have any contribution in classification
+regardless of the choice of quantile level in the regular classifier.  However,
+this deletion can result in loss of efficiency because features that have no
+discriminative ability on their own may still contain useful information when
+considered jointly.  Including the original features ensures that component-wise
+deletion does not occur.
+
+There is of course a trade-off that occurs when including the original features
+in the model.  In some settings the original features can provide information to
+the classifier helping to boost performance, but on the other hand augmenting
+the data doubles the feature space and can add noise to the model.  It is hard
+to say a priori which method will work better, but a good starting point may be
+to observe how well the data can be modeled using a linear boundary line.
+
+
+\section{Potential instabilities and limitiations}
+\label{sec:instabilities-and-limitations}
 
 \subsubsection{Potential instabilities of composite quantile-based methods}
 \label{sec:instabilities}
@@ -1306,8 +1350,6 @@ aggregate, so that although the form of the classifier may show some instability
 the classification rate will typically remain unaffected.  We also expect
 averaging the model as discussed in Section \ref{sec:classifier-algorithm} to
 help protect against this type of instability.
-
-
 
 
 \subsubsection{Limitations of composite quantile-based classifiers}
