@@ -1,11 +1,12 @@
 
 \begin{table}[p]
-  \caption{Block transformed data}
+  \caption{Simulation study: misclassification results for block transformed
+    data.}
   \label{tab:block-transformed}
 
   \begin{subtable}{\textwidth}
     \centering
-    \caption{Correlation coefficient = 0}
+    \caption{Correlation coefficient = 0 with $p = 50$}
     \label{tab:block-transformed-corr0}
     \vspace{5mm}
     
@@ -13,8 +14,6 @@
       
       \hline
       & $n=500$ & $n=250$ & $n=50$ \\ 
-      \hline
-      & $p = 50$ \\
       \hline
 
       CQC & \bn{0.029 (0.01)} & \bn{0.043 (0.01)} & 0.181 (0.03) \\ 
@@ -39,7 +38,7 @@
   \begin{subtable}{\textwidth}
 
     \centering
-    \caption{Correlation coefficient = 0.8}
+    \caption{Correlation coefficient = 0.8 with $p = 250$}
     \label{tab:block-transformed-corr08}
     \vspace{5mm}
     
@@ -47,8 +46,6 @@
       
       \hline
       & $n=500$ & $n=250$ & $n=50$ \\ 
-      \hline
-      & $p = 250$ \\
       \hline
 
       CQC & 0.091 (0.00) & \bn{0.115 (0.01)} & \bn{0.228 (0.03)} \\ 
@@ -109,12 +106,13 @@
 
 
 \begin{table}[p]
-  \caption{Varying within-class distributional shapes}
+  \caption{Simulation study: misclassification results for varying within-class
+    distributional shapes}
   \label{tab:varying-distributional}
 
   \begin{subtable}{\textwidth}
     \centering
-    \caption{Beta distributed data}
+    \caption{Beta distributed features with $p = 50$}
     \label{tab:beta}
     \vspace{5mm}
     
@@ -122,8 +120,6 @@
       
       \hline
       & $n=500$ & $n=250$ & $n=50$ \\ 
-      \hline
-      & $p = 50$ \\
       \hline
 
       CQC & \bn{0.011 (0.01)} & \bn{0.019 (0.01)} & 0.075 (0.03) \\ 
@@ -148,7 +144,7 @@
   \begin{subtable}{\textwidth}
 
     \centering
-    \caption{Gamma distributed data}
+    \caption{Gamma distributed features with $p = 250$}
     \label{tab:gamma}
     \vspace{5mm}
     
@@ -156,8 +152,6 @@
       
       \hline
       & $n=500$ & $n=250$ & $n=50$ \\ 
-      \hline
-      & $p = 250$ \\
       \hline
 
       CQC & 0.035 (0.01) & \bn{0.052 (0.01)} & \bn{0.128 (0.03)} \\ 

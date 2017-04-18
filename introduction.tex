@@ -3,32 +3,32 @@
 \label{sec:intro}
 
 A classifier is a type of supervised learning problem where the goal is to build
-a rule for predicting the class membership of an item based on a set of
+a rule for predicting the class membership of an observation based on a set of
 features.  The rule is constructed from a training sample consisting of the
-class membership and features for the training set.  Numerous applications
-include disease classification, image or sound recognition, object
-discrimination, and spam detection, among many others.
+class membership and features for the training set.  Numerous applications for
+classification include disease classification, image or sound recognition,
+object discrimination, and spam detection, among many others.
 
-Supervised classification has a long and historied place in the literature.
-Some important early methods include naive Bayes, linear and quadratic
-discriminant analysis, nearest neighbor methods \cite{cover1967}, and logistic
-regression.  Examples of more recent methods include kernel smoothing
-\cite{mika1999}, neural networks \cite{ripley1994}, and mixture discriminant
-analysis \cite{hastie1996}.  These methods often perform well in the classical
-low dimensional setting, where the number of features is smaller than the
-training data sample size.  However, in high dimensional settings such methods
-can have identifiability issues, be computationally demanding, or suffer from
-poor performance due to the curse of dimensionality.
+Classification has a long and historied place in the literature.  Some important
+early methods include naive Bayes, linear and quadratic discriminant analysis,
+nearest neighbor methods \cite{cover1967}, and logistic regression.  Examples of
+more recent methods include kernel smoothing \cite{mika1999}, neural networks
+\cite{ripley1994}, and mixture discriminant analysis \cite{hastie1996}.  These
+methods often perform well in the classical low dimensional setting, where the
+number of features is smaller than the training data sample size.  However, in
+high dimensional settings such methods can have identifiability issues, be
+computationally demanding, or suffer from poor performance due to the curse of
+dimensionality.
 
-Some methods have been proposed that are designed to perform well in the
-high-dimensional setting.  Support vector machine (SVM) \cite{cortes1995} and
-penalized logistic regression \cite{park2007} are two well-know approaches have
-been successfully applied in many such settings.  More generally, methods
-designed for the high dimensional setting often employ techniques such as
-shrinkage, dimension reduction, or distance-based methods, sometimes further
-restricting attention to the marginal information provided by the feature in the
-data.  Applications performing shrinkage include penalized logistic regression
-and penalized linear discriminant analysis \cite{tibshirani2002, clemmensen2011,
+Various methods have been proposed for classification in the high-dimensional
+setting.  The support vector machine (SVM) \cite{cortes1995} and penalized
+logistic regression \cite{park2007} are two well-know approaches that have been
+successfully applied in many such settings.  More generally, methods designed
+for the high dimensional setting often employ techniques such as shrinkage,
+dimension reduction, or distance-based methods, sometimes further restricting
+attention to the marginal information provided by the features in the data.
+Techniques performing shrinkage include penalized logistic regression and
+penalized linear discriminant analysis \cite{tibshirani2002, clemmensen2011,
   witten2011}.  Dimension reduction is another valuable technique that is
 employed by methods such as sure independence screening \cite{fan2008} and
 supervised principal components analysis \cite{bair2006}.  Non-parametric
@@ -37,57 +37,53 @@ distance-based classifiers such as centroid-based classifiers
   ghosh2005} have been proposed, as well as component-wise median-based
 classifiers \cite{hall2012} and quantile-based classifiers \cite{hennig2016}.
 
-In this paper we continue to explore the application of quantile-based
-classifiers as introduced in \cite{hennig2016} in the high-dimensional setting.
-This family of classifiers is based upon a comparison of the component-wise
-distances of the components of an observation to the within-class quantiles.
-The quantile-based classifiers family of methods then classifies an observation
-as belonging to the class which has the smaller aggregate component-wise
-distance from the components of the observation to the within-class quantiles,
-and where the aggregate distance is defined as the sum of the individual
-distances.  The quantile-based classifiers in \cite{hennig2016} is a
-single-parameter family of classifiers with the parameter specifying a common
-quantile level for each component at which to compare the component-wise
-distances of an observation to.  This classification approach works very well in
-many settings, in particular for the setting where the optimal choice of
-quantile level is the same for each component.  However, this restriction on the
-choice of quantile level can lead to a loss of efficiency in settings where the
-optimal optimal choice of quantile level varies across components.  This
-naturally leads to the question of whether there is a way to allow for more
-flexibility in the choice of quantile levels in order to achieve improved
-performance in these other scenarios.
+In this paper we continue to explore quantile-based classifiers as introduced in
+\cite{hennig2016} in the high-dimensional setting.  This family of classifiers
+is based upon a comparison of the component-wise distances of the feature vector
+of an observation to the within-class quantiles.  The quantile-based family of
+methods then classifies an observation as belonging to the class which has the
+smaller aggregated component-wise distance from the feature vector of the
+observation to the within-class quantiles, and where the aggregated distance is
+defined as the sum of the individual distances.  The quantile-based classifiers
+in \cite{hennig2016} is a single-parameter family of classifiers with the
+parameter specifying a common quantile level for each component at which to
+compare the component-wise distances of an observation to.  This classification
+approach can work well in certain settings, in particular for the setting where
+the optimal choice of the quantile level is the same for each component.
+However, this restriction on the choice of quantile level can lead to a loss of
+efficiency in settings where the optimal choice of the quantile level varies
+across components.  This naturally leads to the question of whether there is a
+way to allow for more flexibility in the choice of quantile levels in order to
+achieve improved performance in these other scenarios.
 
-The fundamental approach taken in this paper starts from a slightly different
-place then that of Hennig and Viroli.  It was established in \cite{hennig2016}
-that for univariate data and under some assuptions, that the decision rule based
-upon the distances of an observation to the corresponding within-class quantiles
-for the optimal choice of quantile levels is the Bayes rule.  It is this result
-that motivates the methodologies developed in this paper: the goal is to use
-these most powerful univariate classifiers as building blocks for a multivariate
-classifier.  In brief, we propose aggregating the component-wise distances from
-the components of the observation to the within-class quantiles corresponding to
-the one-at-a-time optimal choices of quantile level.  Aggregation is performed
-through an appropriately chosen linear combination of the component-wise
-distances.
+It was established in \cite{hennig2016} that for univariate data and under some
+assuptions, the decision rule based upon the distances of an observation to the
+corresponding within-class quantiles for the optimal choice of quantile levels
+is the Bayes rule.  This result motivates the methodologies developed in this
+paper.  Conceptually, our goal is to use these most powerful univariate
+classifiers as building blocks for a multivariate classifier.  In brief, we
+propose aggregating the component-wise distances from the feature vector of the
+observation to the within-class quantiles corresponding to the one-at-a-time
+optimal choices of the quantile level.  Aggregation is performed through an
+appropriately chosen linear combination of the component-wise distances.
 
 The remainder of this paper procedes as follows.  In Section
-\ref{sec:univariate-classifier}, we introduce the quantile classifier, a
+\ref{sec:univariate-classifier}, we first review the quantile classifier, a
 univariate distance-based classification method and its sample version.
 Properties of the quantile classifier are discussed, and consistency of the
 empirically optimal quantile classifier is established.  An algorithm with which
 to calculate the estimated classification rate for the family of quantile
-classifiers as a function of the quantile level is presented.
-
-In Section \ref{sec:multivariate-classifier}, the \emph{composite quantile-based
-  classifiers} family of classification methods is presented.  Connections to
-other related classifiers are discussed.  Consistency of the empirically optimal
-composite quantile-based classifier is established.  A method for selection of a
-composite quantile-based classifier based on training data is proposed, and a
+classifiers as a function of the quantile level is presented.  In Section
+\ref{sec:multivariate-classifier}, the \emph{composite quantile-based} family of
+classification methods is presented.  Connections to other related classifiers
+are discussed.  Consistency of the empirically optimal composite quantile-based
+classifier is established.  A new method for selection of a composite
+quantile-based classifier based on training data is proposed, and a
 corresponding algorithm is presented.  Properties and the form of composite
-quantile-based classifiers are discussed.  And in Section
+quantile-based classifiers are discussed.  In Section
 \ref{sec:numerical-results}, the competitive performance of these approaches is
-demonstrated in through the use of simulation studies as well as on a benchmark
-email spam application.
+demonstrated using simulation studies as well as on a benchmark email spam
+application.
 
 % In Section \ref{sec:univariate-classifier}, we present the quantile classifier
 % rule as proposed in \cite{hennig2016}.  We describe an algorithm for
