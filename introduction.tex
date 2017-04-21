@@ -4,10 +4,10 @@
 
 A classifier is a type of supervised learning problem where the goal is to build
 a rule for predicting the class membership of an observation based on a set of
-features.  The rule is constructed from a training sample consisting of the
-class membership and features for the training set.  Numerous applications for
-classification include disease classification, image or sound recognition,
-object discrimination, and spam detection, among many others.
+features.  The rule is constructed from a training dataset consisting of the
+class membership and features for each training sample.  There are numerous
+applications for classification, including disease classification, image or
+sound recognition, object discrimination, and spam detection, among many others.
 
 Classification has a long and historied place in the literature.  Some important
 early methods include naive Bayes, linear and quadratic discriminant analysis,
@@ -22,7 +22,7 @@ dimensionality.
 
 Various methods have been proposed for classification in the high-dimensional
 setting.  The support vector machine (SVM) \cite{cortes1995} and penalized
-logistic regression \cite{park2007} are two well-know approaches that have been
+logistic regression \cite{park2007} are two well-known approaches that have been
 successfully applied in many such settings.  More generally, methods designed
 for the high dimensional setting often employ techniques such as shrinkage,
 dimension reduction, or distance-based methods, sometimes further restricting
@@ -31,7 +31,7 @@ Techniques performing shrinkage include penalized logistic regression and
 penalized linear discriminant analysis \cite{tibshirani2002, clemmensen2011,
   witten2011}.  Dimension reduction is another valuable technique that is
 employed by methods such as sure independence screening \cite{fan2008} and
-supervised principal components analysis \cite{bair2006}.  Non-parametric
+supervised principal components analysis \cite{bair2006}.  Nonparametric
 distance-based classifiers such as centroid-based classifiers
 \cite{tibshirani2002} and median based classifiers \cite{jornsten2004,
   ghosh2005} have been proposed, as well as component-wise median-based
@@ -43,9 +43,9 @@ is based upon a comparison of the component-wise distances of the feature vector
 of an observation to the within-class quantiles.  The quantile-based family of
 methods then classifies an observation as belonging to the class which has the
 smaller aggregated component-wise distance from the feature vector of the
-observation to the within-class quantiles, and where the aggregated distance is
+observation to the within-class quantiles, where the aggregated distance is
 defined as the sum of the individual distances.  The quantile-based classifiers
-in \cite{hennig2016} is a single-parameter family of classifiers with the
+in \cite{hennig2016} are a single-parameter family of classifiers with the
 parameter specifying a common quantile level for each component at which to
 compare the component-wise distances of an observation to.  This classification
 approach can work well in certain settings, in particular for the setting where
@@ -83,7 +83,7 @@ corresponding algorithm is presented.  Properties and the form of composite
 quantile-based classifiers are discussed.  In Section
 \ref{sec:numerical-results}, the competitive performance of these approaches is
 demonstrated using simulation studies as well as on a benchmark email spam
-application.
+application.  Proofs of theoretical results are presented in the appendix.
 
 % In Section \ref{sec:univariate-classifier}, we present the quantile classifier
 % rule as proposed in \cite{hennig2016}.  We describe an algorithm for

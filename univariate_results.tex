@@ -2,18 +2,18 @@
 \section{Quantile classifiers for univariate data}
 \label{sec:univariate-classifier}
 
-In this section, we introduce the quantile classifier, a univariate
-distance-based classification method.  As noted in Section \ref{sec:intro}, the
-fundamental motivation for the family of classifiers proposed in this paper is
-the result that for univariate data and under some assumptions, that the
-decision rule based upon the distances of an observation to the corresponding
-within-class quantiles for the optimal choice of quantile levels is the Bayes
-rule.  The proposed classifiers for multivariate data are then constructed by
-considering each component of the observed data as a 1-dimensional problem, and
-then aggregating these most powerful univariate classifiers in some manner to
-create a multivariate classifier.  From this perspective, we find it natural to
-present our proposed methodology by first considering the application of
-quantile classifiers in the univariate setting.
+In this section, we review the quantile classifier, a univariate distance-based
+classification method.  As noted in Section \ref{sec:intro}, the fundamental
+motivation for the family of classifiers proposed in this paper is the result
+that for univariate data and under some assumptions, the decision rule based
+upon the distances of an observation to the corresponding within-class quantiles
+for the optimal choice of quantile levels is the Bayes rule.  The proposed
+classifiers for multivariate data are then constructed by considering each
+component of the observed data as a 1-dimensional problem, and then aggregating
+these most powerful univariate classifiers in some manner to create a
+multivariate classifier.  From this perspective, we find it natural to present
+our proposed methodology by first considering the application of quantile
+classifiers in the univariate setting.
 
 The quantile classifier and the empirically optimal quantile classifier was
 introduced in Hennig and Viroli (2016).  For completeness, the notation and
@@ -28,7 +28,7 @@ yield a decision rule that can be found in $\bigO(n)$ time, where $n$ is the
 number of observations in the training data.  Consistency of both the estimated
 optimal quantile level and that of the empirically optimal quantile classifier
 is established.  Furthermore, an algorithm is proposed that obtains the decision
-rule for the empirically optimal quantile classifier in $\bigO(n \log n)$ time.
+rule for the empirically optimal quantile classifier in $\bigO(n^2)$ time.
 
 
 
@@ -37,24 +37,23 @@ rule for the empirically optimal quantile classifier in $\bigO(n \log n)$ time.
 \label{sec:quantile-classifier}
 
 In order to present the quantile classifier, we begin by defining some
-terminology.  Consider the quantile loss (also called the check loss) function
+terminology.  Consider the check loss (also known as the quantile loss) function
 defined as
 \begin{align}
   \label{eq:check-loss}
-  \begin{split}
-    \rho_\theta(u)
-    &= \ind(u > 0)\, \theta\, u  + \ind (u \leq 0)\, (1 - \theta)\, (-u)  \\[0ex]
-    &= u\, \big[ \theta - \ind(u \leq 0) \big]
-  \end{split}
+  \rho_\theta(u)
+  = \ind(u > 0)\, \theta\, u  + \ind (u \leq 0)\, (1 - \theta)\, (-u)
+  = u\, \big[ \theta - \ind(u \leq 0) \big],
 \end{align}
-\\[-1ex]
-for some choice of $\theta \in (0,1)$.  This loss function has the important
-property that for the $\theta$-th quantile level of a continuous univariate
-random variable $X$ it induces the $\theta$-th quantile as the minimizer of the
-expected distance to $X$.  That is,
+for some choice of quantile level $\theta \in (0,1)$.  A plot of the check loss
+function for various choices of quantile level is presented in Figure
+\ref{fig:quantile-loss}.  This loss function has the important property that for
+the $\theta$-th quantile level of a continuous univariate random variable $X$ it
+induces the $\theta$-th quantile as the minimizer of the expected distance to
+$X$.  That is,
 \begin{equation}
   \label{eq:check-loss-min}
-  \argmin_q \ev \big[ \rho_\theta (X - q) \big] = F_X^{-1}(\theta)
+  \argmin_q \ev \big[ \rho_\theta (X - q) \big] = F_X^{-1}(\theta),
 \end{equation}
 for $F_X$ the distribution function of $X$.  Next, consider two populations
 $\Pi_0$ and $\Pi_1$ with corresponding distribution functions $F_0$ and $F_1$ on
@@ -65,7 +64,7 @@ population's $\theta$-th quantile as
   \Phi_i(z, \theta) = \rho_{\theta}\Big(z - F_i^{-1}(\theta)\Big),
   \hspace{5mm} i = 0, 1.
 \end{equation}
-It will also be convenient later to define for fixed $\theta$:
+It will also be convenient later to define for fixed $\theta$,
 \begin{equation}
   \label{eq:F-order-stats}
   F_{(0)}^{-1}(\theta) = \min\Big\{ F_0^{-1}(\theta),~ F_1^{-1}(\theta) \Big\}
@@ -85,7 +84,7 @@ defined as follows.
     \begin{array}{lcl}
       \Pi_0, & & \text{if} \hspace{3mm}\Lambda\,(z, \theta) > 0 \\[0ex]
       \Pi_1, & & \text{otherwise}
-    \end{array}
+    \end{array} .
   \right.
 \end{equation}
 Finally, let $Z$ be a random variable with a prior probability $\pi_0$ of being
@@ -105,8 +104,8 @@ is equal to that of the Bayes classifier.  This result is formally stated as
 Theorem \ref{thm:quantile-classifier-is-bayes}.
 
 \begin{figure}[ht]
-  \caption[Quantile loss function]{Quantile loss (check loss) function for
-    various choices of quantile level}
+  \caption[Quantile loss function]{Plots of the check loss function for various
+    choices of quantile levels.}
   \label{fig:quantile-loss}
   \vspace{5mm}
 
@@ -268,14 +267,12 @@ Finally, define the empirically optimal quantile classifier to be any solution
 to the equation
 \begin{equation}
   \label{eq:theta-hat}
-  \hat{\theta}_n = \argmax_{\theta \in T} \Psi_n(\theta)
+  \hat{\theta}_n = \argmax_{\theta \in T} \Psi_n(\theta),
 \end{equation}
-and where $T = [\delta, 1 - \delta]$ for some small positive constant $\delta$.
-The restriction of quantile levels to the set $T$ is for the following reason.
-In order to guarantee at least one optimal value of $\theta$ for the theoretical
-quantile classifier, the choice of quantile levels must be restricted to a
-closed subset of $(0, 1)$.  Thus we restrict the empirically optimal quantile
-classifier to the same set to maintain consistency between the two versions.
+where $T = [\delta, 1 - \delta]$ for some small positive constant $\delta$.  The
+restriction of quantile levels to the set $T$ is in order to guarantee at least
+one optimal value of $\theta$ for the theoretical quantile classifier, otherwise
+the optimal quantile level may converge to 0 or 1 in the limit.
 
 
 
@@ -426,12 +423,13 @@ classifier to the same set to maintain consistency between the two versions.
 \subsection{Optimality and consistency of the quantile classifier}
 \label{sec:quantile-classifier-optimality}
 
-Now that all of the definitions for the quantile classifier have been provided,
-we may begin to study its properties.  We begin with the fundamental result for
-the motivation of the paper: the quantile classifier achieves the Bayes rule
-classification rate for the optimal choice of quantile level.
+With the definitions for the quantile classifier in place, we now provide some
+of its properties.  We begin with the fundamental result for the motivation of
+the paper, that the quantile classifier achieves the Bayes rule classification
+rate for the optimal choice of quantile level.  The following result is due to
+\cite{hennig2016}.
 
-\begin{theorem}
+\begin{proposition}
   \label{thm:quantile-classifier-is-bayes}
   Consider two populations $\Pi_0$ and $\Pi_1$ with corresponding density
   functions $f_0$ and $f_1$ such that $f_0$ and $f_1$ are nonzero on the same
@@ -444,15 +442,13 @@ classification rate for the optimal choice of quantile level.
   quantile classifier for an observed realization of $Z$ using the optimal
   choice of quantile level achieves the Bayes rule misclassification
   probability.
-\end{theorem}
-
-\begin{proof}
-  This result and proof were given as Lemma 2 in \cite{hennig2016}.
-\end{proof}
+\end{proposition}
 
 Having established the theoretical optimality of the quantile classifier, we now
-consider the consistency of the empirical version.  For the next lemma, we will
-need the following assumptions.  Let $\delta$ be a small positive constant.
+consider the consistency of the empirical version.  The following result is
+essentially a special case of a theorem presented in \cite{hennig2016}.  For
+this result, we will need the following assumptions.  Let $\delta$ be a small
+positive constant.
 \begin{enumerate}[label=\emph{Assumption \arabic*.}, align=left]
 \item $F_i^{-1}$ is a continuous function of
   $\theta,~ i=0,1$.
