@@ -1,0 +1,256 @@
+
+\section{Appendix}
+\label{sec:appendix}
+
+\begin{proof}[Proof of Lemma \ref{lem:univariate-consistency}.]
+  The fact that
+  $\Psi(\hat{\theta}_n) \stackrel{p}{\longrightarrow} \Psi(\tilde{\theta})$ is a
+  special case of Theorem 1 in \cite{hennig2016} for a feature-space of
+  dimension 1.  Furthermore, during the proof of that theorem it was shown that
+  under Assumptions 1 and 2, $\Psi$ is a continuous function of $\theta$.  To
+  show that $\hat{\theta}_n \stackrel{p}{\longrightarrow} \tilde{\theta}$
+  suppose that the claim doesn't hold.  Then there exists an $\epsilon > 0$ and
+  $\delta > 0$ such that for all $N \in \mathbb{N}$, there exists an $n \geq N$
+  such that
+  \begin{equation*}
+    \prob\Big(
+    \big| \hat{\theta}_n - \tilde{\theta} \big|
+    > \epsilon \Big)
+    \geq \delta.
+  \end{equation*}
+  Now, because $\Psi$ is continuous and $\Psi(\tilde{\theta})$ is a unique
+  maximum, it follows that we can find $\nu > 0$ such that
+  \begin{equation*}
+    \min \left\{
+      \big| \Psi(\Tilde{\theta} - \epsilon) - \Psi(\tilde{\theta}) \big|\,,
+      \hspace{2mm}
+      \big| \Psi(\Tilde{\theta} + \epsilon) - \Psi(\tilde{\theta}) \big|
+    \right\} \geq \nu.
+  \end{equation*}
+  Therefore, for all $N \in \mathbb{N}$, there exists an $n \geq N$ such that
+  \begin{equation*}
+    \prob\Big(
+    \big| \Psi(\hat{\theta}_n) - \Psi(\tilde{\theta}) \big|
+    \geq \nu \Big) \geq
+    \prob\Big(
+    \big| \hat{\theta}_n - \tilde{\theta} \big|
+    \geq \epsilon \Big)
+    \geq \delta.
+  \end{equation*}
+  But this is in contradiction to the fact that
+  $\Psi(\hat{\theta}_n) \stackrel{p}{\longrightarrow} \Psi(\tilde{\theta})$.
+\end{proof}
+
+
+\begin{proof}[Proof of Lemma \ref{lem:decision-boundary}.]
+  Suppose $F_{(0)}^{-1}(\theta) \ne F_{(1)}^{-1}(\theta)$.  It is clear
+  (e.g. see Figure \ref{fig:phi-lambda}) that $\Phi_{(0)}(z, \theta)$ is
+  equal to $\Phi_{(1)}(z, \theta)$ at exactly one point, say $\tau$, and that
+  the following holds:
+  \begin{equation*}
+    \left\{
+      \begin{array}{lll}
+        \Phi_{(0)}(z, \theta) < \Phi_{(1)}(z, \theta), & & z < \tau \\[1ex]
+        \Phi_{(0)}(z, \theta) = \Phi_{(1)}(z, \theta), & & z = \tau \\[1ex]
+        \Phi_{(0)}(z, \theta) > \Phi_{(1)}(z, \theta), & & z > \tau \\
+      \end{array}
+    \right.
+  \end{equation*}
+  Furthermore, we can infer that
+  $F_{(0)}^{-1}(\theta) < \tau < F_{(1)}^{-1}(\theta)$.  Setting the loss
+  functions equal for $z$ in this interval yields:
+  \begin{align*}
+    & \Phi_{(0)}(z, \theta) \stackrel{\mathit{set}}{=} \Phi_{(1)}(z, \theta) \\
+    & \hspace{5mm} \Longleftrightarrow \hspace{5mm}
+      \ind\!\! \left(z > F_{(0)}^{-1}(\theta)\right) \theta
+      \left(z - F_{(0)}^{-1}(\theta)\right) +
+      \ind\!\! \left(z \leq F_{(0)}^{-1}(\theta)\right) (1 - \theta)
+      \left(F_{(0)}^{-1}(\theta) - z\right) \\
+    & \hspace{25mm} =
+      \ind\!\! \left(z > F_{(1)}^{-1}(\theta)\right) \theta
+      \left(z - F_{(1)}^{-1}(\theta)\right) +
+      \ind\!\! \left(z \leq F_{(1)}^{-1}(\theta)\right) (1 - \theta)
+      \left(F_{(1)}^{-1}(\theta) - z\right) \\
+    & \hspace{5mm} \Longleftrightarrow \hspace{5mm}
+      \theta \left(z - F_{(0)}^{-1}(\theta)\right) =
+      (1 - \theta) \left(F_{(1)}^{-1}(\theta) - z\right) \\
+    & \hspace{5mm} \Longleftrightarrow \hspace{5mm}
+      z = \theta\, F_{(0)}^{-1}(\theta) + (1 - \theta)\, F_{(1)}^{-1}(\theta).
+  \end{align*}
+  It can then be verified that $\Phi_{(0)}(z, \theta) < \Phi_{(1)}(z, \theta)$
+  corresponds to classifying $z$ to $\Pi_{(0)}$ and that
+  $\Phi_{(0)}(z, \theta) > \Phi_{(1)}(z, \theta)$ corresponds to classifying $z$
+  to $\Pi_{(1)}$.  Combining these facts yields the desired result.
+\end{proof}
+
+\begin{proof}[Proof of Lemma \ref{lem:empirical-quantlev}.]
+  % \input{empirical_quant_proof.tex}
+  The proof is relegated to the supplementary materials.  The result is
+  essentially a consequence of the fact that the problem can be cast as a linear
+  programming problem where the extreme points of the feasible set are the
+  values of the $x_i$.
+\end{proof}
+
+\begin{proof}[Proof of Lemma \ref{lem:decision-rule-time}.]
+  Constructing the $\theta$-th quantile classifier requires merely finding the
+  $\lceil \theta n_0 \rceil$-th largest value from the observations that were
+  drawn from population $\Pi_0$, and the $\lceil \theta n_1 \rceil$-th largest
+  value from the observations that were drawn from population $\Pi_1$, and then
+  calculating the decision boundary based on Lemma \ref{lem:decision-boundary}.
+  Finding the $k$-th largest value of a set is an $\bigO(n)$ operation, and the
+  calculation to obtain the decision boundary using Lemma
+  \ref{lem:decision-boundary} is an $\bigO(1)$ operation.
+\end{proof}
+
+\begin{proof}[Proof of Lemma \ref{lem:optimal-quantile-time}.]
+  Sorting the data is an $\mathcal{O}(n \log n)$ operation.  The operations
+  performed in line 2 of Algorithm \ref{alg:empirically-optimal-classifier}
+  takes $\mathcal{O}(n)$ time.
+
+  The outer loop beginning on line 3 of Algorithm
+  \ref{alg:empirically-optimal-classifier} requires some number of iterations
+  that is bounded from above by $n - 1$.  Within each iteration, calculating
+  $F_V^{-1}$ and $F_W^{-1}$ and the interval $G_i$ are each constant time
+  operations.
+
+  The step in line 6 of Algorithm \ref{alg:empirically-optimal-classifier} is
+  really a high-level view of a second loop.  This inner loop requires first
+  finding the set of $x_i$'s with values in
+  $\big[x_{\scriptscriptstyle\text{low}},\,
+  x_{\scriptscriptstyle\text{high}}\big)$ which is an $\mathcal{O}(\log n)$
+  operation.  The number of times that the inner loop is performed is determined
+  by the number of points with values in the interval and is bounded from above
+  by $n - 1$.  Calculating the classification rate the sub-interval in each step
+  of the inner loop is a constant time operation, as is mapping the sub-interval
+  back to the quantile levels space.
+
+  So combining the worst-case bound for the outer and inner loops, we find that
+  the total number of intervals for which we calculate the classification rate
+  for has a worst-case bound on the order of $n^2$ intervals, and that each
+  calculation is a constant time operation for a total cost of
+  $\mathcal{O}(n^2)$ time.  The initial operations performed in lines 1-2 of
+  Algorithm \ref{alg:empirically-optimal-classifier} have an aggregate cost with
+  $\mathcal{O}(n \log n)$ time, so in total the algorithm runs in
+  $\mathcal{O}(n^2)$ time.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:multivariate-consistency}.]
+  The following upper bound on the difference between the component-wise
+  quantile distances was established in the proof of Theorem 1 in Hennig and
+  Viroli (2016).  For $z \in \mathbb{R}$ and
+  $\theta, \theta^{\prime} \in (0, 1)$ then
+  \begin{equation}
+    \label{eq:quantile-distance-ubnd}
+    \big| \Phi_{ij}(z, \theta) - \Phi_{ij}(z, \theta^{\prime}) \big|
+    \leq |z|\, | \theta - \theta^{\prime} | +
+    4 | F_{ij}^{-1}(\theta) - F_{ij}^{-1}(\theta^{\prime}) |,
+    \hspace{5mm} i = 1, 2,~ j = 1, \dots, p
+  \end{equation}
+  Since $F_{ij}^{-1}$ is continuous by assumption, it follows that for arbitrary
+  fixed $z$, $\Phi_{ij}(z, \theta)$ is continuous in $\theta$ for every
+  $\{i, j\}$.  This in turn implies that for arbitrary fixed $\vec{z}$,
+  $\Lambda(\vec{z}, \vec{\theta})$ is also continuous in $\vec{\theta}$, since
+  $\Lambda$ is just the sum of the differences of the
+  $\Phi_{ij}(z_j, \theta_j)$'s.  Then we observe that
+  \begin{align}
+    \label{eq:multivariate-phi-continuity}
+    \begin{split}
+      \limtheta \Psi(\vec{\theta})
+      & = \limtheta \left\{
+        \pi_0 \int \ind\Big( \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z}) +
+        \pi_1 \int \ind\Big(\Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+      \right\} \\[1ex]
+      & = \pi_0 \int \limtheta \ind\Big( \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z})
+      + \pi_1 \int \limtheta \ind\Big(\Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+      \\[1ex]
+      & = \pi_0 \int \ind \Big( \limtheta \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z})
+      + \pi_1 \int \ind \Big( \limtheta \Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+      \\[1ex]
+      & = \pi_0 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) > 0 \Big)\, dP_0(\vec{z})
+      + \pi_1 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) \leq 0 \Big)\, dP_1(\vec{z})
+      \\[1ex]
+      & = \Psi(\vec{\theta}^{*})
+    \end{split}
+  \end{align}
+  The justification for bringing the limit inside of the integral is due to the
+  dominated convergence theorem.  The justification for bringing the limit
+  inside of the indicator function is that the indicator function is continuous
+  everywhere except at 0, which by Assumption 2 occurs with probability 0, and
+  hence does not change the value of the integral.  This result establishes that
+  $\Psi$ is continuous in $\vec{\theta}$.
+
+  It was established in Lemma \ref{lem:univariate-consistency} that
+  $\hat{\theta}_{jn} \convp \tilde{\theta}_j$, so by Slutsky's theorem
+  it follows that $\hat{\vec{\theta}}_n \convp \tilde{\vec{\theta}}$.
+  Then by the result obtained in equation
+  (\ref{eq:multivariate-phi-continuity}), a second application of Slutsky's
+  theorem yields
+  $\Psi(\hat{\vec{\theta}}_n) \convp \Psi(\tilde{\vec{\theta}})$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition \ref{thm:cqc-runtime}.]
+  Consider the operations performed inside the outer-level for loop spanning
+  lines 1-10 in Algorithm \ref{alg:classifier}.  Splitting the data into two
+  parts is an $\mathcal{O}(n)$ operation.  Next, consider the second-level for
+  loop iterating over the features.  We saw in Lemma
+  \ref{lem:optimal-quantile-time} that the decision rule for the empirically
+  optimal quantile classifier for the $j$-th feature can be obtained in
+  $\mathcal{O}(n^2)$ time.  Next, calculating $x_{ij}^{*}$ is a constant-time
+  operation for an $\mathcal{O}(n)$ number of calculations, which in total is an
+  $\mathcal{O}(n)$ operation.
+
+  Next, we break down the steps required in line 9 of Algorithm
+  \ref{alg:classifier} to select the linear combination coefficients via
+  penalized logistic regression.  Using the coordinate descent algorithm
+  proposed in \cite{friedman2007, friedman2010} yields an $\mathcal{O}(np)$ run
+  time for a fixed choice of penalty parameter.  Thus for a grid of size $T$
+  penalty parameters and performing $k$-fold cross-validation for a total of $K$
+  folds yields a total run time bound of $\mathcal{O}(KTnp)$.
+
+  Then, since the outer loop is performed a total of $L$ times, we obtain the
+  following run time bound:
+  % \begin{align}
+      %       \label{eq:classifier-runtime}
+      %       \begin{split} \MoveEqLeft
+      %       \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big) \\
+      %    &= \mathcal{O}\Big( L \Big[ n + n^2 p + np + KTnp \Big] \Big) \\
+      %            &= \mathcal{O}\Big( L \Big[ n^2 p + KTnp \Big] \Big) \\
+      %            &= \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
+                     %                      \end{split}
+                     %     \end{align}
+  \begin{equation}
+    \label{eq:classifier-runtime}
+    \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big)
+    = \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
+  \end{equation}
+  Furthermore, if we consider $L$ and $T$ to be constants then the bound further
+  simplifies to $\mathcal{O}(n^2 p)$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition \ref{cor:parallel-runtime}.]
+  Since by assumption we have no fewer than $L$ compute nodes available, we can
+  assign the calculation of each sub-model $f_i$ to one of the nodes; this
+  reduces the problem to calculating the run time for each of the $f_i$.  If we
+  perform the parallelism over first the features (i.e. lines 3-8 of Algorithm
+  \ref{alg:classifier}), and then over the cross-validation folds (i.e. line 9
+  of Algorithm \ref{alg:classifier}), then the run time bound is as follows:
+  \begin{equation}
+    \label{eq:classifier-runtime-parallel}
+    \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) 
+    = \mathcal{O}\Big( \frac{np}{C} (n + KT) \Big).
+  \end{equation}
+  Then by replacing $C$ with $n/T$ under the assumption that $CT \geq n$ we
+  obtain the expression in (\ref{eq:parallel-runtime-ass2}).  We further note
+  that since a penalized logistic regression model has an $\mathcal{O}(npT)$
+  complexity to fit, it follows that when adequate computing resources are
+  available calculating the composite quantile-based classifier model is of
+  similar complexity as a (non-parallelized) penalized logistic regression model
+  fit.
+\end{proof}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "cqc_paper"
+%%% End:
