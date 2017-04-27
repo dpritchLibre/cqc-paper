@@ -148,63 +148,64 @@ $\tilde{\vec{\theta}} = \Big( \tilde{\theta}_1, \dots, \tilde{\theta}_P \Big)$.
 \vspace{5mm}
 
 \begin{theorem}
+  \label{thm:multivariate-consistency}
   Under assumptions 1-3 it follows that
   $\Psi(\hat{\vec{\theta}}_n) \convp \Psi(\tilde{\vec{\theta}})$.
 \end{theorem}
 
-\begin{proof}
-  The following upper bound on the difference between the component-wise
-  quantile distances was established in the proof of Theorem 1 in Hennig and
-  Viroli (2016).  For $z \in \mathbb{R}$ and
-  $\theta, \theta^{\prime} \in (0, 1)$ then
-  \begin{equation}
-    \label{eq:quantile-distance-ubnd}
-    \big| \Phi_{ij}(z, \theta) - \Phi_{ij}(z, \theta^{\prime}) \big|
-    \leq |z|\, | \theta - \theta^{\prime} | +
-    4 | F_{ij}^{-1}(\theta) - F_{ij}^{-1}(\theta^{\prime}) |,
-    \hspace{5mm} i = 1, 2,~ j = 1, \dots, p
-  \end{equation}
-  Since $F_{ij}^{-1}$ is continuous by assumption, it follows that for arbitrary
-  fixed $z$, $\Phi_{ij}(z, \theta)$ is continuous in $\theta$ for every
-  $\{i, j\}$.  This in turn implies that for arbitrary fixed $\vec{z}$,
-  $\Lambda(\vec{z}, \vec{\theta})$ is also continuous in $\vec{\theta}$, since
-  $\Lambda$ is just the sum of the differences of the
-  $\Phi_{ij}(z_j, \theta_j)$'s.  Then we observe that
-  \begin{align}
-    \label{eq:multivariate-phi-continuity}
-    \begin{split}
-      \limtheta \Psi(\vec{\theta})
-      & = \limtheta \left\{
-        \pi_0 \int \ind\Big( \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z}) +
-        \pi_1 \int \ind\Big(\Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
-      \right\} \\[1ex]
-      & = \pi_0 \int \limtheta \ind\Big( \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z})
-      + \pi_1 \int \limtheta \ind\Big(\Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
-      \\[1ex]
-      & = \pi_0 \int \ind \Big( \limtheta \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z})
-      + \pi_1 \int \ind \Big( \limtheta \Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
-      \\[1ex]
-      & = \pi_0 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) > 0 \Big)\, dP_0(\vec{z})
-      + \pi_1 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) \leq 0 \Big)\, dP_1(\vec{z})
-      \\[1ex]
-      & = \Psi(\vec{\theta}^{*})
-    \end{split}
-  \end{align}
-  The justification for bringing the limit inside of the integral is due to the
-  dominated convergence theorem.  The justification for bringing the limit
-  inside of the indicator function is that the indicator function is continuous
-  everywhere except at 0, which by Assumption 2 occurs with probability 0, and
-  hence does not change the value of the integral.  This result establishes that
-  $\Psi$ is continuous in $\vec{\theta}$.
+% \begin{proof}
+%   The following upper bound on the difference between the component-wise
+%   quantile distances was established in the proof of Theorem 1 in Hennig and
+%   Viroli (2016).  For $z \in \mathbb{R}$ and
+%   $\theta, \theta^{\prime} \in (0, 1)$ then
+%   \begin{equation}
+%     \label{eq:quantile-distance-ubnd}
+%     \big| \Phi_{ij}(z, \theta) - \Phi_{ij}(z, \theta^{\prime}) \big|
+%     \leq |z|\, | \theta - \theta^{\prime} | +
+%     4 | F_{ij}^{-1}(\theta) - F_{ij}^{-1}(\theta^{\prime}) |,
+%     \hspace{5mm} i = 1, 2,~ j = 1, \dots, p
+%   \end{equation}
+%   Since $F_{ij}^{-1}$ is continuous by assumption, it follows that for arbitrary
+%   fixed $z$, $\Phi_{ij}(z, \theta)$ is continuous in $\theta$ for every
+%   $\{i, j\}$.  This in turn implies that for arbitrary fixed $\vec{z}$,
+%   $\Lambda(\vec{z}, \vec{\theta})$ is also continuous in $\vec{\theta}$, since
+%   $\Lambda$ is just the sum of the differences of the
+%   $\Phi_{ij}(z_j, \theta_j)$'s.  Then we observe that
+%   \begin{align}
+%     \label{eq:multivariate-phi-continuity}
+%     \begin{split}
+%       \limtheta \Psi(\vec{\theta})
+%       & = \limtheta \left\{
+%         \pi_0 \int \ind\Big( \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z}) +
+%         \pi_1 \int \ind\Big(\Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+%       \right\} \\[1ex]
+%       & = \pi_0 \int \limtheta \ind\Big( \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z})
+%       + \pi_1 \int \limtheta \ind\Big(\Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+%       \\[1ex]
+%       & = \pi_0 \int \ind \Big( \limtheta \Lambda(\vec{z}, \vec{\theta}) > 0 \Big)\, dP_0(\vec{z})
+%       + \pi_1 \int \ind \Big( \limtheta \Lambda(\vec{z}, \vec{\theta}) \leq 0 \Big)\, dP_1(\vec{z})
+%       \\[1ex]
+%       & = \pi_0 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) > 0 \Big)\, dP_0(\vec{z})
+%       + \pi_1 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) \leq 0 \Big)\, dP_1(\vec{z})
+%       \\[1ex]
+%       & = \Psi(\vec{\theta}^{*})
+%     \end{split}
+%   \end{align}
+%   The justification for bringing the limit inside of the integral is due to the
+%   dominated convergence theorem.  The justification for bringing the limit
+%   inside of the indicator function is that the indicator function is continuous
+%   everywhere except at 0, which by Assumption 2 occurs with probability 0, and
+%   hence does not change the value of the integral.  This result establishes that
+%   $\Psi$ is continuous in $\vec{\theta}$.
 
-  It was established in Lemma \ref{lem:univariate-consistency} that
-  $\hat{\theta}_{jn} \convp \tilde{\theta}_j$, so by Slutsky's theorem
-  it follows that $\hat{\vec{\theta}}_n \convp \tilde{\vec{\theta}}$.
-  Then by the result obtained in equation
-  (\ref{eq:multivariate-phi-continuity}), a second application of Slutsky's
-  theorem yields
-  $\Psi(\hat{\vec{\theta}}_n) \convp \Psi(\tilde{\vec{\theta}})$.
-\end{proof}
+%   It was established in Lemma \ref{lem:univariate-consistency} that
+%   $\hat{\theta}_{jn} \convp \tilde{\theta}_j$, so by Slutsky's theorem
+%   it follows that $\hat{\vec{\theta}}_n \convp \tilde{\vec{\theta}}$.
+%   Then by the result obtained in equation
+%   (\ref{eq:multivariate-phi-continuity}), a second application of Slutsky's
+%   theorem yields
+%   $\Psi(\hat{\vec{\theta}}_n) \convp \Psi(\tilde{\vec{\theta}})$.
+% \end{proof}
 
 
 
@@ -834,52 +835,54 @@ presented in its entirety as Algorithm \ref{alg:classifier}.
 \end{algorithm}
 
 
-\begin{lemma}
+\begin{proposition}
+  \label{thm:cqc-runtime}
   Let $T$ be the number of penalty levels and $K$ be the number of folds
   considered when performing penalized logistic regression with $k$-fold
   cross-validation to select the linear combination coefficients in Step 9 of
   Algorithm \ref{alg:classifier}.  Then the composite quantile-based classifiers
   model selection algorithm runs in
   $\mathcal{O}\Big( Lnp \big[ n + KT \big]\Big)$ time.
-\end{lemma}
+\end{proposition}
 
-\begin{proof}
-  Consider the operations performed inside the outer-level for loop spanning
-  lines 1-10 in Algorithm \ref{alg:classifier}.  Splitting the data into two
-  parts is an $\mathcal{O}(n)$ operation.  Next, consider the second-level for
-  loop iterating over the features.  We saw in Lemma \ref{lem:optimal-quantile}
-  that the decision rule for the empirically optimal quantile classifier for the
-  $j$-th feature can be obtained in $\mathcal{O}(n^2)$ time.  Next, calculating
-  $x_{ij}^{*}$ is a constant-time operation for an $\mathcal{O}(n)$ number of
-  calculations, which in total is an $\mathcal{O}(n)$ operation.
+% \begin{proof}
+%   Consider the operations performed inside the outer-level for loop spanning
+%   lines 1-10 in Algorithm \ref{alg:classifier}.  Splitting the data into two
+%   parts is an $\mathcal{O}(n)$ operation.  Next, consider the second-level for
+%   loop iterating over the features.  We saw in Lemma
+%   \ref{lem:optimal-quantile-time} that the decision rule for the empirically
+%   optimal quantile classifier for the $j$-th feature can be obtained in
+%   $\mathcal{O}(n^2)$ time.  Next, calculating $x_{ij}^{*}$ is a constant-time
+%   operation for an $\mathcal{O}(n)$ number of calculations, which in total is an
+%   $\mathcal{O}(n)$ operation.
 
-  Next, we break down the steps required in line 9 of \ref{alg:classifier} to
-  select the linear combination coefficients via penalized logistic regression.
-  Using the coordinate descent algorithm proposed in \cite{friedman2007,
-    friedman2010} yields an $\mathcal{O}(np)$ run time for a fixed choice of
-  penalty parameter.  Thus for a grid of size $T$ penalty parameters and
-  performing $k$-fold cross-validation for a total of $K$ folds yields a total
-  run time bound of $\mathcal{O}(KTnp)$.
+%   Next, we break down the steps required in line 9 of Algorithm
+%   \ref{alg:classifier} to select the linear combination coefficients via
+%   penalized logistic regression.  Using the coordinate descent algorithm
+%   proposed in \cite{friedman2007, friedman2010} yields an $\mathcal{O}(np)$ run
+%   time for a fixed choice of penalty parameter.  Thus for a grid of size $T$
+%   penalty parameters and performing $k$-fold cross-validation for a total of $K$
+%   folds yields a total run time bound of $\mathcal{O}(KTnp)$.
 
-  Then, since the outer loop is performed a total of $L$ times, we obtain the
-  following run time bound:
-  % \begin{align}
-  %   \label{eq:classifier-runtime}
-  %   \begin{split} \MoveEqLeft
-  %     \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big) \\
-  %     &= \mathcal{O}\Big( L \Big[ n + n^2 p + np + KTnp \Big] \Big) \\
-  %     &= \mathcal{O}\Big( L \Big[ n^2 p + KTnp \Big] \Big) \\
-  %     &= \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
-  %   \end{split}
-  % \end{align}
-  \begin{equation}
-    \label{eq:classifier-runtime}
-    \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big)
-    = \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
-  \end{equation}
-  Furthermore, if we consider $L$ and $T$ to be constants then the bound further
-  simplifies to $\mathcal{O}(n^2 p)$.
-\end{proof}
+%   Then, since the outer loop is performed a total of $L$ times, we obtain the
+%   following run time bound:
+%   % \begin{align}
+%   %   \label{eq:classifier-runtime}
+%   %   \begin{split} \MoveEqLeft
+%   %     \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big) \\
+%   %     &= \mathcal{O}\Big( L \Big[ n + n^2 p + np + KTnp \Big] \Big) \\
+%   %     &= \mathcal{O}\Big( L \Big[ n^2 p + KTnp \Big] \Big) \\
+%   %     &= \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
+%   %   \end{split}
+%   % \end{align}
+%   \begin{equation}
+%     \label{eq:classifier-runtime}
+%     \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big)
+%     = \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
+%   \end{equation}
+%   Furthermore, if we consider $L$ and $T$ to be constants then the bound further
+%   simplifies to $\mathcal{O}(n^2 p)$.
+% \end{proof}
 
 There are multiple opportunities for parallelism in the composite quantile-based
 classifiers model selection algorithm which can reduce the run time of Algorithm
@@ -900,7 +903,7 @@ so we ignore this opportunity.  Other opportunities for parallelism at a finer
 level do exist for each step, but given the finite nature of computing resources
 we will not consider these lower-level opportunities further.
 
-\begin{corollary}
+\begin{proposition}
   \label{cor:parallel-runtime}
   Assume that the number of compute nodes in a computing cluster topology is at
   least $L$.  Further let $C$ denote the smallest number of available cores from
@@ -919,38 +922,38 @@ we will not consider these lower-level opportunities further.
   \end{equation}
   which is the same complexity as a penalized logistic regression with
   $\max\{n, KT\}$ observations.
-\end{corollary}
+\end{proposition}
 
-\begin{proof}
-  Since by assumption we have no fewer than $L$ compute nodes available, we can
-  assign the calculation of each sub-model $f_i$ to one of the nodes; this
-  reduces the problem to calculating the run time for each of the $f_i$.  If we
-  perform the parallelism over first the features (i.e. lines 3-8 of Algorithm
-  \ref{alg:classifier}), and then over the cross-validation folds (i.e. line 9
-  of Algorithm \ref{alg:classifier}), then the run time bound is as follows:
-  % \begin{align}
-  %   \label{eq:classifier-runtime-parallel}
-  %   \begin{split} \MoveEqLeft
-  %     \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) \\
-  %     &= \mathcal{O}\left( \frac{p}{C} n^2 + \frac{K}{C} Tnp \right) \\
-  %     &= \mathcal{O}\Big( \frac{np}{C} (n + KT) \Big) \\
-  %     &= \mathcal{O}\Big( \frac{np}{n/T} (n + KT) \Big) \\
-  %     &= \mathcal{O}\Big( pT (n + KT) \Big).
-  %   \end{split}
-  % \end{align}
-  \begin{equation}
-    \label{eq:classifier-runtime-parallel}
-    \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) 
-    = \mathcal{O}\Big( \frac{np}{C} (n + KT) \Big).
-  \end{equation}
-  Then by replacing $C$ with $n/T$ under the assumption that $CT \geq n$ we
-  obtain the expression in (\ref{eq:parallel-runtime-ass2}).  We further note
-  that since a penalized logistic regression model has an $\mathcal{O}(npT)$
-  complexity to fit, it follows that when adequate computing resources are
-  available calculating the composite quantile-based classifier model is of
-  similar complexity as a (non-parallelized) penalized logistic regression model
-  fit.
-\end{proof}
+% \begin{proof}
+%   Since by assumption we have no fewer than $L$ compute nodes available, we can
+%   assign the calculation of each sub-model $f_i$ to one of the nodes; this
+%   reduces the problem to calculating the run time for each of the $f_i$.  If we
+%   perform the parallelism over first the features (i.e. lines 3-8 of Algorithm
+%   \ref{alg:classifier}), and then over the cross-validation folds (i.e. line 9
+%   of Algorithm \ref{alg:classifier}), then the run time bound is as follows:
+%   % \begin{align}
+%   %   \label{eq:classifier-runtime-parallel}
+%   %   \begin{split} \MoveEqLeft
+%   %     \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) \\
+%   %     &= \mathcal{O}\left( \frac{p}{C} n^2 + \frac{K}{C} Tnp \right) \\
+%   %     &= \mathcal{O}\Big( \frac{np}{C} (n + KT) \Big) \\
+%   %     &= \mathcal{O}\Big( \frac{np}{n/T} (n + KT) \Big) \\
+%   %     &= \mathcal{O}\Big( pT (n + KT) \Big).
+%   %   \end{split}
+%   % \end{align}
+%   \begin{equation}
+%     \label{eq:classifier-runtime-parallel}
+%     \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) 
+%     = \mathcal{O}\Big( \frac{np}{C} (n + KT) \Big).
+%   \end{equation}
+%   Then by replacing $C$ with $n/T$ under the assumption that $CT \geq n$ we
+%   obtain the expression in (\ref{eq:parallel-runtime-ass2}).  We further note
+%   that since a penalized logistic regression model has an $\mathcal{O}(npT)$
+%   complexity to fit, it follows that when adequate computing resources are
+%   available calculating the composite quantile-based classifier model is of
+%   similar complexity as a (non-parallelized) penalized logistic regression model
+%   fit.
+% \end{proof}
 
 One question that arises is how to choose $L$, $K$, and $T$.  The number of data
 splits (i.e. the size of $L$) suggested by \cite{fan2016} is 20, and we have
