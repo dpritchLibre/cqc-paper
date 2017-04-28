@@ -90,7 +90,7 @@ follows.  We call this family of classifiers \emph{composite quantile-based
                  \alpha_0 + \sum_{j=1}^p \alpha_j \,
                  \Lambda_j (z_j, \theta_j) > 0 \\[1ex]
       \Pi_1, & & \text{otherwise}
-    \end{array}
+    \end{array} ,
   \right.
 \end{equation}
 for $\vec{\alpha} = (\alpha_0, \dots, \alpha_p) \in \mathbb{R}^{p+1}$.  By
@@ -300,7 +300,7 @@ From this it follows that by dividing through by $\alpha$ we obtain
   \label{eq:boundary-equivalence}
   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j) ~>~ 0
   \hspace{5mm} \Longleftrightarrow \hspace{5mm}
-  \sum_{j=1}^p \Lambda_j (z_j, \theta) > 0
+  \sum_{j=1}^p \Lambda_j (z_j, \theta) > 0,
 \end{equation}
 which is the form of quantile-based classifiers.  Quantile-based classifiers
 belong to the family of distance based classifiers, which can be seen by letting
@@ -384,7 +384,7 @@ $\theta$-th quantile of the $j$-th feature as
 Finally, define the empirically optimal quantile classifier for the $j$-th
 feature to be any solution to the equation
 \begin{equation}
-  \hat{\theta}_{jn} = \argmax_{\theta \in T} \Psi_{jn}(\theta)
+  \hat{\theta}_{jn} = \argmax_{\theta \in T} \Psi_{jn}(\theta),
 \end{equation}
 for $T = [ \delta, 1 - \delta]$ where $\delta$ is an arbitrarily small positive
 constant.  Then $\hat{\theta}_{jn}$ is the choice of quantile level,
@@ -406,7 +406,7 @@ classification rule in equation (\ref{eq:composite-classifier}) as follows:
     \begin{array}{lcl}
       \Pi_0, & & \alpha_0 + \sum_{j = 1}^p \alpha_j z_j^{*} ~>~ 0 \\[1ex]
       \Pi_1, & & \text{otherwise} \\[0ex]
-    \end{array}
+    \end{array} .
   \right.
 \end{equation}
 From this form it is readily apparent that the the classification rule decision
@@ -452,7 +452,7 @@ mutually independent, the Bayes rule decision boundary becomes
     \cdots +
     \log \frac{ f_{0p}(z_p) }{ f_{1p}(z_p) }
     ~=~ 0
-  \right\}
+  \right\} ,
 \end{equation}
 where $f_{ij}$ corresponds to the class conditional marginal density for the
 $j$-th feature of the $i$-th class.  The FANS classifier then proposes the
@@ -918,7 +918,7 @@ we will not consider these lower-level opportunities further.
   If further it holds that $CT \geq n$, then the bound can be expressed as
   \begin{equation}
     \label{eq:parallel-runtime-ass2}
-    \mathcal{O}\Big(  pT (n + KT) \Big)
+    \mathcal{O}\Big(  pT (n + KT) \Big),
   \end{equation}
   which is the same complexity as a penalized logistic regression with
   $\max\{n, KT\}$ observations.
@@ -1063,7 +1063,7 @@ boundary set is of the following form:
       \alpha_0 +
       \alpha_k^{*} \Big(\tau_k - F_{(1),k}^{-1}(\theta_k)\Big) +
       \sum_{j\ne k} \alpha_j^{*} (z_j - \tau_j) = 0
-    \right\}
+    \right\} .
   \end{split}
 \end{equation}
 Next, if we head in a new direction $\vec{d}'$ that yields a line with points in
@@ -1094,7 +1094,7 @@ partition the set of indices $\{1, \dots, p\}$.  Then
         \sum_{\ell \in U} \alpha_j^{*} \Big(\tau_{\ell} - F_{(1),\ell}^{-1}(\theta_{\ell})\Big)
       \right] +
         \sum_{j \in M} \alpha_j^{*} (z_j - \tau_j) ~=~ 0
-    \right\}
+    \right\} ,
   \end{split}
 \end{equation}
 where in this context the products are meant to denote the usual Cartesian
@@ -1170,7 +1170,7 @@ free variable, while the first component is fixed at 0.5 or 1.5, respectively.
 
 
 \begin{figure}[ht]
-  \caption{Gaussian distributions classifier}
+  \caption{Composite quantile-based classifier for Gaussian distributions setting.}
   \label{fig:gaussian-classify}
   \centering
   \vspace{5mm}
@@ -1239,19 +1239,20 @@ free variable, while the first component is fixed at 0.5 or 1.5, respectively.
 \subsubsection{Classifier examples in two dimensions: beta and gamma distributed data}
 \label{sec:beta-gamma-example}
 
-In the following examples we consider settings where the shape of the
-component-wise within-class marginal distributions varies across populations.
-In the first example, we consider populations where the within-class
-distributions follow independent beta distributions, and in the second example
-we consider populations where the within-class distributions follow independent
-gamma distributions.  The parameters of the beta and gamma distributions were
-chosen arbitrarily.  As in the previous example, contour lines denoting 68\% and
-95\% percent of the distributional mass for each population are shown.  The
-Bayes rule decision boundary is shown as the black line and the composite
-quantile-based decision rule boundary is shown as the blue line.  The composite
-quantile-based classifiers rule has a classification rate of 0.84 compared to
-0.87 for the Bayes rule for the beta distributed data, and a classification rate
-of 0.75 compared to 0.76 for the gamma distributed data.
+In the second example, shown as Figure \ref{fig:beta-and-gamma}, we consider
+settings where the shape of the component-wise within-class marginal
+distributions varies across populations.  In the first example, we consider
+populations where the within-class distributions follow independent beta
+distributions, and in the second example we consider populations where the
+within-class distributions follow independent gamma distributions.  The
+parameters of the beta and gamma distributions were chosen arbitrarily.  As in
+the previous example, contour lines denoting 68\% and 95\% percent of the
+distributional mass for each population are shown.  The Bayes rule decision
+boundary is shown as the black line and the composite quantile-based decision
+rule boundary is shown as the blue line.  The composite quantile-based
+classifiers rule has a classification rate of 0.84 compared to 0.87 for the
+Bayes rule for the beta distributed data, and a classification rate of 0.75
+compared to 0.76 for the gamma distributed data.
 
 In both examples we see that the Bayes rule decision boundary is nonlinear, so
 we can only at best hope to approximate it.  Fortunately, in both examples the
@@ -1264,8 +1265,9 @@ classifiers: the approximation of the Bayes rule is often good at the center of
 the data and is less accurate at the edges.
 
 \begin{figure}[ht]
-  \caption{Exponentiated Gaussian distributions classifier}
-  \label{fig:exponentiated-gaussian}
+  \caption{Composite quantile-based classifier for beta- and gamma-distributed
+    data settings.}
+  \label{fig:beta-and-gamma}
   \centering
   \vspace{5mm}
 
