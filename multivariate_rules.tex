@@ -25,18 +25,18 @@ $\theta$-th quantile of the $j$-th component is defined as
   \Lambda_j (z, \theta) = \Phi_{1j}(z, \theta) - \Phi_{0j}(z, \theta),
   \hspace{5mm} j = 1, \dots, p.
 \end{equation}
-The main idea then of the composite quantile-based classifiers proposed in the
-next section is to aggregate the discriminatory information contained in each of
-the $\Lambda_j$'s so as to construct a classification method for data with
-multivariate features.
+The main idea of the composite quantile-based classifiers proposed in the next
+section is to aggregate the discriminatory information contained in each of the
+$\Lambda_j$'s to construct a classification method for data with multivariate
+features.
 
 
 \subsection{Composite quantile-based classifiers}
 \label{sec:varying-coefficient}
 
-In this section we propose the composite quantile-based classifiers
-family; we start by motivating the the form of the classifiers.  Consider a
-point $\vec{z} = (z_1, \dots, z_p) \in \mathbb{R}^p$ and quantile levels
+In this section we propose the composite quantile-based classifiers family.  We
+begin by motivating the the form of the classifiers.  Consider a point
+$\vec{z} = (z_1, \dots, z_p) \in \mathbb{R}^p$ and quantile levels
 $\vec{\theta} = (\theta_1, \dots, \theta_p) \in (0, 1)^p$.  Then the difference
 of the quantile distances of the $j$-th component of $\vec{z}$ to the
 populations' $\theta_j$-th quantile of the $j$-th component
@@ -46,19 +46,18 @@ large positive value (large relative to the magnitude of the $j$-th component),
 then this indicates that $z_j$ is much closer to the $\theta_j$-th quantile of
 the $j$-th component of population $\Pi_0$ than it is to the $\theta_j$-th
 quantile of the $j$-th component of population $\Pi_1$.  In this event we would
-interpret this as being fairly suggestive that $\vec{z}$ is a member of class
-$\Pi_0$.  If however, $\Lambda_j(z_j, \theta_j)$ is positive with a small
-magnitude, then it is less strongly suggestive that $\vec{z}$ is a member of
-class $\Pi_0$.  On the other hand, if $\Lambda_j(z_j, \theta_j)$ is negative,
-then this indicates that $z_j$ is closer to the $\theta$-th quantile of the
-$j$-th component of population $\Pi_1$ than it is to the $\theta$-th quantile of
-the $j$-th component of population $\Pi_0$, and we would interpret this as being
-suggestive that $\vec{z}$ is a member of class $\Pi_1$.  Finally, if
+interpret this as being suggestive that $\vec{z}$ is a member of class $\Pi_0$.
+If however, $\Lambda_j(z_j, \theta_j)$ is positive with a small magnitude, then
+it is less strongly suggestive that $\vec{z}$ is a member of class $\Pi_0$.  On
+the other hand, if $\Lambda_j(z_j, \theta_j)$ is negative, then this indicates
+that $z_j$ is closer to the $\theta$-th quantile of the $j$-th component of
+population $\Pi_1$ than that of population $\Pi_0$, and we would interpret this
+as being suggestive that $\vec{z}$ is a member of class $\Pi_1$.  Finally, if
 $\Lambda_j(z_j, \theta_j)$ has a value of 0, then $z_j$ has an equal quantile
 distance to class $\Pi_0$ as to class $\Pi_1$, so we would interpret this as
-providing no discriminatory information for the classification of $\vec{z}$.
+providing no discriminatory information for classification of $\vec{z}$.
 
-The question then is how to construct a classification method based on
+The question of interest is how to construct a classification method based on
 information obtained from each of the difference of the quantile distances
 $\Lambda_j(z_j, \theta_j)$.  Intuitively, we want to classify an observation to
 the population for which it has more components that are closer to the
@@ -70,14 +69,12 @@ negative (suggesting that the observation belongs to population $\Pi_1$).  This
 approach has a few difficulties however.  One potential drawback is that equal
 weight is given to each of features.  Naturally, some features may potentially
 be more discriminatory and we would like to draw more heavily on these features
-for classification purposes, or conversely we would like to draw less heavily on
-less discriminatory features.  A second is an issue of scaling.  Features with a
-larger scale than other features will implicitly be given more discriminatory
-weight under this scheme.  Finally, we would like to somehow be able to account
-for dependencies that may exist in the data.  With these issues in mind we
-propose using a linear combination of the $\Lambda_j(z_j, \theta_j)$'s as
-follows.  We call this family of classifiers \emph{composite quantile-based
-  classifiers}.
+for classification purposes.  The second is an issue of scaling.  Features with
+a larger scale than other features will implicitly be given more discriminatory
+weight under this scheme.  Finally, we would like to be able to account for
+dependencies that may exist in the data.  With these issues in mind we propose
+using a linear combination of the $\Lambda_j(z_j, \theta_j)$'s as follows.  We
+call this family of classifiers \emph{composite quantile-based classifiers}.
 \begin{equation}
   \label{eq:composite-classifier}
   \text{For an observation $\vec{z}$, classify to:} \hspace{3mm}
@@ -102,12 +99,12 @@ dependencies between the features, allowing the coefficients to take on both
 positive and negative values permits the model to account for features' joint
 effects and to select a good linear combination of features as the decision rule
 boundary.  Finally, the coefficient $\alpha_0$ can be interpreted as an offset
-to classify an observation to when the linear combination of differences of the
-quantile distances is small.  This is valuable when the prior probability of an
+to classify an observation when the linear combination of the differences of the
+quantile distances is small.  This is useful when the prior probability of an
 observation being drawn from one class is higher than for the other.  When this
 is the case, we can require a higher threshold of closeness for an observation
-to a population that has a low prior probability before we are willing to
-classify the observation as belonging to that population.
+to a population that has a low prior probability before we decide to classify
+the observation to that population.
 
 
 \subsubsection{Consistency of the aggregate quantile classifier}
@@ -115,8 +112,8 @@ classify the observation as belonging to that population.
 
 Having presented the theoretical form of the composite quantile-based
 classifiers, we now consider the consistency of the empirical version.  Firstly,
-we note that the correct classification rate for composite quantile-based
-classifiers as is given by:
+let us denote $\Psi(\vec{\theta})$ as the classification rate for composite
+quantile-based classifiers given by
 \begin{equation}
   \label{eq:multivariate-theoretical-rate}
   \Psi(\vec{\theta}) =
@@ -127,8 +124,8 @@ classifiers as is given by:
   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j) \leq 0
   \bigg)\, dP_1(\vec{z}).
 \end{equation}
-For the following theorem, we will need the following assumptions.  Let $\delta$
-be a small positive constant.
+For the theorem below, we will need the following assumptions.  Let $\delta$ be
+a small positive constant.
 \begin{enumerate}[label=\emph{Assumption \arabic*.}, align=left]
 \item $F_{ij}^{-1}$ is a continuous function of
   $\theta,~ i=0,1,~ j=1, \dots, p$.
@@ -217,8 +214,8 @@ Distance-based classifiers are a type of classifier that assign an observation
 to a population which it is deemed closer to by some measure of distance.  More
 formally, let $\vec{\xi}_0$ and $\vec{\xi}_1$ be $p$-variate statistics
 representing populations $\Pi_0$ and $\Pi_1$, respectively, and further let
-$d(\cdot)$ denote a chosen distance measure. Then, following the notation used
-in \cite{hennig2016}, a distance-based classifier has the following form:
+$d(\cdot, \cdot)$ denote a chosen distance measure. Then, following the notation
+used in \cite{hennig2016}, a distance-based classifier has the following form:
 \begin{equation}
   \label{eq:distance-based-classifier}
   \text{For an observation $\vec{z}$, classify to:}  \hspace{3mm}
@@ -325,10 +322,10 @@ of the family of classifiers belongs to the set of distance based classifiers.
 
 Having introduced a family of classifiers in Section
 \ref{sec:varying-coefficient}, we now need a method by which to select a
-particular model based upon the data in hand; this requires selection of both a
+particular model based upon the data in hand.  This requires selection of both a
 vector of component-wise quantile levels, and a vector of component
 coefficients.  To perform model selection, we propose a two-step process as
-described in Section \ref{sec:choice-of-quantile-lev} and Section
+described in Sections \ref{sec:choice-of-quantile-lev} and
 \ref{sec:variable-coefficients}.
 
 
@@ -337,27 +334,26 @@ described in Section \ref{sec:choice-of-quantile-lev} and Section
 \subsubsection{Choice of quantile levels}
 \label{sec:choice-of-quantile-lev}
 
-As has been noted before, the fundamental motivation for the family of
-classifiers proposed in this paper is the result that for univariate data and
-under some assumptions, that the decision rule based upon the distances of an
-observation to the corresponding within-class quantiles for the optimal choice
-of quantile levels is the Bayes rule.  Thus, we propose using these most
-powerful choices of quantile level with respect to each feature's discriminatory
-ability, taken one-at-a-time.  This statement is developed more precisely in the
-following paragraphs.
+As stated before, the fundamental motivation for the family of classifiers
+proposed in this paper is the result that for univariate data and under some
+assumptions, the decision rule based upon the distances of an observation to the
+corresponding within-class quantiles for the optimal choice of quantile levels
+is the Bayes rule.  Thus, we propose using these most powerful choices of
+quantile level with respect to each feature's discriminatory ability, taken
+one-at-a-time.  This statement is developed more precisely below.
 
 To begin, let us suppose that we have $p$-dimensional observations
 $\vec{x}_1, \dots, \vec{x}_n$, and we let $x_{ij}$ denote the $j$-th component
-of $\vec{x}_i$, $i = 1, \dots, n,~ j = 1, \dots, p$.  Then we define the
+of $\vec{x}_i$; $i = 1, \dots, n,~ j = 1, \dots, p$.  Then we define the
 empirical quantile for the $j$-th feature of the $i$-th population to be any
 solution satisfying
 \begin{equation}
   \label{eq:multivariate-empirical-quantile}
   \hat{F}_{ijn}^{-1} (\theta) = \argmin_q \left\{
-    \theta \sum_{\substack{ \{ \ell:\, x_{\ell j} > q \} \\[0.5mm] \vec{x}_i \in \Pi_i }}
+    \theta \sum_{\substack{ \{ \ell:\, \vec{x}_{\ell} \in \Pi_i  \\[0.5mm] x_{\ell j} > q \} }}
     |x_{\ell j} - q| ~+~
     (1 - \theta)
-    \sum_{\substack{ \{ \ell:\, x_{\ell j} \leq q \} \\[0.5mm] \vec{x}_i \in \Pi_i }}
+    \sum_{\substack{ \{ \ell:\, \vec{x}_{\ell} \in \Pi_i  \\[0.5mm] x_{\ell j} \leq q \} }}
     |x_{\ell j} - q|
   \right\}.
 \end{equation}
@@ -398,7 +394,7 @@ $j = 1, \dots, p$.
 
 To motivate the choice of linear combination coefficients, we note the following
 observation.  If we write
-$z_j^{*} = \Lambda_j (z_j, \theta_j),~ j = 1, \dots, p$, then we can express the
+$z_j^{*} = \Lambda_j (z_j, \theta_j);~ j = 1, \dots, p$, then we can express the
 classification rule in equation (\ref{eq:composite-classifier}) as follows:
 \begin{equation}
   \label{eq: classifier transformed data}
@@ -411,18 +407,17 @@ classification rule in equation (\ref{eq:composite-classifier}) as follows:
 \end{equation}
 From this form it is readily apparent that the the classification rule decision
 boundary for the classifier in (\ref{eq: classifier transformed data}) is the
-same as that of the decision boundary obtained from the logistic regression
+same as that of the decision rule boundary obtained from the logistic regression
 model with $\vec{z}^{*} = (z_1^{*}, \dots, z_p^{*})$ as the predictor variables.
 From this perspective, it is natural to select the classifier component
 coefficients by using the logistic regression coefficient estimates obtained
 from the transformed training data where the transformation is taken to be
 $x_{ij}^{*} = \Lambda(x_{ij}, \theta_j)$ for all $i, j$.  Indeed, this is
 exactly the approach that we propose, using a two step process as follows: first
-(i) choose quantile levels based on each feature's empirically optimal quantile
+choose quantile levels based on each feature's empirically optimal quantile
 level in terms of class prediction, and then for these fixed choices of quantile
-levels (ii) use penalized logistic regression on the transformed training data
-to select a choice of coefficients for the linear combination of the differences
-in the quantile distances for each component.  A full presentation of the
+levels use penalized logistic regression on the transformed training data to
+select a choice of linear combination coefficients.  A full presentation of the
 two-step parameter selection process is provided in Section
 \ref{sec:classifier-algorithm}.
 
@@ -437,7 +432,7 @@ At this point it is very interesting to note that the proposed choice of
 quantile levels (Section \ref{sec:choice-of-quantile-lev}) and variable
 coefficients (Section \ref{sec:variable-coefficients}) selects a model from the
 composite quantile-based classifiers that bears a number of similarities to the
-FANS classifier proposed in \cite{fan2016} The FANS classifier starts from the
+FANS classifier proposed in \cite{fan2016}.  The FANS classifier starts from the
 idea that for data with an equal prior probability of being a member from one of
 two classes with corresponding class conditional densities $f_0$ and $f_1$, that
 the Bayes rule decision boundary is given by
@@ -478,17 +473,17 @@ all $i, j$.
 Having described the FANS method in brief, it is evident that although the
 composite quantile-based classifiers and FANS classifiers are each motivated
 from different perspectives, they share a number of common traits.  Both methods
-start with component-wise transforms for transforms that each yield the Bayes
-rule decision bound in the univariate setting, and then perform logistic
+start with component-wise transformations that each yield the Bayes rule
+decision boundary in the univariate setting, and then perform logistic
 regression on those transformed features to create a decision rule boundary
 nonlinear in the original features.  The difference in the classifiers comes of
-course from the chosen transformation on each of the components.
+course from the transformation performed on each of the components.
 
 One final point that was noted in \cite{fan2016} and bears repeating here, is
-that instead of using penalized linear regression, FANS may well use SVM (linear
-kernel) or any other linear classifier as a means through which to obtain the
-transformed feature coefficient values.  Indeed, this observation is equally
-true with composite quantile-based classifiers as well.  In this paper though,
+that instead of using penalized linear regression, FANS may well use the SVM
+(linear kernel) or any other linear classifier as a means through which to
+obtain the transformed feature coefficient values.  Indeed, this observation is
+equally true with composite quantile-based classifiers as well.  In this paper,
 as in \cite{fan2016}, we focus on using penalized linear regression with the
 $\ell_1$ penalty.
 
@@ -705,12 +700,11 @@ $\ell_1$ penalty.
 % using penalized linear regression with the $L_1$ penalty.
 
 
-\subsection{Classifier algorithm}
+\subsection{Algorithm for composite quantile-based classifiers}
 \label{sec:classifier-algorithm}
 
 In this section, we present an algorithm used to select a composite
-quantile-based classifier model, and where selection is based upon a set of
-training data.  This algorithm is in large part adapted from the algorithm
+quantile-based classifier model.  This algorithm is similar to the algorithm
 proposed in \cite{fan2016}.
 
 We begin with some observations that motivate the form of the algorithm.  One
@@ -719,32 +713,32 @@ quantile levels and linear combination coefficients are based upon a two-step
 process.  Recall from Sections \ref{sec:choice-of-quantile-lev} and
 \ref{sec:variable-coefficients} that the quantile levels are chosen first with
 each quantile level based on the optimal level with respect to the feature's
-ability to predict class membership, and then secondly the linear combination
-coefficients are chosen based upon the transformed data where the transformation
-is performed with respect to the choices of quantile levels from the first step.
-Because of this two-step process, the second step is particularly prone to
-overfitting the model to the training data.  To mitigate this undesirable
-behavior, the data is split into two parts: one part to train for the choice of
-quantile levels and corresponding within-class quantiles, and one part to train
-for the choice of penalty parameter used to select the linear combination
-coefficients.  The question then is how to split the data.  Based on empirical
-evidence, we suggest randomly splitting the data into evenly-sized partitions.
-In our experience, this equitable partitioning tends to work well across
-different sizes and types of data.
+ability to predict class membership.  Then for the second step, the linear
+combination coefficients are chosen based upon the transformed data where the
+transformation is performed with respect to the choices of quantile levels from
+the first step.  Because of this two-step process, the second step is
+particularly prone to overfitting the model to the training data.  To mitigate
+this undesirable behavior, the data set is split into two parts: one part to
+train for the choice of quantile levels and corresponding within-class
+quantiles, and the other part to train for the choice of penalty parameter used
+to select the linear combination coefficients.  The question then is how to
+split the data.  Based on empirical evidence, we suggest randomly splitting the
+data into evenly-sized partitions.  In our experience, this equitable
+partitioning tends to work well across different sizes and types of data.
 
-Splitting the data however, while alleviating one problem, leads to a another
-concern: namely that varying splits of the data leads to different model
-choices.  To protect against arbitrary assignments of the data, the data is
-split not just once but multiple times, and a classification model is procured
-for each split.  The final model is then obtained by averaging the individual
-models in the following sense.  Let $f_i$ be one of the individual models among
-a total of $L$ data splits.  Then a new observation $\vec{z}$ is classified
-according to $\frac{1}{L} \sum_{i=1}^L f_i(\vec{z})$ where the decision rule
-boundary is 0 (furthermore, since the boundary rule is 0 we need not divide by
-$L$).  We note that the process described here is similar in concept to the
-ideas presented in bagging \cite{breiman1996} and random forests
-\cite{breiman2001}.  The composite quantile-based classifiers algorithm is
-presented in its entirety as Algorithm \ref{alg:classifier}.
+While alleviating one problem, splitting the data leads to a another concern:
+namely that varying splits of the data can lead to different model choices.  To
+protect against arbitrary assignments of the data, the data is split not just
+once but multiple times, and a classification model is procured for each split.
+The final model is then obtained by averaging the individual models in the
+following sense.  Let $f_i$ be one of the individual models among a total of $L$
+data splits.  Then a new observation $\vec{z}$ is classified according to
+$\frac{1}{L} \sum_{i=1}^L f_i(\vec{z})$ where the decision rule boundary is 0
+(furthermore, since the boundary rule is 0 we need not divide by $L$).  We note
+that the process described here is similar in concept to the ideas presented in
+bagging \cite{breiman1996} and random forests \cite{breiman2001}.  The composite
+quantile-based classifiers algorithm is presented in its entirety as Algorithm
+\ref{alg:classifier}.
 
 % The choice of variable coefficients proposed in section
 % \ref{sec:variable-coefficients} leads to the following classification method
@@ -840,8 +834,8 @@ presented in its entirety as Algorithm \ref{alg:classifier}.
   Let $T$ be the number of penalty levels and $K$ be the number of folds
   considered when performing penalized logistic regression with $k$-fold
   cross-validation to select the linear combination coefficients in Step 9 of
-  Algorithm \ref{alg:classifier}.  Then the composite quantile-based classifiers
-  model selection algorithm runs in
+  Algorithm \ref{alg:classifier}.  Then the model selection algorithm for
+  composite quantile-based classifiers runs in
   $\mathcal{O}\Big( Lnp \big[ n + KT \big]\Big)$ time.
 \end{proposition}
 
@@ -884,29 +878,24 @@ presented in its entirety as Algorithm \ref{alg:classifier}.
 %   simplifies to $\mathcal{O}(n^2 p)$.
 % \end{proof}
 
-There are multiple opportunities for parallelism in the composite quantile-based
-classifiers model selection algorithm which can reduce the run time of Algorithm
-\ref{alg:classifier}.  Clearly, the sub-models $f_1, \dots, f_L$ can each be
-obtained independently of each other.  Within the calculation of a single
-sub-model with index $\ell$, the feature-specific calculations can each be
-performed independently of each other (i.e. lines 3-8 of Algorithm
-\ref{alg:classifier}).  That is to say, that for $j$ in $1, \dots p$, the
-calculation of the optimal quantile level for the $j$-th feature with data
-$D_{\ell 1}$ and transformation of the $j$-th component of every $\vec{x}_i$ in
-data $D_{\ell 2}$ can be calculated independently of the other features.
-Selecting the choice of linear combination coefficients (i.e. line 9 of
-Algorithm \ref{alg:classifier}) at a coarse level can be parallelized over the
-folds in the cross-validation procedure.  Another opportunity for parallelism
-within each fold is afforded at the different steps in the penalty parameter
-grid.  However, the use of warm starts largely obviates the value in doing so,
-so we ignore this opportunity.  Other opportunities for parallelism at a finer
-level do exist for each step, but given the finite nature of computing resources
-we will not consider these lower-level opportunities further.
+There are multiple opportunities for parallelism in the model selection
+algorithm for composite quantile-based classifiers which can reduce the run time
+of Algorithm \ref{alg:classifier}.  Clearly, the sub-models $f_1, \dots, f_L$
+can each be obtained independently of each other.  Within the calculation of a
+single sub-model with index $\ell$, the feature-specific calculations can each
+be performed independently of each other (i.e. lines 3-8 of Algorithm
+\ref{alg:classifier}).  Thus, for $j$ in $1, \dots p$, the calculation of the
+optimal quantile level for the $j$-th feature with data $D_{\ell 1}$ and
+transformation of the $j$-th component of every $\vec{x}_i$ in data $D_{\ell 2}$
+can be calculated independently of the other features.  Selecting the choice of
+linear combination coefficients (i.e. line 9 of Algorithm \ref{alg:classifier})
+at a coarse level can be parallelized over the folds in the cross-validation
+procedure.
 
 \begin{proposition}
   \label{cor:parallel-runtime}
   Assume that the number of compute nodes in a computing cluster topology is at
-  least $L$.  Further let $C$ denote the smallest number of available cores from
+  least $L$, and let $C$ denote the smallest number of available cores from
   among the compute nodes.  Then the run time of Algorithm \ref{alg:classifier}
   is reduced to
   \begin{equation}
@@ -920,7 +909,7 @@ we will not consider these lower-level opportunities further.
     \label{eq:parallel-runtime-ass2}
     \mathcal{O}\Big(  pT (n + KT) \Big),
   \end{equation}
-  which is the same complexity as a penalized logistic regression with
+  which is the same complexity as penalized logistic regression with
   $\max\{n, KT\}$ observations.
 \end{proposition}
 

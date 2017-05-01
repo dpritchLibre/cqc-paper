@@ -503,7 +503,7 @@ positive constant.
 \subsection{Decision rule calculation}
 \label{sec:empirical-quantile-classifier-results}
 
-So it has been established that the classification rate of the empirically
+So far it has been established that the classification rate of the empirically
 optimal quantile classifier converges to the classification rate of the true
 optimal quantile classifier.  In this section we investigate the practical
 considerations of calculating the empirically optimal quantile classifier.  We
@@ -527,21 +527,23 @@ boundary in Lemma \ref{lem:decision-boundary}.
       \end{array} .
     \right.
   \end{equation}
-  If on the other hand, $F_{0}^{-1}(\theta) > F_{1}^{-1}(\theta)$, then the
-  quantile classifier defined in equation (\ref{eq:quantile-classifier}) can be
-  equivalently expressed as follows.
-  \begin{equation}
-    \label{eq:alt-quantile-classifier-greater}
-    \text{For an observation $z$, classify to:} \hspace{5mm} \left\{ 
-      \begin{array}{lcl}
-        \Pi_{0}, & & z ~>~ \theta\, F_{0}^{-1}(\theta) +
-                     (1 - \theta)\, F_{1}^{-1}(\theta) \\[1ex]
-                     % \Pi_{1}, & & z ~=~ \theta F_{(0)}^{-1}(\theta) +
-                     % (1 - \theta)\, F_{(1)}^{-1}(\theta) \\[1ex]
-        \Pi_{1}, & & \textup{otherwise}
-      \end{array} .
-    \right.
-  \end{equation}
+  If on the other hand $F_{0}^{-1}(\theta) > F_{1}^{-1}(\theta)$, then the
+  direction of the inequality changes so that we instead classify an observation
+  to $\Pi_0$ when
+  $z ~>~ \theta\, F_{0}^{-1}(\theta) + (1 - \theta)\, F_{1}^{-1}(\theta)$, and
+  to $\Pi_1$ otherwise.
+  % \begin{equation}
+  %   \label{eq:alt-quantile-classifier-greater}
+  %   \text{For an observation $z$, classify to:} \hspace{5mm} \left\{ 
+  %     \begin{array}{lcl}
+  %       \Pi_{0}, & & z ~>~ \theta\, F_{0}^{-1}(\theta) +
+  %                    (1 - \theta)\, F_{1}^{-1}(\theta) \\[1ex]
+  %                    % \Pi_{1}, & & z ~=~ \theta F_{(0)}^{-1}(\theta) +
+  %                    % (1 - \theta)\, F_{(1)}^{-1}(\theta) \\[1ex]
+  %       \Pi_{1}, & & \textup{otherwise}
+  %     \end{array} .
+  %   \right.
+  % \end{equation}
 \end{lemma}
 
 % \begin{proof}
@@ -619,7 +621,7 @@ the empirical decision rule boundary for a given dataset.
 
 \begin{lemma}
   \label{lem:decision-rule-time}
-  Obtaining the quantile classifier decision rule boundary for fixed choice of
+  Obtaining the quantile classifier decision rule boundary for a fixed choice of
   quantile level is an $\bigO(n)$ operation.
 \end{lemma}
 
@@ -653,39 +655,47 @@ classification rate for some countable number of decision boundary choices.
 A sketch of the procedure to calculate the empirical classification rate over
 the entire space of quantile levels is presented below, and a more detailed
 description is provided in the supplementary materials.  The basic idea is that
-the quantile estimates $\hat{F}_0^{-1}$ and $\hat{F}_1^{-1}$ are each step
-functions with respect to the quantile level and with change points occuring on
-the sets $\left\{\frac{1}{n_0}, \dots, \frac{n_o - 1}{n_0}\right\}$ and
+the quantile estimates $\hat{F}_0^{-1}$ and $\hat{F}_1^{-1}$ are step functions
+with respect to the quantile level and with change points occuring on the sets
+$\left\{\frac{1}{n_0}, \dots, \frac{n_o - 1}{n_0}\right\}$ and
 $\left\{\frac{1}{n_1}, \dots, \frac{n_1 - 1}{n_1}\right\}$, respectively.  Thus
 for intervals not containing any of these points except as endpoints, the
-estimates are fixed and the interval can be mapped to a contiguous interval of
-decision rule boundaries.  Then within these decision rule boundary intervals we
-can partition a given interval into sub-intervals that each have constant
-empirical classification rate by letting the partition boundaries be defined by
-any of data points contained in the interval.  Thus by counting the number of
-data points on the correct side of any boundary line belonging to a given
-sub-interval we can calculate the classification rate for the whole
-sub-interval, and in turn by doing this for every sub-interval we can map the
-empirical classification rate as a function of the quantile level over the
-entire quantile level space.  A high-level version of the algorithm is presented
-as Algorithm \ref{alg:empirically-optimal-classifier}.  An illustrative example
-for a small dataset is presented as Figure
+quantile estimates are fixed and the interval can be mapped to a contiguous
+interval of decision rule boundaries.  Then within these decision rule boundary
+intervals we can partition a given interval into sub-intervals that each have a
+constant empirical classification rate by letting the partition boundaries be
+defined by any data points contained in the interval.  Thus by counting the
+number of data points from each class on either side of the decision boundary we
+can calculate the classification rate for the entire sub-interval, and by doing
+this for every sub-interval this yields the empirical classification rate over
+the entire quantile level space.  A high-level version of the algorithm is
+presented as Algorithm \ref{alg:empirically-optimal-classifier}, and a result
+for the algorithm complexity is presented as Proposition
+\ref{lem:optimal-quantile-time}.
+
+An illustrative example for a small dataset is presented as Figure
 \ref{fig:empirical-classification-rate} showing the decision rule boundary and
-corresponding classification rate as a function of the quantile level.
-Additionally, a discussion of the algorithm complexity is presented as
-Proposition \ref{lem:optimal-quantile-time}.
+corresponding classification rate as a function of the quantile level.  A data
+set of 7 observations were sampled from independent $N(0, 1)$ distributions for
+class 0, resulting in the values -0.96, -0.78, -0.46, -0.10, 0.24, 0.98, and
+1.61.  A data set of 5 observations were sampled from independent $N(1, 1)$
+distributions for class 1 resulting in the values -0.60, 0.37, 0.64, 1.37, and
+1.78.  The values of the data are shown as the horizontal lines in the top
+panel.  The quantile classifier decision rule boundary corresponding to the data
+set is shown as a function of the quantile level, and appear as the diagonal
+blue lines.  The vertical dashed lines represent the quantile levels at which
+the quantile estimates change for one of the classes.  In the bottom panel the
+number of correctly classified observations in the data is plotted as a function
+of quantile level out of a total of 12 observations.
+
+TODO: choosing the quantile level.  Using the minimizer of the training error
+okay since the model complexity is the same for all choices.
+
 
 \begin{figure}[p]
-  \caption[Example empirical classification rate]{Example empirical
-    classification rate.  An arbitrary example data set is shown with 7 values
-    from class $\Pi_0$ and 5 values from class $\Pi_1$; the values of the data
-    are shown as the horizontal lines in the top figure.  The quantile
-    classifier decision rule boundary corresponding to the data set is then
-    shown as a function of the quantile level, and appear as the diagonal blue
-    lines.  The vertical dashed lines represent the quantile levels at which the
-    quantile estimates change for one of the classes.  In the bottom figure the
-    number of correctly classified observations in the data is plotted as a
-    function of quantile level (out of a total of 7 + 5 = 12 observations). }
+  \caption[Example empirical classification rate]{Illustrative plot of the
+    empirical classification rate for a toy example.  An example data set is
+    shown with 7 values from class $\Pi_0$ and 5 values from class $\Pi_1$. }
   \label{fig:empirical-classification-rate}
   \centering
   \vspace{5mm}
@@ -793,25 +803,25 @@ Proposition \ref{lem:optimal-quantile-time}.
 
 
 \begin{algorithm}[ht]
-  \caption{calculate the empirically optimal quantile classifer}
+  \caption{Calculate of the empirically optimal quantile classifer}
   \label{alg:empirically-optimal-classifier}
   \DontPrintSemicolon
   \BlankLine
   \SetKwInOut{Input}{Data}
   \Input{$v_1, \dots, v_{n_0}$ from $\Pi_0$ and $w_1, \dots, w_{n_1}$ in
-    $\Pi_W$}
+    $\Pi_1$}
   
   % sort observations $v_1, \dots, v_{n_0}$ and $w_1, \dots, w_{n_1}$ \;
   
-  sort $x_1, \dots, x_r$ a collection of the unique values from among the $v_i$
-  and $w_i$ \;
+  % Sort $x_1, \dots, x_r$ a collection of the unique values from among the $v_i$
+  % and $w_i$ \;
+
+  Sort $v_1, \dots, v_{n_0}, w_1, \dots, w_{n_1}$ and denote the unique values
+  as $x_1, \dots, x_r$
   
-  calculate in such a way so as to produce a sorted set of quantile levels given by
-  $
-  \Theta = \Big\{ 0 \Big\} \bigcup
-  \left\{ \frac{k}{n_0}: 1 \leq k \leq n_0 \right\} \bigcup
-  \left\{ \frac{k}{n_1}: 1 \leq k \leq n_1 \right\}
-  $
+  Produce a sorted set of quantile levels given by
+  $ \Theta = \Big\{ 0 \Big\} \bigcup \left\{ \frac{k}{n_0}: 1 \leq k \leq n_0
+  \right\} \bigcup \left\{ \frac{k}{n_1}: 1 \leq k \leq n_1 \right\} $
 
   \BlankLine
 
@@ -894,16 +904,15 @@ It remains an open question as to whether the bound obtained in Proposition
 \ref{lem:optimal-quantile-time} is actually achievable.  In practice, for both
 simulated and real data we typically see less than $n$ total intervals that need
 to be considered in the outer and inner loops, so when this is the case the
-algorithm runs in $\mathcal{O}(n \log n)$ time.  As an alternative, we might be
-willing to approximate the empirically optimal quantile classifier by simply
-calculating the empirical classification rate over a fine grid of quantile
-levels, which reduces the complexity to an $\mathcal{O}(Kn)$ operation where $K$
-is the number of points in the grid.  This complexity is the case because each
-choice of quantile level requires calculating the decision rule boundary by
-finding the $k_0$-th and $k_1$-th largest value of each class for the
-appropriate values of $k_0$ and $k_1$, and then counting the number of
-observations on the correct side of the boundary, each of which is an
-$\mathcal{O}(n)$ operation.
+algorithm runs in $\mathcal{O}(n \log n)$ time.  As an alternative, we can
+approximate the empirically optimal quantile classifier by simply calculating
+the empirical classification rate over a fine grid of quantile levels, which
+reduces the complexity to an $\mathcal{O}(Kn)$ operation where $K$ is the number
+of points in the grid.  This complexity is the case because each choice of
+quantile level requires calculating the decision rule boundary by finding the
+$k_0$-th and $k_1$-th largest value of each class for the appropriate values of
+$k_0$ and $k_1$, and then counting the number of observations on the correct
+side of the boundary, each of which is an $\mathcal{O}(n)$ operation.
 
 
 
