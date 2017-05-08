@@ -458,6 +458,13 @@ positive constant.
   $\hat{\theta}_n \stackrel{p}{\longrightarrow} \tilde{\theta}$.
 \end{lemma}
 
+It is worth noting that convergence to the optimal quantile level is based on
+the empirically optimal choice for a training data set without the need for
+additional training on a validation data set.  Intuitively, this can be
+explained by the fact that the model complexity is the same for all of the
+possible quantile classifier models, so we do not need to include a model
+validation training step to defend against overfitting the model to the data.
+
 % \begin{proof}
 %   The fact that
 %   $\Psi(\hat{\theta}_n) \stackrel{p}{\longrightarrow} \Psi(\tilde{\theta})$ is a
@@ -661,36 +668,47 @@ $\left\{\frac{1}{n_0}, \dots, \frac{n_o - 1}{n_0}\right\}$ and
 $\left\{\frac{1}{n_1}, \dots, \frac{n_1 - 1}{n_1}\right\}$, respectively.  Thus
 for intervals not containing any of these points except as endpoints, the
 quantile estimates are fixed and the interval can be mapped to a contiguous
-interval of decision rule boundaries.  Then within these decision rule boundary
-intervals we can partition a given interval into sub-intervals that each have a
-constant empirical classification rate by letting the partition boundaries be
-defined by any data points contained in the interval.  Thus by counting the
-number of data points from each class on either side of the decision boundary we
-can calculate the classification rate for the entire sub-interval, and by doing
-this for every sub-interval this yields the empirical classification rate over
-the entire quantile level space.  A high-level version of the algorithm is
-presented as Algorithm \ref{alg:empirically-optimal-classifier}, and a result
-for the algorithm complexity is presented as Proposition
+interval of decision rule boundaries.  Within these decision rule boundary
+intervals we can further partition a given interval into sub-intervals that each
+has a constant empirical classification rate by letting the partition boundaries
+be defined by any data points contained in the interval.  Thus by counting the
+number of data points from each class on either side of the decision boundary
+for every sub-interval we obtain the empirical classification rate over the
+entire quantile level space.  A high-level version of the algorithm is presented
+as Algorithm \ref{alg:empirically-optimal-classifier}, and a result for the
+algorithm complexity is presented as Proposition
 \ref{lem:optimal-quantile-time}.
 
-An illustrative example for a small dataset is presented as Figure
+An illustrative example for a small data set is presented as Figure
 \ref{fig:empirical-classification-rate} showing the decision rule boundary and
 corresponding classification rate as a function of the quantile level.  A data
-set of 7 observations were sampled from independent $N(0, 1)$ distributions for
-class 0, resulting in the values -0.96, -0.78, -0.46, -0.10, 0.24, 0.98, and
-1.61.  A data set of 5 observations were sampled from independent $N(1, 1)$
-distributions for class 1 resulting in the values -0.60, 0.37, 0.64, 1.37, and
-1.78.  The values of the data are shown as the horizontal lines in the top
-panel.  The quantile classifier decision rule boundary corresponding to the data
-set is shown as a function of the quantile level, and appear as the diagonal
-blue lines.  The vertical dashed lines represent the quantile levels at which
-the quantile estimates change for one of the classes.  In the bottom panel the
-number of correctly classified observations in the data is plotted as a function
-of quantile level out of a total of 12 observations.
+set for class 0 with 7 observations was sampled from independent $N(0, 1)$
+distributions yielding the values -0.96, -0.78, -0.46, -0.10, 0.24, 0.98, 1.61,
+and a data set for class 1 with 5 observations was sampled from independent
+$N(1, 1)$ distributions yielding the values -0.60, 0.37, 0.64, 1.37, 1.78.
+These values are shown as the horizontal lines in the top panel, along with the
+decision rule boundaries corresponding to this data which are displayed as the
+diagonal blue lines.  The dashed vertical lines represent the quantile levels at
+which the quantile estimates change for at least one of the classes.  In the
+bottom panel the number of correctly classified observations out of a possible
+12 observations is plotted as a function of the quantile level.  From this
+figure we see that the classification rate of the quantile classifier is
+constant for the intervals between the quantile estimate change points except
+when the set of corresponding decision rule boundary values includes values in
+the data.  When this is the case the intervals can be further divided into
+sub-intervals with a constant classification rate.  For this example the
+theoretically optimal quantile level is 0.5, which is indeed one of the
+empirically optimal quantile levels.
 
-TODO: choosing the quantile level.  Using the minimizer of the training error
-okay since the model complexity is the same for all choices.
-
+One issue yet to be addressed that is evident in this example is how to choose a
+quantile level based on a training data set when there is more than one
+empirically optimal value.  When this is the case, as it typically is, we find
+that selecting the value closest to the median works well in many settings.  One
+argument for this choice is that the median is the optimal choice of quantile
+level for two classes with symmetric distributions that differ only by a
+location shift.  While this scenario may not hold in many settings, it still
+offers in some sense a conservative rule for what is hopefully a small set of
+empirically quantile levels from which to choose.
 
 \begin{figure}[p]
   \caption[Example empirical classification rate]{Illustrative plot of the
@@ -803,7 +821,7 @@ okay since the model complexity is the same for all choices.
 
 
 \begin{algorithm}[ht]
-  \caption{Calculate of the empirically optimal quantile classifer}
+  \caption{Calculating the empirically optimal quantile classifer}
   \label{alg:empirically-optimal-classifier}
   \DontPrintSemicolon
   \BlankLine

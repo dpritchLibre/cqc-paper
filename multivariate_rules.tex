@@ -34,8 +34,8 @@ features.
 \subsection{Composite quantile-based classifiers}
 \label{sec:varying-coefficient}
 
-In this section we propose the composite quantile-based classifiers family.  We
-begin by motivating the the form of the classifiers.  Consider a point
+In this section we propose the family of composite quantile-based classifiers.
+We begin by motivating the the form of the classifiers.  Consider a point
 $\vec{z} = (z_1, \dots, z_p) \in \mathbb{R}^p$ and quantile levels
 $\vec{\theta} = (\theta_1, \dots, \theta_p) \in (0, 1)^p$.  Then the difference
 of the quantile distances of the $j$-th component of $\vec{z}$ to the
@@ -124,8 +124,8 @@ quantile-based classifiers given by
   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j) \leq 0
   \bigg)\, dP_1(\vec{z}).
 \end{equation}
-For the theorem below, we will need the following assumptions.  Let $\delta$ be
-a small positive constant.
+For the theorem below we will need the following assumptions.  Let $\delta$ be a
+small positive constant.
 \begin{enumerate}[label=\emph{Assumption \arabic*.}, align=left]
 \item $F_{ij}^{-1}$ is a continuous function of
   $\theta,~ i=0,1,~ j=1, \dots, p$.
@@ -711,7 +711,7 @@ We begin with some observations that motivate the form of the algorithm.  One
 issue that needs some consideration is the fact that the proposed choices of
 quantile levels and linear combination coefficients are based upon a two-step
 process.  Recall from Sections \ref{sec:choice-of-quantile-lev} and
-\ref{sec:variable-coefficients} that the quantile levels are chosen first with
+\ref{sec:variable-coefficients} that the quantile levels are chosen first, with
 each quantile level based on the optimal level with respect to the feature's
 ability to predict class membership.  Then for the second step, the linear
 combination coefficients are chosen based upon the transformed data where the
@@ -727,8 +727,8 @@ data into evenly-sized partitions.  In our experience, this equitable
 partitioning tends to work well across different sizes and types of data.
 
 While alleviating one problem, splitting the data leads to a another concern:
-namely that varying splits of the data can lead to different model choices.  To
-protect against arbitrary assignments of the data, the data is split not just
+namely that different splits of the data can lead to different model choices.
+To protect against arbitrary assignments of the data, the data is split not just
 once but multiple times, and a classification model is procured for each split.
 The final model is then obtained by averaging the individual models in the
 following sense.  Let $f_i$ be one of the individual models among a total of $L$
@@ -883,14 +883,15 @@ algorithm for composite quantile-based classifiers which can reduce the run time
 of Algorithm \ref{alg:classifier}.  Clearly, the sub-models $f_1, \dots, f_L$
 can each be obtained independently of each other.  Within the calculation of a
 single sub-model with index $\ell$, the feature-specific calculations can each
-be performed independently of each other (i.e. lines 3-8 of Algorithm
+be performed independently of each other (lines 3-8 of Algorithm
 \ref{alg:classifier}).  Thus, for $j$ in $1, \dots p$, the calculation of the
 optimal quantile level for the $j$-th feature with data $D_{\ell 1}$ and
 transformation of the $j$-th component of every $\vec{x}_i$ in data $D_{\ell 2}$
-can be calculated independently of the other features.  Selecting the choice of
-linear combination coefficients (i.e. line 9 of Algorithm \ref{alg:classifier})
-at a coarse level can be parallelized over the folds in the cross-validation
-procedure.
+can be calculated independently of the other features.  Also, selecting the
+choice of linear combination coefficients (line 9 of Algorithm
+\ref{alg:classifier}) can be parallelized over the folds in the cross-validation
+procedure.  Exploiting these opportunities for parallelism leads to the run time
+complexity described in Proposition \ref{cor:parallel-runtime}.
 
 \begin{proposition}
   \label{cor:parallel-runtime}
