@@ -111,9 +111,10 @@ the observation to that population.
 \label{sec:aggregate-classifier-consistency}
 
 Having presented the theoretical form of the composite quantile-based
-classifiers, we now consider the consistency of the empirical version.  Firstly,
-let us denote $\Psi(\vec{\theta})$ as the classification rate for composite
-quantile-based classifiers given by
+classifiers, we now consider the consistency of the empirical version as well as
+the form of the classifier decision rule boundary.  Firstly, let us denote
+$\Psi(\vec{\theta})$ as the classification rate for composite quantile-based
+classifiers given by
 \begin{equation}
   \label{eq:multivariate-theoretical-rate}
   \Psi(\vec{\theta}) =
@@ -254,9 +255,9 @@ affine set within each hypercube.
   \label{lem:decision-rule-form}
   Define
   $\alpha_j^{*} = \alpha_j\, \sign\!\Big(F_1^{-1}(\theta_j) -
-  F_0^{-1}(\theta_j)\Big)$.  Let $L$, $M$, and $U$ (for lower, middle and upper)
-  be sets that partition the set of indices $\{1, \dots, p\}$.  Define the
-  hypercube $\mathcal{H}_{L,M,U}$ to be the set given by
+  F_0^{-1}(\theta_j)\Big)$, and let $L$, $M$, and $U$ (for lower, middle and
+  upper) be sets that partition the set of indices $\{1, \dots, p\}$.  Define
+  the hypercube $\mathcal{H}_{L,M,U}$ to be the set given by
   \begin{equation}
     \mathcal{H}_{L,M,U} = 
     \prod_{{\ell} \in L} \big( -\infty,~ F_{(0),{\ell}}^{-1}(\theta_{\ell}) \big)
@@ -294,113 +295,113 @@ affine set within each hypercube.
 
 
 
-\subsubsection{Connection to quantile-based classifiers and distance-based
-  methods }
-\label{sec:similarities-to-existing}
+% \subsubsection{Connection to quantile-based classifiers and distance-based
+%   methods }
+% \label{sec:similarities-to-existing}
 
-Distance-based classifiers are a type of classifier that assign an observation
-to a population which it is deemed closer to by some measure of distance.  More
-formally, let $\vec{\xi}_0$ and $\vec{\xi}_1$ be $p$-variate statistics
-representing populations $\Pi_0$ and $\Pi_1$, respectively, and further let
-$d(\cdot, \cdot)$ denote a chosen distance measure. Then, following the notation
-used in \cite{hennig2016}, a distance-based classifier has the following form:
-\begin{equation}
-  \label{eq:distance-based-classifier}
-  \text{For an observation $\vec{z}$, classify to:}  \hspace{3mm}
-  \left\{
-    \begin{array}{lll}
-      \Pi_0, & & \sum_{j=1}^p
-                 \Big\{
-                 d(z_j, \xi_{1j}) - d(z_j, \xi_{0j})
-                 \Big\} > 0 \\[1ex]
-      \Pi_1, & & \text{otherwise}
-    \end{array}.
-  \right.
-\end{equation}
-Some examples of distance-based classifiers include nearest centroid
-classification (e.g.\ \cite{hastie2009}), shrunken centroids
-(\cite{tibshirani2002}, \cite{wang2007}), median-based classifiers
-(\cite{jornsten2004}, \cite{ghosh2005}, \cite{hall2012}), and quantile-based
-classifiers (\cite{hennig2016}).  It is apparent that a subset of composite
-quantile-based classifiers are also distance-based classifiers, as described
-below.
+% Distance-based classifiers are a type of classifier that assign an observation
+% to a population which it is deemed closer to by some measure of distance.  More
+% formally, let $\vec{\xi}_0$ and $\vec{\xi}_1$ be $p$-variate statistics
+% representing populations $\Pi_0$ and $\Pi_1$, respectively, and further let
+% $d(\cdot, \cdot)$ denote a chosen distance measure. Then, following the notation
+% used in \cite{hennig2016}, a distance-based classifier has the following form:
+% \begin{equation}
+%   \label{eq:distance-based-classifier}
+%   \text{For an observation $\vec{z}$, classify to:}  \hspace{3mm}
+%   \left\{
+%     \begin{array}{lll}
+%       \Pi_0, & & \sum_{j=1}^p
+%                  \Big\{
+%                  d(z_j, \xi_{1j}) - d(z_j, \xi_{0j})
+%                  \Big\} > 0 \\[1ex]
+%       \Pi_1, & & \text{otherwise}
+%     \end{array}.
+%   \right.
+% \end{equation}
+% Some examples of distance-based classifiers include nearest centroid
+% classification (e.g.\ \cite{hastie2009}), shrunken centroids
+% (\cite{tibshirani2002}, \cite{wang2007}), median-based classifiers
+% (\cite{jornsten2004}, \cite{ghosh2005}, \cite{hall2012}), and quantile-based
+% classifiers (\cite{hennig2016}).  It is apparent that a subset of composite
+% quantile-based classifiers are also distance-based classifiers, as described
+% below.
 
-% First, to obtain the subset of composite quantile-based classifiers that belong
-% to the family of distance-based classifiers, we restrict the coefficient values
-% of the linear combination of the differences in component-wise quantile
-% distances to have the following form: let $\alpha_0 = 0$, and let
-% $\alpha_1 = \dots = \alpha_p$ where $\alpha_1 > 0$.  Next, let
-% $\vec{\xi}_i = \Big(F_{i1}^{-1}(\theta_1), \dots, F_{ip}^{-1}(\theta_p) \Big),~
-% i = 0, 1$, and further let
-% $d(z_j, \vec{\xi}_i) = \rho_{\theta_j}(z_j - \xi_{ij})$.  Under these choices of
-% $d(\cdot)$ and $\vec{\xi}_i$,
+% % First, to obtain the subset of composite quantile-based classifiers that belong
+% % to the family of distance-based classifiers, we restrict the coefficient values
+% % of the linear combination of the differences in component-wise quantile
+% % distances to have the following form: let $\alpha_0 = 0$, and let
+% % $\alpha_1 = \dots = \alpha_p$ where $\alpha_1 > 0$.  Next, let
+% % $\vec{\xi}_i = \Big(F_{i1}^{-1}(\theta_1), \dots, F_{ip}^{-1}(\theta_p) \Big),~
+% % i = 0, 1$, and further let
+% % $d(z_j, \vec{\xi}_i) = \rho_{\theta_j}(z_j - \xi_{ij})$.  Under these choices of
+% % $d(\cdot)$ and $\vec{\xi}_i$,
 
-To see this, restrict the linear combination coefficients so that $\alpha_0 = 0$
-and $\alpha_1 = \dots = \alpha_p = \alpha$ for $\alpha > 0$, and finally require
-that $\theta_1 = \dots = \theta_p = \theta$.  Then under these specifications we
-obtain:
-% \begin{align}
-%   \label{eq:composite-is-distance}
-%   \begin{split}
-%   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j)
-%   &= \alpha \sum_{j=1}^p \Lambda_j (z_j, \theta) \\[1ex]
-%   &= \alpha \sum_{j=1}^p \Big\{
-%   \Phi_{1j} (z_j, \theta) - \Phi_{0j} (z_j, \theta)
-%   \Big\} \\[1ex]
-%   &= \alpha \sum_{j=1}^p \Big\{
-%   \rho_{\theta} \Big(z_j - F_{1j}^{-1}(\theta) \Big) -
-%   \rho_{\theta} \Big(z_j - F_{0j}^{-1}(\theta) \Big)
-%   \Big\} \\[1ex]
-%   &= \alpha \sum_{j=1}^p \Big\{
-%   \rho_{\theta} (z_j - \xi_{1j} ) -
-%   \rho_{\theta} (z_j - \xi_{0j} )
-%   \Big\} \\[1ex]
-%   &= \alpha \sum_{j=1}^p \Big\{
-%   d_\theta(z_j, \xi_{1j}) -
-%   d_\theta(z_j, \xi_{0j})
-%   \Big\} \\[1ex]
-%   \end{split}
-    %   \end{align}
-\begin{equation}
-  \label{eq:composite-is-distance}
-  \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j)
-  = \alpha \sum_{j=1}^p \Lambda_j (z_j, \theta).
-\end{equation}
+% To see this, restrict the linear combination coefficients so that $\alpha_0 = 0$
+% and $\alpha_1 = \dots = \alpha_p = \alpha$ for $\alpha > 0$, and finally require
+% that $\theta_1 = \dots = \theta_p = \theta$.  Then under these specifications we
+% obtain:
+% % \begin{align}
+% %   \label{eq:composite-is-distance}
+% %   \begin{split}
+% %   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j)
+% %   &= \alpha \sum_{j=1}^p \Lambda_j (z_j, \theta) \\[1ex]
+% %   &= \alpha \sum_{j=1}^p \Big\{
+% %   \Phi_{1j} (z_j, \theta) - \Phi_{0j} (z_j, \theta)
+% %   \Big\} \\[1ex]
+% %   &= \alpha \sum_{j=1}^p \Big\{
+% %   \rho_{\theta} \Big(z_j - F_{1j}^{-1}(\theta) \Big) -
+% %   \rho_{\theta} \Big(z_j - F_{0j}^{-1}(\theta) \Big)
+% %   \Big\} \\[1ex]
+% %   &= \alpha \sum_{j=1}^p \Big\{
+% %   \rho_{\theta} (z_j - \xi_{1j} ) -
+% %   \rho_{\theta} (z_j - \xi_{0j} )
+% %   \Big\} \\[1ex]
+% %   &= \alpha \sum_{j=1}^p \Big\{
+% %   d_\theta(z_j, \xi_{1j}) -
+% %   d_\theta(z_j, \xi_{0j})
+% %   \Big\} \\[1ex]
+% %   \end{split}
+%     %   \end{align}
 % \begin{equation}
 %   \label{eq:composite-is-distance}
 %   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j)
-%   = \alpha_1 \sum_{j=1}^p \Big\{
-%   d_\theta(z_j, \xi_{1j}) -
-%   d_\theta(z_j, \xi_{0j})
-%   \Big\}.
+%   = \alpha \sum_{j=1}^p \Lambda_j (z_j, \theta).
 % \end{equation}
-From this it follows that by dividing through by $\alpha$ we obtain
+% % \begin{equation}
+% %   \label{eq:composite-is-distance}
+% %   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j)
+% %   = \alpha_1 \sum_{j=1}^p \Big\{
+% %   d_\theta(z_j, \xi_{1j}) -
+% %   d_\theta(z_j, \xi_{0j})
+% %   \Big\}.
+% % \end{equation}
+% From this it follows that by dividing through by $\alpha$ we obtain
+% % \begin{equation}
+% %   \label{eq:boundary-equivalence}
+% %   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j) ~>~ 0
+% %   \hspace{5mm} \Longleftrightarrow \hspace{5mm}
+% %   \sum_{j=1}^p \Big\{ d_{\theta}(z_j, \xi_{1j}) - d_{\theta}(z_j, \xi_{0j}) \Big\} > 0.
+% % \end{equation}
 % \begin{equation}
 %   \label{eq:boundary-equivalence}
 %   \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j) ~>~ 0
 %   \hspace{5mm} \Longleftrightarrow \hspace{5mm}
-%   \sum_{j=1}^p \Big\{ d_{\theta}(z_j, \xi_{1j}) - d_{\theta}(z_j, \xi_{0j}) \Big\} > 0.
+%   \sum_{j=1}^p \Lambda_j (z_j, \theta) > 0,
 % \end{equation}
-\begin{equation}
-  \label{eq:boundary-equivalence}
-  \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j) ~>~ 0
-  \hspace{5mm} \Longleftrightarrow \hspace{5mm}
-  \sum_{j=1}^p \Lambda_j (z_j, \theta) > 0,
-\end{equation}
-which is the form of quantile-based classifiers.  Quantile-based classifiers
-belong to the family of distance based classifiers, which can be seen by letting
-$\vec{\xi}_i = \Big(F_{i1}^{-1}(\theta), \dots, F_{ip}^{-1}(\theta) \Big),~ i =
-0, 1$, and further letting
-$d_\theta(z_j, \xi_{ij}) = \rho_{\theta}(z_j - \xi_{ij})$, in which case
-\begin{equation}
-  \label{eq:quantile-is-distance-subset}
-  \sum_{j=1}^p \Lambda_j (z_j, \theta) = \sum_{j=1}^p \Big\{ d_{\theta}(z_j,
-  \xi_{1j}) - d_{\theta}(z_j, \xi_{0j}) \Big\}.
-\end{equation}
-So from this we see that composite quantile-based classifiers cover
-quantile-based classifiers.  Furthermore, although composite quantile-based
-classifiers are not in general distance based classifiers, we see that a subset
-of the family of classifiers belongs to the set of distance based classifiers.
+% which is the form of quantile-based classifiers.  Quantile-based classifiers
+% belong to the family of distance based classifiers, which can be seen by letting
+% $\vec{\xi}_i = \Big(F_{i1}^{-1}(\theta), \dots, F_{ip}^{-1}(\theta) \Big),~ i =
+% 0, 1$, and further letting
+% $d_\theta(z_j, \xi_{ij}) = \rho_{\theta}(z_j - \xi_{ij})$, in which case
+% \begin{equation}
+%   \label{eq:quantile-is-distance-subset}
+%   \sum_{j=1}^p \Lambda_j (z_j, \theta) = \sum_{j=1}^p \Big\{ d_{\theta}(z_j,
+%   \xi_{1j}) - d_{\theta}(z_j, \xi_{0j}) \Big\}.
+% \end{equation}
+% So from this we see that composite quantile-based classifiers cover
+% quantile-based classifiers.  Furthermore, although composite quantile-based
+% classifiers are not in general distance based classifiers, we see that a subset
+% of the family of classifiers belongs to the set of distance based classifiers.
 
 
 
@@ -409,7 +410,7 @@ of the family of classifiers belongs to the set of distance based classifiers.
 \label{sec:model-selection}
 
 Having introduced a family of classifiers in Section
-\ref{sec:varying-coefficient}, we now need a method by which to select a
+\ref{sec:varying-coefficient}, we are in need a method by which to select a
 particular model based upon the data in hand.  This requires selection of both a
 vector of component-wise quantile levels, and a vector of component
 coefficients.  To perform model selection, we propose a two-step process as
@@ -471,8 +472,8 @@ feature to be any solution to the equation
   \hat{\theta}_{jn} = \argmax_{\theta \in T} \Psi_{jn}(\theta),
 \end{equation}
 for $T = [ \delta, 1 - \delta]$ where $\delta$ is an arbitrarily small positive
-constant.  Then $\hat{\theta}_{jn}$ is the choice of quantile level,
-$j = 1, \dots, p$.
+constant.  Then we propose selecting $\hat{\theta}_{jn}$ as the choice of
+quantile level, $j = 1, \dots, p$.
 
 
 
@@ -512,18 +513,68 @@ two-step parameter selection process is provided in Section
 
 
 
-\subsubsection{Connection to Feature Augmentation via Nonparametrics and
-  Selection (FANS)}
-\label{sec:similarites-to-fans}
+\subsubsection{Connections to existing methods}
+\label{sec:similarities-to-existing}
 
-At this point it is very interesting to note that the proposed choice of
-quantile levels (Section \ref{sec:choice-of-quantile-lev}) and variable
-coefficients (Section \ref{sec:variable-coefficients}) selects a model from the
-composite quantile-based classifiers that bears a number of similarities to the
-FANS classifier proposed in \cite{fan2016}.  The FANS classifier starts from the
-idea that for data with an equal prior probability of being a member from one of
-two classes with corresponding class conditional densities $f_0$ and $f_1$, that
-the Bayes rule decision boundary is given by
+Composite quantile-based classifiers share a relationship with a number of
+existing methods such as quantile-based classifiers, and more generally the
+class of distance-based classifiers to which quantile-based classifiers belongs.
+Distance-based classifiers are a type of classifier that assign an observation
+to a population which it is deemed closer to by some measure of distance.  More
+formally, let $\vec{\xi}_0$ and $\vec{\xi}_1$ be $p$-variate statistics
+representing populations $\Pi_0$ and $\Pi_1$, respectively, and further let
+$d(\cdot, \cdot)$ denote a chosen distance measure. Then, following the notation
+used in \cite{hennig2016}, a distance-based classifier has the following form:
+\begin{equation}
+  \label{eq:distance-based-classifier}
+  \text{For an observation $\vec{z}$, classify to:}  \hspace{3mm}
+  \left\{
+    \begin{array}{lll}
+      \Pi_0, & & \sum_{j=1}^p
+                 \Big\{
+                 d(z_j, \xi_{1j}) - d(z_j, \xi_{0j})
+                 \Big\} > 0 \\[1ex]
+      \Pi_1, & & \text{otherwise}
+    \end{array}.
+  \right.
+\end{equation}
+Some examples of distance-based classifiers include nearest centroid
+classification (e.g.\ \cite{hastie2009}), shrunken centroids
+(\cite{tibshirani2002}, \cite{wang2007}), median-based classifiers
+(\cite{jornsten2004}, \cite{ghosh2005}, \cite{hall2012}), and quantile-based
+classifiers (\cite{hennig2016}).  When we restrict the linear combination
+coefficients so that $\alpha_0 = 0$ and $\alpha_1 = \dots = \alpha_p > 0$, and
+also require that $\theta_1 = \dots = \theta_p = \theta$, then the decision rule
+is based upon
+\begin{equation}
+  \label{eq:boundary-equivalence}
+  \alpha_0 + \sum_{j=1}^p \alpha_j \, \Lambda_j (z_j, \theta_j) ~>~ 0
+  \hspace{5mm} \Longleftrightarrow \hspace{5mm}
+  \sum_{j=1}^p \Lambda_j (z_j, \theta) > 0,
+\end{equation}
+which is the form of quantile-based classifiers.  Quantile-based classifiers
+belong to the family of distance based classifiers, which can be seen by letting
+$\vec{\xi}_i = \Big(F_{i1}^{-1}(\theta), \dots, F_{ip}^{-1}(\theta) \Big),~ i =
+0, 1$, and further letting
+$d_\theta(z_j, \xi_{ij}) = \rho_{\theta}(z_j - \xi_{ij})$, in which case
+\begin{equation}
+  \label{eq:quantile-is-distance-subset}
+  \sum_{j=1}^p \Lambda_j (z_j, \theta) = \sum_{j=1}^p \Big\{ d_{\theta}(z_j,
+  \xi_{1j}) - d_{\theta}(z_j, \xi_{0j}) \Big\}.
+\end{equation}
+So from this we see that composite quantile-based classifiers cover
+quantile-based classifiers.  Furthermore, although composite quantile-based
+classifiers are not in general distance based classifiers, we see that a subset
+of the family of classifiers belongs to the set of distance based classifiers.
+
+Another interesting connection to note is that the proposed choice of quantile
+levels and variable coefficients from Sections \ref{sec:choice-of-quantile-lev}
+and \ref{sec:variable-coefficients} selects a model from the composite
+quantile-based classifiers that bears a number of similarities to the FANS
+classifier proposed in \cite{fan2016}.  The FANS classifier starts from the idea
+that for data with an equal prior probability of being a member from one of two
+classes with corresponding class conditional densities $f_0$ and $f_1$, the
+Bayes rule decision boundary is given by
 $\left\{ \vec{z}{:}~ \log \frac{ f_0(\vec{z}) }{ f_1(\vec{z}) } = 0 \right\}$.
 Then, if it is the case that conditional on class membership the features are
 mutually independent, the Bayes rule decision boundary becomes
