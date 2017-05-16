@@ -208,7 +208,7 @@
   folds yields a total run time bound of $\mathcal{O}(KTnp)$.
 
   Then, since the outer loop is performed a total of $L$ times, we obtain the
-  following run time bound:
+  following run time bound for a sequential implementation of Algorithm 2:
   % \begin{align}
       %       \label{eq:classifier-runtime}
       %       \begin{split} \MoveEqLeft
@@ -221,31 +221,21 @@
   \begin{equation}
     \label{eq:classifier-runtime}
     \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big)
-    = \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
+    = \mathcal{O}\Big( Lnp \big[ n + KT \big] \Big).
   \end{equation}
-  Furthermore, if we consider $L$ and $T$ to be constants then the bound further
-  simplifies to $\mathcal{O}(n^2 p)$.
-\end{proof}
-
-\begin{proof}[Proof of Proposition \ref{cor:parallel-runtime}.]
-  Since by assumption we have no fewer than $L$ compute nodes available, we can
-  assign the calculation of each sub-model $f_i$ to one of the nodes; this
-  reduces the problem to calculating the run time for each of the $f_i$.  If we
-  perform the parallelism over first the features (i.e. lines 3-8 of Algorithm
-  \ref{alg:classifier}), and then over the cross-validation folds (i.e. line 9
-  of Algorithm \ref{alg:classifier}), then the run time bound is as follows:
+  Next, if we have $L$ compute nodes available, we can assign the calculation of
+  each sub-model $f_i$ to one of the nodes; this reduces the problem to
+  calculating the run time for each of the $f_i$.  If we perform the parallelism
+  over first the features (i.e. lines 3-8 of Algorithm \ref{alg:classifier}),
+  and then over the cross-validation folds (i.e. line 9 of Algorithm
+  \ref{alg:classifier}), then the run time bound for an implementation of
+  Algorithm 2 utilizing parallel computing is given by
   \begin{equation}
     \label{eq:classifier-runtime-parallel}
     \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) 
-    = \mathcal{O}\Big( \frac{np}{C} (n + KT) \Big).
+    = \mathcal{O}\Big( \frac{np}{C} \big[ n + KT \big] \Big).
   \end{equation}
-  Then by replacing $C$ with $n/T$ under the assumption that $CT \geq n$ we
-  obtain the expression in (\ref{eq:parallel-runtime-ass2}).  We further note
-  that since a penalized logistic regression model has an $\mathcal{O}(npT)$
-  complexity to fit, it follows that when adequate computing resources are
-  available calculating the composite quantile-based classifier model is of
-  similar complexity as a (non-parallelized) penalized logistic regression model
-  fit.
+  
 \end{proof}
 
 

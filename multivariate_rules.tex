@@ -999,7 +999,7 @@ described in below.
 \begin{proposition}
   \label{thm:cqc-runtime}
   Let $T$ be the number of penalty levels and $K$ be the number of folds
-  considered when performing penalized logistic regression with $K$-fold
+  considered when performing penalized logistic regression with $k$-fold
   cross-validation to select the linear combination coefficients
   $\alpha_0, \dots, \alpha_p$.  Then the model selection algorithm for composite
   quantile-based classifiers runs in
@@ -1179,55 +1179,50 @@ choices for the number of folds and the size of the penalty parameter grid
 % solutions for either system.
 
 
-\subsection{Classifier examples in two dimensions}
+\subsection{Classifier examples}
 \label{sec:classifier-examples}
 
 Having described the general form of the composite quantile-based classifiers,
-we new consider a few simple examples of the classifiers in two dimensions.  In
-each of the examples, the classifier model that is presented is that for the
-optimal choice of quantile level for each of the features in terms of the
-feature's ability to discriminate between the classes.  These are the quantile
-levels that are chosen by the composite quantile-based classifiers in the limit
-with probability 1 as the sample size goes to infinity (as a consequence of
-Lemma \ref{lem:univariate-consistency}).  In each of the examples we arbitrarily
-choose linear combination coefficients of 0, 1, and 1 for the offset and feature
-1 and feature 2 components, respectively.  In each example, we presume that the
-prior probability for each class is 1/2.
+we now consider a few illustrative examples of the classifiers in two
+dimensions.  In each of the examples we use the optimal choice of quantile level
+for each of the features to discriminate between the classes.  These are the
+quantile levels that are chosen by the composite quantile-based classifiers in
+the limit as the sample size goes to infinity, as a consequence of Lemma
+\ref{lem:univariate-consistency}.  We also fixed the linear combination
+coefficients $(\alpha_0, \alpha_1, \alpha_2) = (0, 1, 1)$, and set the prior
+probability for each class as 1/2.
 
 
-\subsubsection{Classifier examples in two dimensions: Gaussian data}
+\subsubsection*{Example 1:  Two dimensional Gaussian data}
 \label{sec:classifier-examples-gaussian}
 
-In the first example, shown as Figure \ref{fig:gaussian-classify}, we consider
+In the first example, shown in Figure \ref{fig:gaussian-classify}, we consider
 the classical setting of two Gaussian distributions.  The first class, shown in
 yellow, follows a $N \big( (0, 0),\, \vec{I} \big)$ distribution, while the
 second class, shown in light red, follows a $N \big( (2, 1),\, \vec{I} \big)$
-distribution.  In the left-hand figure, the inner circles for each class
-represent a contour line for 68\% of the mass of the distribution, while the
-outer circles represent a contour line for 95\% of the mass of the distribution.
-These same circles are shown on the right-hand figure, but are zoomed to focus
-on the upper-right quadrant of the coordinate system, and as a result we can
-only see a portion of the contour lines for each class.
+distribution.  In the left panel, the inner circles for each class represent a
+contour line for 68\% of the mass of the distribution, while the outer circles
+represent a contour line for 95\% of the mass of the distribution.  Additionally
+the decision rule boundary lines are shown for both the composite quantile-based
+classifiers method and the Bayes rule.  The composite quantile-based classifiers
+rule has a classification rate of 0.82, while the Bayes rule classification rate
+is 0.87.
 
-In the left-hand figure, the decision rule boundary lines are shown for both the
-composite quantile-based classifiers method and the Bayes rule.  The composite
-quantile-based classifiers rule has a classification rate of 0.82, while the
-Bayes rule classification rate is 0.87.
-
-In the right-hand figure, the composite quantile-based classifiers decision rule
-is shown at a more granular level of detail.  Firstly, the marginal
-distributions' Bayes rules have values 1 and 1/2 for components 1 and 2,
-respectively (in this setting they are the midpoints between the class means for
-each component).  This corresponds to the median quantile for each component
-(i.e. $\theta_1 = \theta_2 = 0.5$), and it follows that
-$F_{01}^{-1}(\theta_1) = 0$, $F_{11}^{-1}(\theta_1) = 2$,
-$F_{02}^{-1}(\theta_2) = 0$, and $F_{11}^{-1}(\theta_2) = 1$.  Thus for
-$\theta_1$ and $\theta_2$ corresponding to these values, we have
-$\Lambda_1(1, \theta_1) = 0$ and $\Lambda_2(0.5, \theta_2) = 0$.  The slope of
-the line within the box bounded by the within-class quantiles is -1.  Once the
-second component (on the vertical axis) is either no less than 1 or no greater
-than 0 then $\Lambda_2$ becomes a fixed value and the second component becomes a
-free variable, while the first component is fixed at 0.5 or 1.5, respectively.
+The same contour lines are shown on the right panel, but the figure is zoomed in
+on the upper-right quadrant of the coordinate system in order to focus on the
+decision rule boundary in more detail.  To begin with, we note that the marginal
+distributions' Bayes rules have decision rule boundaries with values of $1$ and
+$1/2$ for component 1 (the horizontal axis) and component 2 (the vertical axis),
+respectively, which corresponds to the median quantile for each component (i.e.
+$\theta_1 = \theta_2 = 0.5$).  It follows that the corresponding population
+quantiles are given by $F_{01}^{-1}(\theta_1) = 0$, $F_{11}^{-1}(\theta_1) = 2$,
+$F_{02}^{-1}(\theta_2) = 0$, and $F_{11}^{-1}(\theta_2) = 1$, and furthermore
+that $\Lambda_1(1, \theta_1) = 0$ and $\Lambda_2(0.5, \theta_2) = 0$.  The slope
+of the line within the box bounded by the within-class quantiles is $-1$.  Once
+the second component (on the vertical axis) is either no less than $1$ or no
+greater than $0$ then $\Lambda_2$ becomes a fixed value and the second component
+becomes a free variable, while the first component is fixed at $0.5$ or $1.5$,
+respectively.
 
 % Thus for $\theta_1$ and $\theta_2$ corresponding to these values, we have
 % $\Lambda_1(1, \theta_1) = 0$ and $\Lambda_2(0.5, \theta_2) = 0$.  In the set
@@ -1312,17 +1307,17 @@ free variable, while the first component is fixed at 0.5 or 1.5, respectively.
 
 
 
-\subsubsection{Classifier examples in two dimensions: beta and gamma distributed data}
+\subsubsection*{Example 2:  Two dimensional beta and gamma distributed data}
 \label{sec:beta-gamma-example}
 
-In the second example, shown as Figure \ref{fig:beta-and-gamma}, we consider
+In the second example, shown in Figure \ref{fig:beta-and-gamma}, we consider
 settings where the shape of the component-wise within-class marginal
-distributions varies across populations.  In the first example, we consider
+distributions varies across populations.  In the left panel, we consider
 populations where the within-class distributions follow independent beta
-distributions, and in the second example we consider populations where the
+distributions, and in the right panel we consider populations where the
 within-class distributions follow independent gamma distributions.  The
-parameters of the beta and gamma distributions were chosen arbitrarily.  As in
-the previous example, contour lines denoting 68\% and 95\% percent of the
+parameters of the beta and gamma distributions were chosen randomly.  As in the
+previous example, contour lines denoting 68\% and 95\% percent of the
 distributional mass for each population are shown.  The Bayes rule decision
 boundary is shown as the black line and the composite quantile-based decision
 rule boundary is shown as the blue line.  The composite quantile-based
@@ -1338,7 +1333,7 @@ rule decision boundary moves into low-density distributional regions the
 approximation is less accurate due to the form of the composite quantile-based
 classifiers.  In our experience this is typical of composite quantile-based
 classifiers: the approximation of the Bayes rule is often good at the center of
-the data and is less accurate at the edges.
+the data and is less accurate in the tails.
 
 \begin{figure}[ht]
   \caption{Composite quantile-based classifier for beta- and gamma-distributed
@@ -1401,62 +1396,6 @@ the classifier helping to boost performance, but on the other hand augmenting
 the data doubles the feature space and can add noise to the model.  It is hard
 to say a priori which method will work better, but a good starting point may be
 to observe how well the data can be modeled using a linear boundary line.
-
-
-\subsection{Potential instabilities and limitiations}
-\label{sec:instabilities-and-limitations}
-
-\subsubsection{Potential instabilities of composite quantile-based methods}
-\label{sec:instabilities}
-
-One potential source of instability of composite quantile-based classifiers is
-that the direction of the decision rule boundary lines are dependent on the
-magnitude of the difference between the component-wise class quantiles.  This
-raises two concerns.  Firstly, changes in scale of the features can
-fundamentally affect the classifier by changing which components are part of the
-linear systems in the piecewise affine sets.  As a result, when some of the
-features in the data are very different in scale to other features then we
-recommend some sort of data transformations to try to keep the features at a
-similar scale before performing classification.
-
-On the other hand, a second potential source of instability for composite
-quantile-based classifiers occurs when the magnitude of the differences between
-the within-class quantiles is very similar for two or more features.  When this
-is the case, small changes in the within-class quantile estimates can
-fundamentally affect the classifier by changing which components are part of the
-linear systems in the piecewise affine sets.  On the other hand, when the
-within-class quantiles are similar for a given component, this has the effect
-that the component contributes very little information to the classifier
-aggregate, so that although the form of the classifier may show some instability
-the classification rate will typically remain unaffected.  We also expect
-averaging the model as discussed in Section \ref{sec:classifier-algorithm} to
-help protect against this type of instability.
-
-
-\subsubsection{Limitations of composite quantile-based classifiers}
-\label{sec:limitations}
-
-There are two main limitations of composite quantile-based classifiers that are
-evident based upon the form of the classifiers.  The first limitation is that
-the classifiers decision rule boundaries are piecewise linear and consequently
-can only hope to approximate nonlinear decision rule boundaries.  For some
-problems this can result in a loss of efficiency when compared to more flexible
-methods.
-
-A second limitation of composite quantile-based classifiers is that there can
-only be a single decision rule boundary for any dimension.  Consider an example
-where the densities of two populations are perfectly separated into two
-concentric circles.  The Bayes rule can perfectly classify this situation, but
-any composite quantile-based classifiers decision rule boundary is totally
-unable to capture both sides of the inner circle.
-
-We view the limitations of composite quantile-based classifiers as a trade-off
-between simplicity of the classifier and its ability to perform well in all
-situations.  No single classifier can be expected to perform well in all
-settings.  Due to the simple nature of the classifier it is well-suited for
-high-dimensional problems, even in the presence of limited data.  However, it is
-important to recognize that there are settings for which composite
-quantile-based classifiers are ill-suited.
 
 
 
