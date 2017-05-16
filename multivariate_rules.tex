@@ -107,7 +107,7 @@ to a population that has a low prior probability before we decide to classify
 the observation to that population.
 
 
-\subsubsection{Consistency of the aggregate quantile classifier}
+\subsubsection{Properties of composite quantile-based classifiers}
 \label{sec:aggregate-classifier-consistency}
 
 Having presented the theoretical form of the composite quantile-based
@@ -130,7 +130,7 @@ small positive constant.
 \item $F_{ij}^{-1}$ is a continuous function of
   $\theta,~ i=0,1,~ j=1, \dots, p$.
 \item $\prob\Big(
-  \sum_{j=1}^p \Lambda_j (Z_j, \theta_j) = 0
+  \alpha_0 + \sum_{j=1}^p \alpha_j\, \Lambda_j (Z_j, \theta_j) = 0
   \Big) = 0$ for all
   $\theta \in [\delta, 1 - \delta]$.
 \item There is a unique $\tilde{\theta}_j$ that satisfies
@@ -140,15 +140,18 @@ small positive constant.
 % $\Psi_j(\theta),~ j=1, \dots, p$, and further denote
 % $\tilde{\vec{\theta}} = \Big( \tilde{\theta}_1, \dots,
 % \tilde{\theta}_P \Big)$.
-Further denote
-$\tilde{\vec{\theta}} = \Big( \tilde{\theta}_1, \dots, \tilde{\theta}_P \Big)$.
-\vspace{5mm}
 
 \begin{theorem}
   \label{thm:multivariate-consistency}
-  Under assumptions 1-3 it follows that
+  Denote
+  $\tilde{\vec{\theta}} = \Big( \tilde{\theta}_1, \dots, \tilde{\theta}_P
+  \Big)$.  Then under assumptions 1-3 it follows that
   $\Psi(\hat{\vec{\theta}}_n) \convp \Psi(\tilde{\vec{\theta}})$.
 \end{theorem}
+This result shows that the classification rate of the empirical version of
+composite quantile-based classifiers converges to that of the composite
+quantile-based classifier using the component-wise most discriminatory choices
+of quantile level.
 
 % \begin{proof}
 %   The following upper bound on the difference between the component-wise
@@ -203,6 +206,91 @@ $\tilde{\vec{\theta}} = \Big( \tilde{\theta}_1, \dots, \tilde{\theta}_P \Big)$.
 %   theorem yields
 %   $\Psi(\hat{\vec{\theta}}_n) \convp \Psi(\tilde{\vec{\theta}})$.
 % \end{proof}
+
+Next, we consider the decision rule form of composite quantile-based
+classifiers.  Recall that the composite quantile-based family of classifiers is
+defined as expression (\ref{eq:composite-classifier}).  From this expression we
+see that the decision rule boundary is given by
+\begin{equation}
+  \label{eq:composite-classifiers-boundary}
+  \alpha_0 + \sum_{j=1}^p \alpha_j\, \Lambda_j (z_j, \theta_j) = 0.
+\end{equation}
+As an aside, we note that the set of $\vec{z}$ that satisfy
+(\ref{eq:composite-classifiers-boundary}) may be empty for certain choices of
+$(\alpha_0, \dots, \alpha_p, \allowbreak\theta_1, \allowbreak\dots, \allowbreak\theta_p)$, which corresponds to a
+decision rule that only classifies observations to one of the two classes.  If
+the solution set is nonempty, then we can show that the decision rule boundary
+is a piecewise linear function with a particularly simple form, as is discussed
+in what follows.  Let us define the component-wise quantile classifier decision
+boundary $\tau_j$ to be the unique point satisfying
+$\Lambda_j (\tau_j, \theta_j) = 0,~ j = 1, \dots, p$.  We can assume without
+loss of generality that $\tau_j$ is unique because it is only non-unique when
+$\Lambda(\,\cdot\,,\, \theta_j)$ is identically zero, in which case the problem
+is effectively reduced to $p - 1$ dimensions.  It follows then that
+\begin{equation}
+  \label{eq:lambda}
+  \sign\Big(F_{1j}^{-1}(\theta_j) - F_{0j}^{-1}(\theta_j)\Big)~ \Lambda_j(z_j, \theta_j) =
+  \left\{
+    \begin{array}{lll}
+      \tau_j - F_{(0)j}^{-1}(\theta_j),
+      & \hspace{5mm}
+      & z_j \leq F_{(0)j}^{-1}(\theta_j) \\[0.5ex]
+      \tau_j - z_j,
+      & \hspace{5mm}
+      & F_{(0)j}^{-1}(\theta_j) < z_j < F_{(1)j}^{-1}(\theta_j) \\[0.5ex]
+      \tau_j - F_{(1)j}^{-1} (\theta_j),
+      & \hspace{5mm}
+      & \text{otherwise} \\
+    \end{array}.
+  \right.
+\end{equation}
+The expression in (\ref{eq:lambda}) leads to the decision rule form of composite
+quantile-based classifiers.  Conceptually, we can divide $\mathbb{R}^p$ into
+$3^p$ hypercubes so that the decision rule boundary set is either empty or is an
+affine set within each hypercube.
+
+
+\begin{proposition}
+  \label{lem:decision-rule-form}
+  Define
+  $\alpha_j^{*} = \alpha_j\, \sign\!\Big(F_1^{-1}(\theta_j) -
+  F_0^{-1}(\theta_j)\Big)$.  Let $L$, $M$, and $U$ (for lower, middle and upper)
+  be sets that partition the set of indices $\{1, \dots, p\}$.  Define the
+  hypercube $\mathcal{H}_{L,M,U}$ to be the set given by
+  \begin{equation}
+    \mathcal{H}_{L,M,U} = 
+    \prod_{{\ell} \in L} \big( -\infty,~ F_{(0),{\ell}}^{-1}(\theta_{\ell}) \big)
+    \prod_{m \in M} \big[ F_{(0),m}^{-1}(\theta_m),~ F_{(1),m}^{-1}(\theta_m) \big]
+    \prod_{u \in U} \big( F_{(1),u}^{-1}(\theta_{u}),~ \infty \big),
+  \end{equation}
+  where in this context the products denote the usual Cartesian product.  Then
+  the decision rule boundary for composite quantile-based classifiers on the
+  domain $\mathcal{H}_{L,M,U}$ is the possibly empty set given by
+  \begin{equation}
+    \label{eq:composite-classifiers-general}
+    \begin{split}
+      \mathcal{D}_{L,M,U} = \left\{
+        \vec{z} \in
+        % \prod_{k \in L} \big[ -\infty,~ F_{(0),k}^{-1}(\theta_k) \big]
+        % \prod_{\ell \in U} \big[ F_{(1),\ell}^{-1}(\theta_{\ell}),~ \infty \big]
+        % \prod_{j \in M} \big[ F_{(0),j}^{-1}(\theta_j),~ F_{(1),j}^{-1}(\theta_j) \big] :
+        % \phantom{\hspace{15mm}}
+        \mathcal{H}_{L,M,U}:
+        \left[
+          \alpha_0 + 
+          \sum_{{\ell} \in L} \alpha_{\ell}^{*} \Big(\tau_{\ell} - F_{(0),{\ell}}^{-1}(\theta_{\ell})\Big) +
+          \sum_{u \in U} \alpha_{u}^{*} \Big(\tau_{u} - F_{(1),u}^{-1}(\theta_{u})\Big)
+        \right]
+      \right. \\[1ex]
+      \left.
+        + \sum_{m \in M} \alpha_m^{*} (z_m - \tau_m) ~=~ 0
+      \right\} .
+    \end{split}
+  \end{equation}
+  Furthermore, the decision rule boundary is a continuous function of $\vec{z}$.
+  
+\end{proposition}
+
 
 
 
@@ -955,142 +1043,142 @@ choices for the number of folds and the size of the penalty parameter grid
 
 
 
-\subsection{Composite quantile-based classifiers decision rule form}
-\label{sec:classifier-discussion}
+% \subsection{Composite quantile-based classifiers decision rule form}
+% \label{sec:classifier-discussion}
 
-The composite quantile-based family of classifiers is defined as expression
-(\ref{eq:composite-classifier}).  From this expression we see that the decision
-rule boundary is given by
-\begin{equation}
-  \label{eq:composite-classifiers-boundary}
-  \alpha_0 + \sum_{j=1}^p \alpha_j\, \Lambda_j (z_j, \theta_j) = 0.
-\end{equation}
-In the above equality it is implicit that the linear combination coefficients
-and quantile levels are such that there exist a set of $z_1, \dots, z_p$ that
-satisfy the equation.  We note that this need not be the case as
-$\sum_{j=1}^p \alpha_j\, \Lambda_j (\,\cdot\,, \,\theta_j)$ is bounded for fixed
-$\alpha_1, \dots, \alpha_p$ and $\theta_1, \dots, \theta_p$.
-
-If the linear combination coefficients and quantile levels are chosen such that
-the solution set for $z_1, \dots, z_p$ is indeed nonempty, then it turns out
-that this decision rule boundary is a piecewise linear function with a
-particularly simple form, as is discussed in what follows.  Let us define the
-component-wise quantile classifier decision boundary $\tau_j$ to be the unique
-point satisfying $\Lambda_j (\tau_j, \theta_j) = 0,~ j = 1, \dots, p$.  We can
-assume without loss of generality that $\tau_j$ is unique because it is only
-non-unique when $\Lambda(\,\cdot\,,\, \theta_j)$ is identically zero, in which
-case the problem is effectively reduced to $p - 1$ dimensions.  It follows then
-that
-\begin{equation}
-  \label{eq:lambda}
-  \sign\Big(F_1^{-1}(\theta_j) - F_0^{-1}(\theta_j)\Big)~ \Lambda_j(z, \theta) =
-  \left\{
-    \begin{array}{lll}
-      \tau_j - F_{(0)}^{-1}(\theta),
-      & \hspace{5mm}
-      & z \leq F_{(0)}^{-1}(\theta) \\[0.5ex]
-      \tau_j - z,
-      & \hspace{5mm}
-      & F_{(0)}^{-1}(\theta) < z < F_{(1)}^{-1}(\theta) \\[0.5ex]
-      \tau_j - F_{(1)}^{-1} (\theta)),
-      & \hspace{5mm}
-      & \text{otherwise} \\
-    \end{array}.
-  \right.
-\end{equation}
-% Next, let $a_j = \tau_j - F_{(0)}^{-1}(\theta_j)$ and
-% $b_j = F_{(1)}^{-1}(\theta_p) - \tau_p,~ j = 1, \dots, p$.
-Define
-$\alpha_j^{*} = \alpha_j\, \sign\!\Big(F_1^{-1}(\theta_j) -
-F_0^{-1}(\theta_j)\Big)$, then for $(z_1, \dots, z_p)$ close to
-$(\tau_1, \dots, \tau_p)$, the decision rule boundary is the (possibly empty)
-affine set given by
+% The composite quantile-based family of classifiers is defined as expression
+% (\ref{eq:composite-classifier}).  From this expression we see that the decision
+% rule boundary is given by
 % \begin{equation}
-%   \alpha_0 + \sum_{j=1}^p \alpha_j (z_j - \tau_j) = 0
-%   \hspace{5mm} \text{for } \hspace{5mm}
-%   z \in [\tau_1 - a_{1}, \tau_1 + b_{1}]
-%   \times \dots \times
-%   [\tau_p - a_{p}, \tau_p + b_{p}].
+%   \label{eq:composite-classifiers-boundary}
+%   \alpha_0 + \sum_{j=1}^p \alpha_j\, \Lambda_j (z_j, \theta_j) = 0.
 % \end{equation}
-\begin{equation}
-  \label{eq:composite-classifiers-close}
-  \mathcal{D}_{{\scriptstyle \text{close}}} = \left\{
-    \vec{z} \in [F_{(0),1}^{-1},\, F_{(1),1}^{-1}]
-    \times \dots \times
-    [F_{(0),p}^{-1},\, F_{(1),p}^{-1}] :
-    \hspace{3mm}
-    \alpha_0 + \sum_{j=1}^p \alpha_j^{*} (z_j - \tau_j) = 0
-  \right\} .
-\end{equation}
-Next we consider what happens outside of the set described in
-(\ref{eq:composite-classifiers-close}).  Write
-$\vec{\tau} = (\tau_1, \dots, \tau_p)$, and suppose that we pick a direction
-$\vec{d} = (d_1, \dots, d_p)$ and $\gamma > 0$ such that
-$\vec{\tau} + \gamma \vec{d}$ is an element of
-(\ref{eq:composite-classifiers-close}).  Then let $\gamma^{*} > 0$ be chosen
-such that $\vec{\tau} + \gamma^{*} \vec{d}$ is a boundary point of the set
-$[F_{(0),1}^{-1},\, F_{(1),1}^{-1}] \times \dots \times [F_{(0),p}^{-1},\,
-F_{(1),p}^{-1}]$ and is on the boundary for some component $k$, and for the sake
-of exposition let's suppose that the $k$-th component of
-$\vec{\tau} + \gamma^{*} \vec{d} = F_{(1),k}^{-1}(\theta_k)$, as opposed to
-$F_{(0),k}^{-1}(\theta_k)$.  We note that continuing in the direction $\vec{d}$
-will take us outside of the the decision rule boundary set.  Instead, for
-$\vec{z}$ taking values inside the newly entered hypercube, the decision rule
-boundary set is of the following form:
-\begin{equation}
-  \label{eq:composite-classifiers-outside}
-  \begin{split}
-    \mathcal{D}_{\vec{d}} = \left\{
-      \vec{z} \in [F_{(0),1}^{-1},\, F_{(1),1}^{-1}]
-      \times \dots \times
-      [F_{(1),k}^{-1}(\theta_k),\, \infty]
-      \times \dots \times
-      [F_{(0),p}^{-1},\, F_{(1),p}^{-1}] :
-      \phantom{\hspace{30mm} \sum_{j=1}^p}
-    \right.  \\
-    \left.
-      \hfill
-      \alpha_0 +
-      \alpha_k^{*} \Big(\tau_k - F_{(1),k}^{-1}(\theta_k)\Big) +
-      \sum_{j\ne k} \alpha_j^{*} (z_j - \tau_j) = 0
-    \right\} .
-  \end{split}
-\end{equation}
-Next, if we head in a new direction $\vec{d}'$ that yields a line with points in
-the set given by (\ref{eq:composite-classifiers-outside}), then we will
-eventually reach a boundary point of the set.  Once again we will enter another
-hypercube, and now the affine set will be a linear system with $p - 2$
-variables.  This process can be repeated until all only 1 variable remains in
-the affine set.
+% In the above equality it is implicit that the linear combination coefficients
+% and quantile levels are such that there exist a set of $z_1, \dots, z_p$ that
+% satisfy the equation.  We note that this need not be the case as
+% $\sum_{j=1}^p \alpha_j\, \Lambda_j (\,\cdot\,, \,\theta_j)$ is bounded for fixed
+% $\alpha_1, \dots, \alpha_p$ and $\theta_1, \dots, \theta_p$.
 
-In general, we can divide $\mathbb{R}^p$ into $3^p$ hypercubes so that the
-decision rule boundary set is either empty or is an affine set within each
-hypercube.  Let $L$, $M$, and $U$ (for lower, middle and upper) be sets that
-partition the set of indices $\{1, \dots, p\}$.  Then
-\begin{equation}
-  \label{eq:composite-classifiers-general}
-  \begin{split}
-    \mathcal{D}_{L,M,U} = \left\{
-      \vec{z} \in
-      \prod_{k \in L} \big[ -\infty,~ F_{(0),k}^{-1}(\theta_k) \big]
-      \prod_{\ell \in U} \big[ F_{(1),\ell}^{-1}(\theta_{\ell}),~ \infty \big]
-      \prod_{j \in M} \big[ F_{(0),j}^{-1}(\theta_j),~ F_{(1),j}^{-1}(\theta_j) \big] :
-      \phantom{\hspace{15mm}}
-    \right.  \\
-    \left.
-      \left[
-        \alpha_0 + 
-        \sum_{k \in L} \alpha_k^{*} \Big(\tau_k - F_{(0),k}^{-1}(\theta_k)\Big) +
-        \sum_{\ell \in U} \alpha_j^{*} \Big(\tau_{\ell} - F_{(1),\ell}^{-1}(\theta_{\ell})\Big)
-      \right] +
-        \sum_{j \in M} \alpha_j^{*} (z_j - \tau_j) ~=~ 0
-    \right\} ,
-  \end{split}
-\end{equation}
-where in this context the products are meant to denote the usual Cartesian
-product.  Finally, we note that the piecewise linear portions of the decision
-rule boundary are connected, which can be seen since points on the boundary are
-solutions for either system.
+% If the linear combination coefficients and quantile levels are chosen such that
+% the solution set for $z_1, \dots, z_p$ is indeed nonempty, then it turns out
+% that this decision rule boundary is a piecewise linear function with a
+% particularly simple form, as is discussed in what follows.  Let us define the
+% component-wise quantile classifier decision boundary $\tau_j$ to be the unique
+% point satisfying $\Lambda_j (\tau_j, \theta_j) = 0,~ j = 1, \dots, p$.  We can
+% assume without loss of generality that $\tau_j$ is unique because it is only
+% non-unique when $\Lambda(\,\cdot\,,\, \theta_j)$ is identically zero, in which
+% case the problem is effectively reduced to $p - 1$ dimensions.  It follows then
+% that
+% \begin{equation}
+%   \label{eq:lambda}
+%   \sign\Big(F_1^{-1}(\theta_j) - F_0^{-1}(\theta_j)\Big)~ \Lambda_j(z, \theta) =
+%   \left\{
+%     \begin{array}{lll}
+%       \tau_j - F_{(0)}^{-1}(\theta),
+%       & \hspace{5mm}
+%       & z \leq F_{(0)}^{-1}(\theta) \\[0.5ex]
+%       \tau_j - z,
+%       & \hspace{5mm}
+%       & F_{(0)}^{-1}(\theta) < z < F_{(1)}^{-1}(\theta) \\[0.5ex]
+%       \tau_j - F_{(1)}^{-1} (\theta)),
+%       & \hspace{5mm}
+%       & \text{otherwise} \\
+%     \end{array}.
+%   \right.
+% \end{equation}
+% % Next, let $a_j = \tau_j - F_{(0)}^{-1}(\theta_j)$ and
+% % $b_j = F_{(1)}^{-1}(\theta_p) - \tau_p,~ j = 1, \dots, p$.
+% Define
+% $\alpha_j^{*} = \alpha_j\, \sign\!\Big(F_1^{-1}(\theta_j) -
+% F_0^{-1}(\theta_j)\Big)$, then for $(z_1, \dots, z_p)$ close to
+% $(\tau_1, \dots, \tau_p)$, the decision rule boundary is the (possibly empty)
+% affine set given by
+% % \begin{equation}
+% %   \alpha_0 + \sum_{j=1}^p \alpha_j (z_j - \tau_j) = 0
+% %   \hspace{5mm} \text{for } \hspace{5mm}
+% %   z \in [\tau_1 - a_{1}, \tau_1 + b_{1}]
+% %   \times \dots \times
+% %   [\tau_p - a_{p}, \tau_p + b_{p}].
+% % \end{equation}
+% \begin{equation}
+%   \label{eq:composite-classifiers-close}
+%   \mathcal{D}_{{\scriptstyle \text{close}}} = \left\{
+%     \vec{z} \in [F_{(0),1}^{-1},\, F_{(1),1}^{-1}]
+%     \times \dots \times
+%     [F_{(0),p}^{-1},\, F_{(1),p}^{-1}] :
+%     \hspace{3mm}
+%     \alpha_0 + \sum_{j=1}^p \alpha_j^{*} (z_j - \tau_j) = 0
+%   \right\} .
+% \end{equation}
+% Next we consider what happens outside of the set described in
+% (\ref{eq:composite-classifiers-close}).  Write
+% $\vec{\tau} = (\tau_1, \dots, \tau_p)$, and suppose that we pick a direction
+% $\vec{d} = (d_1, \dots, d_p)$ and $\gamma > 0$ such that
+% $\vec{\tau} + \gamma \vec{d}$ is an element of
+% (\ref{eq:composite-classifiers-close}).  Then let $\gamma^{*} > 0$ be chosen
+% such that $\vec{\tau} + \gamma^{*} \vec{d}$ is a boundary point of the set
+% $[F_{(0),1}^{-1},\, F_{(1),1}^{-1}] \times \dots \times [F_{(0),p}^{-1},\,
+% F_{(1),p}^{-1}]$ and is on the boundary for some component $k$, and for the sake
+% of exposition let's suppose that the $k$-th component of
+% $\vec{\tau} + \gamma^{*} \vec{d} = F_{(1),k}^{-1}(\theta_k)$, as opposed to
+% $F_{(0),k}^{-1}(\theta_k)$.  We note that continuing in the direction $\vec{d}$
+% will take us outside of the the decision rule boundary set.  Instead, for
+% $\vec{z}$ taking values inside the newly entered hypercube, the decision rule
+% boundary set is of the following form:
+% \begin{equation}
+%   \label{eq:composite-classifiers-outside}
+%   \begin{split}
+%     \mathcal{D}_{\vec{d}} = \left\{
+%       \vec{z} \in [F_{(0),1}^{-1},\, F_{(1),1}^{-1}]
+%       \times \dots \times
+%       [F_{(1),k}^{-1}(\theta_k),\, \infty]
+%       \times \dots \times
+%       [F_{(0),p}^{-1},\, F_{(1),p}^{-1}] :
+%       \phantom{\hspace{30mm} \sum_{j=1}^p}
+%     \right.  \\
+%     \left.
+%       \hfill
+%       \alpha_0 +
+%       \alpha_k^{*} \Big(\tau_k - F_{(1),k}^{-1}(\theta_k)\Big) +
+%       \sum_{j\ne k} \alpha_j^{*} (z_j - \tau_j) = 0
+%     \right\} .
+%   \end{split}
+% \end{equation}
+% Next, if we head in a new direction $\vec{d}'$ that yields a line with points in
+% the set given by (\ref{eq:composite-classifiers-outside}), then we will
+% eventually reach a boundary point of the set.  Once again we will enter another
+% hypercube, and now the affine set will be a linear system with $p - 2$
+% variables.  This process can be repeated until all only 1 variable remains in
+% the affine set.
+
+% In general, we can divide $\mathbb{R}^p$ into $3^p$ hypercubes so that the
+% decision rule boundary set is either empty or is an affine set within each
+% hypercube.  Let $L$, $M$, and $U$ (for lower, middle and upper) be sets that
+% partition the set of indices $\{1, \dots, p\}$.  Then
+% \begin{equation}
+%   \label{eq:composite-classifiers-general}
+%   \begin{split}
+%     \mathcal{D}_{L,M,U} = \left\{
+%       \vec{z} \in
+%       \prod_{k \in L} \big[ -\infty,~ F_{(0),k}^{-1}(\theta_k) \big]
+%       \prod_{\ell \in U} \big[ F_{(1),\ell}^{-1}(\theta_{\ell}),~ \infty \big]
+%       \prod_{j \in M} \big[ F_{(0),j}^{-1}(\theta_j),~ F_{(1),j}^{-1}(\theta_j) \big] :
+%       \phantom{\hspace{15mm}}
+%     \right.  \\
+%     \left.
+%       \left[
+%         \alpha_0 + 
+%         \sum_{k \in L} \alpha_k^{*} \Big(\tau_k - F_{(0),k}^{-1}(\theta_k)\Big) +
+%         \sum_{\ell \in U} \alpha_j^{*} \Big(\tau_{\ell} - F_{(1),\ell}^{-1}(\theta_{\ell})\Big)
+%       \right] +
+%         \sum_{j \in M} \alpha_j^{*} (z_j - \tau_j) ~=~ 0
+%     \right\} ,
+%   \end{split}
+% \end{equation}
+% where in this context the products are meant to denote the usual Cartesian
+% product.  Finally, we note that the piecewise linear portions of the decision
+% rule boundary are connected, which can be seen since points on the boundary are
+% solutions for either system.
 
 
 \subsection{Classifier examples in two dimensions}
