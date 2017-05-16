@@ -967,122 +967,69 @@ quantile-based classifiers algorithm is presented in its entirety as Algorithm
 
 \end{algorithm}
 
+% % old version
+% \begin{proposition}
+%   \label{thm:cqc-runtime}
+%   Let $T$ be the number of penalty levels and $K$ be the number of folds
+%   considered when performing penalized logistic regression with $k$-fold
+%   cross-validation to select the linear combination coefficients in Step 9 of
+%   Algorithm \ref{alg:classifier}.  Then the model selection algorithm for
+%   composite quantile-based classifiers runs in
+%   $\mathcal{O}\Big( Lnp \big[ n + KT \big]\Big)$ time.
+% \end{proposition}
+
+Two expressions for the run time complexity of Algorithm \ref{alg:classifier}
+are presented in Proposition \ref{thm:cqc-runtime}.  The first expression
+describes the complexity of a sequential implementation of the algorithm, while
+the second expression considers an implementation utilizing parallel computing.
+The opportunities for parallelism that are considered are the following.  At the
+top level, the sub-models $f_1, \dots, f_L$ can each be obtained independently
+of each other.  Furthermore, within the calculation of each sub-model with index
+$\ell$, the feature-specific calculations can each be performed independently of
+each other.  Thus, for $j$ in $1, \dots p$, both the calculation of the optimal
+quantile level for the $j$-th feature with data $D_{\ell 1}$ and the
+transformation of the $j$-th component of every $\vec{x}_i$ in data $D_{\ell 2}$
+can be calculated independently of the other features (lines 3-8 of Algorithm
+\ref{alg:classifier}).  Additionally, selection of the choice of linear
+combination coefficients can be parallelized over the folds in the
+cross-validation procedure (line 9 of Algorithm \ref{alg:classifier}).
+Exploiting these opportunities for parallelism leads to the run time complexity
+described in below.
 
 \begin{proposition}
   \label{thm:cqc-runtime}
   Let $T$ be the number of penalty levels and $K$ be the number of folds
-  considered when performing penalized logistic regression with $k$-fold
-  cross-validation to select the linear combination coefficients in Step 9 of
-  Algorithm \ref{alg:classifier}.  Then the model selection algorithm for
-  composite quantile-based classifiers runs in
-  $\mathcal{O}\Big( Lnp \big[ n + KT \big]\Big)$ time.
+  considered when performing penalized logistic regression with $K$-fold
+  cross-validation to select the linear combination coefficients
+  $\alpha_0, \dots, \alpha_p$.  Then the model selection algorithm for composite
+  quantile-based classifiers runs in
+  $\mathcal{O}\Big( Lnp \big[ n + KT \big]\Big)$ time.  Furthermore, if the
+  number of compute nodes in a computing cluster topology is at least $L$, and
+  $C$ denotes the smallest number of available cores from among the compute
+  nodes, then the run time of Algorithm \ref{alg:classifier} is reduced to
+  $\mathcal{O}\Big( \frac{np}{C} \big[ n + KT \big] \Big)$.
 \end{proposition}
 
-% \begin{proof}
-%   Consider the operations performed inside the outer-level for loop spanning
-%   lines 1-10 in Algorithm \ref{alg:classifier}.  Splitting the data into two
-%   parts is an $\mathcal{O}(n)$ operation.  Next, consider the second-level for
-%   loop iterating over the features.  We saw in Lemma
-%   \ref{lem:optimal-quantile-time} that the decision rule for the empirically
-%   optimal quantile classifier for the $j$-th feature can be obtained in
-%   $\mathcal{O}(n^2)$ time.  Next, calculating $x_{ij}^{*}$ is a constant-time
-%   operation for an $\mathcal{O}(n)$ number of calculations, which in total is an
-%   $\mathcal{O}(n)$ operation.
-
-%   Next, we break down the steps required in line 9 of Algorithm
-%   \ref{alg:classifier} to select the linear combination coefficients via
-%   penalized logistic regression.  Using the coordinate descent algorithm
-%   proposed in \cite{friedman2007, friedman2010} yields an $\mathcal{O}(np)$ run
-%   time for a fixed choice of penalty parameter.  Thus for a grid of size $T$
-%   penalty parameters and performing $k$-fold cross-validation for a total of $K$
-%   folds yields a total run time bound of $\mathcal{O}(KTnp)$.
-
-%   Then, since the outer loop is performed a total of $L$ times, we obtain the
-%   following run time bound:
-%   % \begin{align}
-%   %   \label{eq:classifier-runtime}
-%   %   \begin{split} \MoveEqLeft
-%   %     \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big) \\
-%   %     &= \mathcal{O}\Big( L \Big[ n + n^2 p + np + KTnp \Big] \Big) \\
-%   %     &= \mathcal{O}\Big( L \Big[ n^2 p + KTnp \Big] \Big) \\
-%   %     &= \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
-%   %   \end{split}
-%   % \end{align}
+% \begin{proposition}
+%   \label{cor:parallel-runtime}
+%   Assume that the number of compute nodes in a computing cluster topology is at
+%   least $L$, and let $C$ denote the smallest number of available cores from
+%   among the compute nodes.  Then the run time of Algorithm \ref{alg:classifier}
+%   is reduced to
 %   \begin{equation}
-%     \label{eq:classifier-runtime}
-%     \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big)
-%     = \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
+%     \label{eq:parallel-runtime-ass1}
+%     \mathcal{O}\left(
+%       \frac{np}{C} (n + KT)
+%     \right).
 %   \end{equation}
-%   Furthermore, if we consider $L$ and $T$ to be constants then the bound further
-%   simplifies to $\mathcal{O}(n^2 p)$.
-% \end{proof}
-
-There are multiple opportunities for parallelism in the model selection
-algorithm for composite quantile-based classifiers which can reduce the run time
-of Algorithm \ref{alg:classifier}.  Clearly, the sub-models $f_1, \dots, f_L$
-can each be obtained independently of each other.  Within the calculation of a
-single sub-model with index $\ell$, the feature-specific calculations can each
-be performed independently of each other (lines 3-8 of Algorithm
-\ref{alg:classifier}).  Thus, for $j$ in $1, \dots p$, the calculation of the
-optimal quantile level for the $j$-th feature with data $D_{\ell 1}$ and
-transformation of the $j$-th component of every $\vec{x}_i$ in data $D_{\ell 2}$
-can be calculated independently of the other features.  Also, selecting the
-choice of linear combination coefficients (line 9 of Algorithm
-\ref{alg:classifier}) can be parallelized over the folds in the cross-validation
-procedure.  Exploiting these opportunities for parallelism leads to the run time
-complexity described in Proposition \ref{cor:parallel-runtime}.
-
-\begin{proposition}
-  \label{cor:parallel-runtime}
-  Assume that the number of compute nodes in a computing cluster topology is at
-  least $L$, and let $C$ denote the smallest number of available cores from
-  among the compute nodes.  Then the run time of Algorithm \ref{alg:classifier}
-  is reduced to
-  \begin{equation}
-    \label{eq:parallel-runtime-ass1}
-    \mathcal{O}\left(
-      \frac{np}{C} (n + KT)
-    \right).
-  \end{equation}
-  If further it holds that $CT \geq n$, then the bound can be expressed as
-  \begin{equation}
-    \label{eq:parallel-runtime-ass2}
-    \mathcal{O}\Big(  pT (n + KT) \Big),
-  \end{equation}
-  which is the same complexity as penalized logistic regression with
-  $\max\{n, KT\}$ observations.
-\end{proposition}
-
-% \begin{proof}
-%   Since by assumption we have no fewer than $L$ compute nodes available, we can
-%   assign the calculation of each sub-model $f_i$ to one of the nodes; this
-%   reduces the problem to calculating the run time for each of the $f_i$.  If we
-%   perform the parallelism over first the features (i.e. lines 3-8 of Algorithm
-%   \ref{alg:classifier}), and then over the cross-validation folds (i.e. line 9
-%   of Algorithm \ref{alg:classifier}), then the run time bound is as follows:
-%   % \begin{align}
-%   %   \label{eq:classifier-runtime-parallel}
-%   %   \begin{split} \MoveEqLeft
-%   %     \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) \\
-%   %     &= \mathcal{O}\left( \frac{p}{C} n^2 + \frac{K}{C} Tnp \right) \\
-%   %     &= \mathcal{O}\Big( \frac{np}{C} (n + KT) \Big) \\
-%   %     &= \mathcal{O}\Big( \frac{np}{n/T} (n + KT) \Big) \\
-%   %     &= \mathcal{O}\Big( pT (n + KT) \Big).
-%   %   \end{split}
-%   % \end{align}
+%   If further it holds that $CT \geq n$, then the bound can be expressed as
 %   \begin{equation}
-%     \label{eq:classifier-runtime-parallel}
-%     \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) 
-%     = \mathcal{O}\Big( \frac{np}{C} (n + KT) \Big).
+%     \label{eq:parallel-runtime-ass2}
+%     \mathcal{O}\Big(  pT (n + KT) \Big),
 %   \end{equation}
-%   Then by replacing $C$ with $n/T$ under the assumption that $CT \geq n$ we
-%   obtain the expression in (\ref{eq:parallel-runtime-ass2}).  We further note
-%   that since a penalized logistic regression model has an $\mathcal{O}(npT)$
-%   complexity to fit, it follows that when adequate computing resources are
-%   available calculating the composite quantile-based classifier model is of
-%   similar complexity as a (non-parallelized) penalized logistic regression model
-%   fit.
-% \end{proof}
+%   which is the same complexity as penalized logistic regression with
+%   $\max\{n, KT\}$ observations.
+% \end{proposition}
 
 One question that arises is how to choose $L$, $K$, and $T$.  The number of data
 splits (i.e. the size of $L$) suggested by \cite{fan2016} is 20, and we have
