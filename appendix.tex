@@ -135,9 +135,9 @@
 \end{proof}
 
 \begin{proof}[Proof of Theorem \ref{thm:multivariate-consistency}.]
-  The following upper bound on the difference between the component-wise
-  quantile distances was established in the proof of Theorem 1 in Hennig and
-  Viroli (2016).  For $z \in \mathbb{R}$ and
+  The upper bound on the difference between the component-wise quantile
+  distances shown in \ref{eq:quantile-distance-ubnd} was established in the
+  proof of Theorem 1 in Hennig and Viroli (2016).  For $z \in \mathbb{R}$ and
   $\theta, \theta^{\prime} \in (0, 1)$ then
   \begin{equation}
     \label{eq:quantile-distance-ubnd}
@@ -148,10 +148,11 @@
   \end{equation}
   Since $F_{ij}^{-1}$ is continuous by assumption, it follows that for arbitrary
   fixed $z$, $\Phi_{ij}(z, \theta)$ is continuous in $\theta$ for every
-  $\{i, j\}$.  This in turn implies that for arbitrary fixed $\vec{z}$,
-  $\Lambda(\vec{z}, \vec{\theta})$ is also continuous in $\vec{\theta}$, since
-  $\Lambda$ is just the sum of the differences of the
-  $\Phi_{ij}(z_j, \theta_j)$'s.  Then we observe that
+  $\{i, j\}$.  This in turn implies that for arbitrary fixed $\vec{z}$ then
+  $\Lambda(\vec{z}, \vec{\theta}) = \alpha_0 + \sum_{j=1}^p \alpha_j
+  \Lambda_j(z_j, \theta_j)$ is also continuous in $\vec{\theta}$, since
+  $\Lambda$ is a linear combination of the $\Phi_{ij}(z_j, \theta_j)$'s.  Then
+  we observe that
   \begin{align}
     \label{eq:multivariate-phi-continuity}
     \begin{split}
@@ -169,7 +170,7 @@
       & = \pi_0 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) > 0 \Big)\, dP_0(\vec{z})
       + \pi_1 \int \ind \Big( \Lambda(\vec{z}, \vec{\theta}^{*}) \leq 0 \Big)\, dP_1(\vec{z})
       \\[1ex]
-      & = \Psi(\vec{\theta}^{*})
+      & = \Psi(\vec{\theta}^{*}).
     \end{split}
   \end{align}
   The justification for bringing the limit inside of the integral is due to the
@@ -235,7 +236,8 @@
     \mathcal{O}\left( n + \frac{p}{C} (n^2 + n) + \frac{K}{C} Tnp \right) 
     = \mathcal{O}\Big( \frac{np}{C} \big[ n + KT \big] \Big).
   \end{equation}
-  
+  This calculation shows that the cost of training the algorithm has a
+  polynomial-time complexity.
 \end{proof}
 
 

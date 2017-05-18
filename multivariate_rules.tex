@@ -34,28 +34,40 @@ features.
 \subsection{Composite quantile-based classifiers}
 \label{sec:varying-coefficient}
 
+% In this section we propose the family of composite quantile-based classifiers.
+% We begin by motivating the the form of the classifiers.  Consider a point
+% $\vec{z} = (z_1, \dots, z_p) \in \mathbb{R}^p$ and quantile levels
+% $\vec{\theta} = (\theta_1, \dots, \theta_p) \in (0, 1)^p$.  Then the difference
+% of the quantile distances of the $j$-th component of $\vec{z}$ to the
+% populations' $\theta_j$-th quantile of the $j$-th component
+% $\Lambda_j(z_j, \theta_j)$ provides some discriminatory information for the
+% classification of $\vec{z}$.  In more detail, if $\Lambda_j(z_j, \theta_j)$ is a
+% large positive value (large relative to the magnitude of the $j$-th component),
+% then this indicates that $z_j$ is much closer to the $\theta_j$-th quantile of
+% the $j$-th component of population $\Pi_0$ than it is to the $\theta_j$-th
+% quantile of the $j$-th component of population $\Pi_1$.  In this event we would
+% interpret this as being suggestive that $\vec{z}$ is a member of class $\Pi_0$.
+% If however, $\Lambda_j(z_j, \theta_j)$ is positive with a small magnitude, then
+% it is less strongly suggestive that $\vec{z}$ is a member of class $\Pi_0$.  On
+% the other hand, if $\Lambda_j(z_j, \theta_j)$ is negative, then this indicates
+% that $z_j$ is closer to the $\theta$-th quantile of the $j$-th component of
+% population $\Pi_1$ than that of population $\Pi_0$, and we would interpret this
+% as being suggestive that $\vec{z}$ is a member of class $\Pi_1$.  Finally, if
+% $\Lambda_j(z_j, \theta_j)$ has a value of 0, then $z_j$ has an equal quantile
+% distance to class $\Pi_0$ as to class $\Pi_1$, so we would interpret this as
+% providing no discriminatory information for classification of $\vec{z}$.
+
 In this section we propose the family of composite quantile-based classifiers.
 We begin by motivating the the form of the classifiers.  Consider a point
 $\vec{z} = (z_1, \dots, z_p) \in \mathbb{R}^p$ and quantile levels
-$\vec{\theta} = (\theta_1, \dots, \theta_p) \in (0, 1)^p$.  Then the difference
-of the quantile distances of the $j$-th component of $\vec{z}$ to the
-populations' $\theta_j$-th quantile of the $j$-th component
-$\Lambda_j(z_j, \theta_j)$ provides some discriminatory information for the
-classification of $\vec{z}$.  In more detail, if $\Lambda_j(z_j, \theta_j)$ is a
-large positive value (large relative to the magnitude of the $j$-th component),
-then this indicates that $z_j$ is much closer to the $\theta_j$-th quantile of
-the $j$-th component of population $\Pi_0$ than it is to the $\theta_j$-th
-quantile of the $j$-th component of population $\Pi_1$.  In this event we would
-interpret this as being suggestive that $\vec{z}$ is a member of class $\Pi_0$.
-If however, $\Lambda_j(z_j, \theta_j)$ is positive with a small magnitude, then
-it is less strongly suggestive that $\vec{z}$ is a member of class $\Pi_0$.  On
-the other hand, if $\Lambda_j(z_j, \theta_j)$ is negative, then this indicates
-that $z_j$ is closer to the $\theta$-th quantile of the $j$-th component of
-population $\Pi_1$ than that of population $\Pi_0$, and we would interpret this
-as being suggestive that $\vec{z}$ is a member of class $\Pi_1$.  Finally, if
-$\Lambda_j(z_j, \theta_j)$ has a value of 0, then $z_j$ has an equal quantile
-distance to class $\Pi_0$ as to class $\Pi_1$, so we would interpret this as
-providing no discriminatory information for classification of $\vec{z}$.
+$\vec{\theta} = (\theta_1, \dots, \theta_p) \in (0, 1)^p$.  If the difference of
+the quantile distances of the $j$-th component $\Lambda_j(z_j, \theta_j)$ is
+positive, this provides some descriminatory information indicating that $z_j$ is
+closer to the $\theta_j$-th quantile of the $j$-th component of population
+$\Pi_0$ than it is to the $\theta_j$-th quantile of the $j$-th component of
+population $\Pi_1$, and conversely if $\Lambda_j(z_j, \theta_j)$ is negative.
+Furthermore, differences of larger magnitudes provide stronger information than
+those with smaller magnitudes.
 
 The question of interest is how to construct a classification method based on
 information obtained from each of the difference of the quantile distances
@@ -63,18 +75,17 @@ $\Lambda_j(z_j, \theta_j)$.  Intuitively, we want to classify an observation to
 the population for which it has more components that are closer to the
 population's component-wise quantiles.  A natural way to incorporate both the
 distances and the number of components that an observation is closer to is to
-simply sum up the $\Lambda_j(z_j, \theta_j)$'s and see whether this result is
-positive (suggesting that the observation belongs to population $\Pi_0$), or
-negative (suggesting that the observation belongs to population $\Pi_1$).  This
-approach has a few difficulties however.  One potential drawback is that equal
-weight is given to each of features.  Naturally, some features may potentially
-be more discriminatory and we would like to draw more heavily on these features
-for classification purposes.  The second is an issue of scaling.  Features with
-a larger scale than other features will implicitly be given more discriminatory
-weight under this scheme.  Finally, we would like to be able to account for
-dependencies that may exist in the data.  With these issues in mind we propose
-using a linear combination of the $\Lambda_j(z_j, \theta_j)$'s as follows.  We
-call this family of classifiers \emph{composite quantile-based classifiers}.
+simply sum up the $\Lambda_j(z_j, \theta_j)$'s and classify according to whether
+the result is positive or negative.  This approach has a few difficulties
+however.  One potential drawback is that equal weight is given to each of
+features.  Naturally, some features may potentially be more discriminatory and
+we would like to draw more heavily on these features for classification
+purposes.  The second is an issue of scaling.  Features with a larger scale than
+other features will implicitly be given more discriminatory weight under this
+scheme.  Finally, we would like to be able to account for dependencies that may
+exist in the data.  With these issues in mind we propose using a linear
+combination of the $\Lambda_j(z_j, \theta_j)$'s as follows.  We call this family
+of classifiers \emph{composite quantile-based classifiers}.
 \begin{equation}
   \label{eq:composite-classifier}
   \text{For an observation $\vec{z}$, classify to:} \hspace{3mm}
@@ -1188,8 +1199,8 @@ dimensions.  In each of the examples we use the optimal choice of quantile level
 for each of the features to discriminate between the classes.  These are the
 quantile levels that are chosen by the composite quantile-based classifiers in
 the limit as the sample size goes to infinity, as a consequence of Lemma
-\ref{lem:univariate-consistency}.  We also fixed the linear combination
-coefficients $(\alpha_0, \alpha_1, \alpha_2) = (0, 1, 1)$, and set the prior
+\ref{lem:univariate-consistency}.  We also set the linear combination
+coefficients as $(\alpha_0, \alpha_1, \alpha_2) = (0, 1, 1)$ and the prior
 probability for each class as 1/2.
 
 
@@ -1316,7 +1327,7 @@ distributions varies across populations.  In the left panel, we consider
 populations where the within-class distributions follow independent beta
 distributions, and in the right panel we consider populations where the
 within-class distributions follow independent gamma distributions.  The
-parameters of the beta and gamma distributions were chosen randomly.  As in the
+parameters of the beta and gamma distributions were chosen at random.  As in the
 previous example, contour lines denoting 68\% and 95\% percent of the
 distributional mass for each population are shown.  The Bayes rule decision
 boundary is shown as the black line and the composite quantile-based decision
@@ -1354,6 +1365,17 @@ the data and is less accurate in the tails.
   \end{minipage}
 \end{figure}
 
+One limitation of composite quantile-based classifiers that is evident from
+these examples is that the classification rate does not in general achieve the
+Bayes rule classification rate even in the limit.  This is a consequence of the
+piecewise linear form of the decision rule boundary.  We view this limitation as
+a trade-off between simplicity of the classifier and its ability to perform well
+in all situations.  Because of the simple nature of the classifier it is
+well-suited for high-dimensional problems even in the presence of limited data.
+For settings where the Bayes rule decision boundary is linear as in Example 1, a
+variant of composite quantile-based classifiers is discussed in the following
+section that can achieve the Bayes rule classification rate.
+
 
 \subsection{Augmented composite quantile-based classifiers}
 \label{sec:augmented}
@@ -1375,27 +1397,22 @@ based upon
   \dots +
   \alpha_{2p} z_p.
 \end{equation}
-There are two main motivations for considering this variant.  The first reason
-is mostly performance-based.  When the decision rule boundary is approximately
-linear in the original features, then augmenting the transformed data can result
-in a better classification rate.
+There are two main motivations for considering this variant.  One reason is that
+when the decision rule boundary is approximately linear in the original
+features, then augmenting the transformed data can result in a better
+classification rate.  A second motivation for augmented composite quantile-based
+classifiers is an issue that can arise due to the component-wise form of
+classifiers.  If the marginal densities for a given feature are the same for the
+two classes then the feature does not provide any contribution to the
+classifier.  However, this deletion can result in loss of efficiency because
+features that have no discriminative ability on their own may still contain
+useful information when considered jointly.  Including the original features
+ensures that component-wise deletion does not occur.
 
-A second motivation for augmented composite quantile-based classifiers is an
-issue that can arise due to the component-wise form of composite quantile-based
-classifiers.  If the marginal densities for a given feature are identically
-equal then the feature does not have any contribution in classification
-regardless of the choice of quantile level in the regular classifier.  However,
-this deletion can result in loss of efficiency because features that have no
-discriminative ability on their own may still contain useful information when
-considered jointly.  Including the original features ensures that component-wise
-deletion does not occur.
-
-There is of course a trade-off that occurs when including the original features
+There is a trade-off that occurs when including the original features
 in the model.  In some settings the original features can provide information to
 the classifier helping to boost performance, but on the other hand augmenting
-the data doubles the feature space and can add noise to the model.  It is hard
-to say a priori which method will work better, but a good starting point may be
-to observe how well the data can be modeled using a linear boundary line.
+the data doubles the feature space and can add noise to the model.
 
 
 

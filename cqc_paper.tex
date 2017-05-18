@@ -16,6 +16,10 @@
 \usepackage{mathtools}
 \usepackage{subcaption}
 \usepackage[ruled,linesnumbered]{algorithm2e}
+\usepackage{afterpage}
+\usepackage{placeins}
+\usepackage{flafter}
+\usepackage{float}
 
 % natbib bibliography style settings
 \bibliographystyle{amsplain}
@@ -77,16 +81,31 @@
 
 \begin{document}
 
-% title and author specifications
-\title{Composite Quantile-Based Classifiers}
-\author[1]{David A. Pritchard}
-\author[2,3,1]{Yufeng Liu}
-\affil[1]{Department of Biostatistics, University of North Carolina, Chapel
-  Hill, NC 27599, USA}
-\affil[2]{Department of Statistics and Operations Research}
-\affil[3]{Department of Genetics}
-\date{}
-\maketitle
+% % title and author specifications
+% \title{Composite Quantile-Based Classifiers}
+% \author[1]{David A. Pritchard}
+% \author[2,3,1]{Yufeng Liu}
+% \affil[1]{Department of Biostatistics, University of North Carolina, Chapel
+%   Hill, NC 27599, USA}
+% \affil[2]{Department of Statistics and Operations Research}
+% \affil[3]{Department of Genetics}
+% \date{}
+% \maketitle
+
+\begin{center}
+
+  {\LARGE Composite Quantile-Based Classifiers} \vspace{5mm}
+
+  {\large David A. Pritchard$^1$ and Yufeng Liu$^{2,3,1}$} \vspace{5mm}
+
+  {\large
+    $^1$Department of Biostatistics,
+    $^2$Department of Statistics and Operations Research,
+    $^3$Department of Genetics,
+    University of North Carolina, Chapel Hill, NC 27599, USA
+  }
+
+\end{center}
 
 \begin{abstract}
   \input{abstract.tex}
