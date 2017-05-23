@@ -83,8 +83,7 @@
   to $\Pi_{(1)}$.  Combining these facts yields the desired result.
 \end{proof}
 
-\begin{proof}[Proof of Lemma \ref{lem:empirical-quantlev}.]
-  % \input{empirical_quant_proof.tex}
+\begin{proof}[Proof of Lemma \ref{lem:empirical-quantlev}.]=
   The proof is relegated to the supplementary materials.  The result is
   essentially a consequence of the fact that the problem can be cast as a linear
   programming problem where the extreme points of the feasible set are the
@@ -209,16 +208,7 @@
   folds yields a total run time bound of $\mathcal{O}(KTnp)$.
 
   Then, since the outer loop is performed a total of $L$ times, we obtain the
-  following run time bound for a sequential implementation of Algorithm 2:
-  % \begin{align}
-      %       \label{eq:classifier-runtime}
-      %       \begin{split} \MoveEqLeft
-      %       \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big) \\
-      %    &= \mathcal{O}\Big( L \Big[ n + n^2 p + np + KTnp \Big] \Big) \\
-      %            &= \mathcal{O}\Big( L \Big[ n^2 p + KTnp \Big] \Big) \\
-      %            &= \mathcal{O}\Big( Lnp \Big[ n + KT \Big] \Big).
-                     %                      \end{split}
-                     %     \end{align}
+  following run time bound for a sequential implementation of Algorithm 2:=
   \begin{equation}
     \label{eq:classifier-runtime}
     \mathcal{O}\Big( L \Big[ n + p(n^2 + n) + KTnp \Big] \Big)

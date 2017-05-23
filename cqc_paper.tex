@@ -15,6 +15,7 @@
 \usepackage{mathtools}
 \usepackage{subcaption}
 \usepackage[ruled,linesnumbered]{algorithm2e}
+
 % natbib bibliography style settings
 \bibliographystyle{amsplain}
 
@@ -33,18 +34,15 @@
 \newcommand{\normal}{\text{N}}
 \newcommand{\convp}{\stackrel{p}{\longrightarrow}}
 \newcommand{\limtheta}{\lim_{\vec{\theta} \rightarrow \vec{\theta}^{*}}}
-% \newcommand{\colsp}{\extracolsep{5mm}}
-% \newcommand{\bigUp}[1]{\text{\kern0.5em\smash{\raisebox{0ex}{\huge #1}}}}
-% \newcommand{\bigDown}[1]{\text{\kern-0.5em\smash{\raisebox{-1.5ex}{\huge #1}}}}
 \def\r/{\textsf{R}}
 \def\matlab/{\textsf{MATLAB}}
 
 \newcommand{\bn}{\fontseries{b}\selectfont} % Bold Number, for highlighting numbers in tables
 
+
 % Sets the document line spacing; 1.6 is double spacing.  See
 % https://www.sharelatex.com/learn/Paragraph_formatting#Line_spacing
 \linespread{1.6}
-
 
 % % allow align environment to break over pages
 \allowdisplaybreaks[2]
@@ -65,8 +63,6 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
-% \newenvironment{proof}[1][Proof]{\begin{trivlist}
-%   \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 
 
 
@@ -75,17 +71,7 @@
 
 \begin{document}
 
-% % title and author specifications
-% \title{Composite Quantile-Based Classifiers}
-% \author[1]{David A. Pritchard}
-% \author[2,3,1]{Yufeng Liu}
-% \affil[1]{Department of Biostatistics, University of North Carolina, Chapel
-%   Hill, NC 27599, USA}
-% \affil[2]{Department of Statistics and Operations Research}
-% \affil[3]{Department of Genetics}
-% \date{}
-% \maketitle
-
+% title and author information
 \begin{center}
 
   {\LARGE Composite Quantile-Based Classifiers} \vspace{5mm}
@@ -116,9 +102,6 @@
 \input{univariate_results.tex}
 
 \input{multivariate_rules.tex}
-
-% folded into multivariate rules
-% \input{asymptotic_results.tex}
 
 \input{numerical_results.tex}
 

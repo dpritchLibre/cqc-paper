@@ -153,29 +153,7 @@ emprically optimal quantile classifier, which is presented in Section
 
 \begin{figure}[ht]
   \caption[cccc]{Example within-class quantile distances and difference in
-    quantile distances for two choices of quantiles.
-    % In these examples we
-    % suppose that $F_0^{-1}(\theta) < F_1^{-1}(\theta)$ for $\theta = 0.25$ and
-    % $\theta = 0.75$, and that
-    % $F_1^{-1}(0.75) - F_0^{-1}(0.75) = F_1^{-1}(0.25) - F_0^{-1}(0.25)$.  For
-    % example, this would be the case when the populations $\Pi_0$ and $\Pi_1$
-    % follow $N(0, 1)$ and $N(1, 1)$ distributions, respectively.  In the
-    % upper-left plot we show the check loss distance to the populations' 0.25-th
-    % quantiles as a function of input $z$ and denoted as $\Phi_1$ and $\Phi_0$,
-    % while in the bottom-left plot we show the difference of the check loss
-    % distances, $\Lambda = \Phi_1 - \Phi_0$ again as a function of input $z$.
-    % The upper-right and lower right plots also show the check loss distances and
-    % difference between the distances, but instead with respect to the
-    % populations' 0.75-th quantiles.  In each of these figures $\tau_{\theta}$
-    % can be seen to represent the decision rule boundary point, which occurs for
-    % $\Lambda = 0$.  We note that the decision rule boundary is always between
-    % $F_{(0)}^{-1}$ and $F_{(1)}^{-1}$, and that when the quantile level is less
-    % than 1/2 that $\tau_{\theta}$ is closer to $F_{(1)}^{-1}$, and conversely
-    % that when the quantile level is greater than 1/2 that $\tau_{\theta}$ is
-    % closer to $F_{(0)}^{-1}$.  Finally, we note that $\Lambda$ is piecewise
-    % linear and that it has a constant value when it is smaller than
-    % $F_{(0)}^{-1}$ or larger than $F_{(1)}^{-1}$.
-  }
+    quantile distances for two choices of quantiles.}
 
   \label{fig:phi-lambda}
   \vspace{5mm}
@@ -261,149 +239,6 @@ optimal value of $\theta$ for the theoretical quantile classifier.
 
 
 
-% \vspace{10mm} Let $z$ be a univariate observation with a prior
-% probability $\pi_0$ of being a member of class 0, and $1 - \pi_0 = \pi_1$ the
-% prior probability of being a member of class 1.  Then for quantile level
-% $\theta$, define
-% \[
-%   \rho\,(z, \theta) = \rho_{\theta}\Big(z,\, F_1^{-1}(\theta)\Big) -
-%   \rho_{\theta}\Big(z,\, F_0^{-1}(\theta)\Big)
-% \]
-% Then the probability of a correct classification by the quantile classifier is
-% given by
-% \begin{equation}
-%   \label{eq: theoretical rate}
-%   \pi_0 \int \ind\Big( \rho(z, \theta) > 0 \Big)\, dP_0(z) + \pi_1 \int \ind\Big(
-%   \rho(z, \theta) \leq 0 \Big) \,dP_1(z)
-% \end{equation}
-% The expression given in (\ref{eq:theoretical-rate}) has the appealing property
-% that for the optimal choice of quantile level $\theta$ the classification rate is
-% equal to that of the Bayes classifier.  Thus, to select the quantile level for
-% the classification rule given by (\ref{eq:distance-classifier}), one approach
-% is to select the empirically optimal choice of $\theta$, as determined by
-% leave-one-out cross validation.  To give the definition of this estimator, we
-% first describe the setting and introduce some preliminary definitions.
-
-% Consider observations $x_{0, 1}, \dots, x_{0, n_0}$ sampled from population
-% $\Pi_0$ and observations $x_{1, 1}, \dots, x_{1, n_1}$ sampled from population $\Pi_1$.
-% Then we define
-% \[
-%   \widehat{\rho}(z, \theta) = \rho_{\theta}\Big(z,\,
-%   \widehat{F}_1^{-1}(\theta)\Big) - \rho_{\theta}\Big(z,\,
-%   \widehat{F}_0^{-1}(\theta)\Big)
-% \]
-% where $\widehat{F}_i^{-1}(\theta)$ is estimated from
-% $x_{i,1}, x_{i,2}, \dots, x_{i,n_i},~ i = 1, 2$.  Further define
-% $\widehat{\rho}_{-x_{i, j}} (z, \theta)$ to be as above, but where
-% $\widehat{F}_i^{-1}(\theta)$ is estimated from the data after leaving out the
-% $x_{i, j}$ observation (and the estimate of the comparison quantile is
-% obtained using the full set of observations from that class).  Then we define
-% the empirically optimal quantile level to be given by
-% \begin{align}
-%   \begin{split}
-%     \widehat{\theta^{\text{opt}}}
-%     &= \argmax_{\theta \in \{\theta_1, \dots, \theta_K\}} \left\{ \frac{n_0}{n_0 + n_1} \left[ \frac{1}{n_0} \sum_{z \in \Pi_0} \mathbbm{1}\Big( \widehat{\rho}_{-z}(z, \theta) > 0 \Big)  \right] +
-%       \frac{n_1}{n_0 + n_1} \left[ \frac{1}{n_1} \sum_{z \in \Pi_1} \mathbbm{1}\Big( \widehat{\rho}_{-z}(z, \theta) \leq 0 \Big)  \right] \right\} \\[1ex]
-%     &= \argmax_{\theta \in \{\theta_1, \dots, \theta_K\}} \left\{ \sum_{z \in \Pi_0} \mathbbm{1}\Big( \widehat{\rho}_{-z}(z, \theta) > 0 \Big) +
-%       \sum_{z \in \Pi_1} \mathbbm{1}\Big( \widehat{\rho}_{-z}(z, \theta) \leq 0 \Big) \right\}
-%   \end{split}
-% \end{align}
-% for $\theta_1, \dots, \theta_K$ a grid of quantile levels from which to compare.
-% Conceptually, $\widehat{\theta^{\text{opt}}}$ is chosen to be the optimizer of
-% the sample version of the theoretical optimizer given in equation
-% (\ref{eq:theoretical-rate}).
-
-% \begin{editornote}
-%   This seems like a reasonable strategy and we have shown empirically that good
-%   estimates for the optimal quantile level can be found for a moderate sample
-%   size (see project update pdf for 2016-07-01).  However it does have some
-%   drawbacks:
-  
-%   \begin{itemize}
-%   \item adds computational burden to the method
-%   \item eats up our sample size in that we should set aside training data to
-%     train on the quantile estimates
-%   \item practical issues with small sample sizes: seems unstable.  Depending on
-%     the sample size and the proportion of observations, one class can end up
-%     with just a handful or even no observations for a particular class.
-%   \end{itemize}
-  
-% \end{editornote}
-
-
-% \subsection{Choice of quantile level: distance-based}
-
-% Another approach to selecting the quantile level for the classification rule
-% given in expression (\ref{eq: distance classifier}) is based on comparing the
-% distances between the quantiles for each class.  Intuitively, the quantiles with
-% greater differences between the classes may contain more information in
-% discriminating new observations through a comparison of their quantile distances
-% to the quantile.  In this section we consider a class of composite
-% distance-based quantile levels.
-
-% One major drawback to selecting quantile levels based on a comparison of the
-% distances between quantiles is the following.  Consider as an example the case
-% where the observations are drawn from populations $\Pi_0$ and $\Pi_1$ such that
-% the densities for the populations are $\normal(\mu_0, 1)$ and
-% $\normal(\mu_1, 1)$, respectively.  Then
-% $\big|F_1^{-1}(\theta) - F_0^{-1}(\theta)\big| = |\mu_1 - \mu_0|$ for all $\theta$. In
-% this particular example, the optimal choice of quantile level is 0.5; however,
-% when using a distance-based approach to selecting the quantile there is no
-% meaningful information from which to make a decision, a clearly undesirable
-% property.  However, when extending the classification rule to the multivariate
-% setting, there is not a direct connection between the classification problem
-% based on one variable and the classification problem drawing information from
-% all of the variables, and in practice we may achieve better performance with
-% this approach in some settings.
-
-% We propose a class of composite distance-based quantile levels constructed as
-% follows.  Consider a grid of quantile levels $\theta_1, \dots, \theta_K$.  Define
-% \[
-%   d_k = \left| \widehat{F}^{-1}_1 (\theta_k) - \widehat{F}^{-1}_0
-%     (\theta_k) \,\right|, \hspace{5mm} k = 1, \dots, K
-% \]
-% Then a class of component-wise quantile weights is defined as
-% \begin{equation}
-%   w_k = \frac{ (d_k - \epsilon)_{+}^{\nu} }{ \sum_{\ell = 1}^K (d_{\ell}
-%     - \epsilon)_{+}^{\nu} }, \hspace{5mm} k = 1, \dots, K.
-% \end{equation}
-% where $\nu$ and $\epsilon$ are nonnegative tuning parameters.
-% % Various choices
-% % of $\nu$ and $\epsilon$ lead to special cases such as
-% % \begin{itemize}
-% % \item $w_k = 1 / K$
-% % \item $\displaystyle w_k = \frac{ (d_k - \epsilon)_+ }
-% %   { \sum_{\ell=1}^K (d_{\ell} - \epsilon)_+ }$
-% % \item $\displaystyle w_k = \frac{ d_{k}^2 }{ \sum_{\ell=1}^K d_{\ell}^2 }$
-% % \end{itemize}
-% When using composite quantile levels we write the classifier as follows.  For
-% new observation $z$, classify to
-% \begin{equation}
-%   \label{eq: composite classifier}
-%   \left\{ 
-%     \begin{array}{lcl}
-%       \Pi_0, & & \displaystyle \text{if} \hspace{3mm} \sum_{k=1}^K w_{jk}\,
-%                  \bigg\{ \rho_{\theta_k} \left( z - \widehat{F}^{-1}_1 (\theta_k) \right) -
-%                  \rho_{\theta_k} \left( z - \widehat{F}^{-1}_0 (\theta_k) \right) \bigg\}
-%                  ~>~ 0 \\[2ex]
-%       \Pi_1, & & \text{otherwise} \\[1ex]
-%     \end{array}
-%   \right.
-% \end{equation}
-
-
-% \subsection{Optimal quantile level estimation properties}
-% \label{sec: opt quantile est}
-
-% In this section we investigate the finite-sample properties of the leave-one-out
-% cross validation approach for estimating the classification rate as a function
-% of quantile level.
-% \\
-% ****  TODO: rework this section if we think it belongs in the paper.  *****
-% \\
-% \includegraphics[width=1\textwidth]{../../R_Scratch/Plots/Case1.pdf}
-
-
 
 \subsection{Optimality and consistency of the quantile classifier}
 \label{sec:quantile-classifier-optimality}
@@ -460,45 +295,6 @@ explained by the fact that the model complexity is the same for all of the
 possible quantile classifier models, so we do not need to include a model
 validation training step to defend against overfitting the model to the data.
 
-% \begin{proof}
-%   The fact that
-%   $\Psi(\hat{\theta}_n) \stackrel{p}{\longrightarrow} \Psi(\tilde{\theta})$ is a
-%   special case of Theorem 1 in \cite{hennig2016} for a feature-space of
-%   dimension 1.  Furthermore, during the proof of that theorem it was shown that
-%   under Assumptions 1 and 2, $\Psi$ is a continuous function of $\theta$.  To
-%   show that $\hat{\theta}_n \stackrel{p}{\longrightarrow} \tilde{\theta}$
-%   suppose that the claim doesn't hold.  Then there exists an $\epsilon > 0$ and
-%   $\delta > 0$ such that for all $N \in \mathbb{N}$, there exists an $n \geq N$
-%   such that
-%   \begin{equation*}
-%     \prob\Big(
-%     \big| \hat{\theta}_n - \tilde{\theta} \big|
-%     > \epsilon \Big)
-%     \geq \delta.
-%   \end{equation*}
-%   Now, because $\Psi$ is continuous and $\Psi(\tilde{\theta})$ is a unique
-%   maximum, it follows that we can find $\nu > 0$ such that
-%   \begin{equation*}
-%     \min \left\{
-%       \big| \Psi(\Tilde{\theta} - \epsilon) - \Psi(\tilde{\theta}) \big|\,,
-%       \hspace{2mm}
-%       \big| \Psi(\Tilde{\theta} + \epsilon) - \Psi(\tilde{\theta}) \big|
-%     \right\} \geq \nu.
-%   \end{equation*}
-%   Therefore, for all $N \in \mathbb{N}$, there exists an $n \geq N$ such that
-%   \begin{equation*}
-%     \prob\Big(
-%     \big| \Psi(\hat{\theta}_n) - \Psi(\tilde{\theta}) \big|
-%     \geq \nu \Big) \geq
-%     \prob\Big(
-%     \big| \hat{\theta}_n - \tilde{\theta} \big|
-%     \geq \epsilon \Big)
-%     \geq \delta.
-%   \end{equation*}
-%   But this is in contradiction to the fact that
-%   $\Psi(\hat{\theta}_n) \stackrel{p}{\longrightarrow} \Psi(\tilde{\theta})$.
-% \end{proof}
-
 
 
 
@@ -534,60 +330,8 @@ boundary in Lemma \ref{lem:decision-boundary}.
   to $\Pi_0$ when
   $z ~>~ \theta\, F_{0}^{-1}(\theta) + (1 - \theta)\, F_{1}^{-1}(\theta)$, and
   to $\Pi_1$ otherwise.
-  % \begin{equation}
-  %   \label{eq:alt-quantile-classifier-greater}
-  %   \text{For an observation $z$, classify to:} \hspace{5mm} \left\{ 
-  %     \begin{array}{lcl}
-  %       \Pi_{0}, & & z ~>~ \theta\, F_{0}^{-1}(\theta) +
-  %                    (1 - \theta)\, F_{1}^{-1}(\theta) \\[1ex]
-  %                    % \Pi_{1}, & & z ~=~ \theta F_{(0)}^{-1}(\theta) +
-  %                    % (1 - \theta)\, F_{(1)}^{-1}(\theta) \\[1ex]
-  %       \Pi_{1}, & & \textup{otherwise}
-  %     \end{array} .
-  %   \right.
-  % \end{equation}
 \end{lemma}
 
-% \begin{proof}
-%   Suppose $F_{(0)}^{-1}(\theta) \ne F_{(1)}^{-1}(\theta)$.  It is clear
-%   (e.g. see Figure \ref{fig:phi-lambda}) that $\Phi_{(0)}(z, \theta)$ is
-%   equal to $\Phi_{(1)}(z, \theta)$ at exactly one point, say $\tau$, and that
-%   the following holds:
-%   \begin{equation*}
-%     \left\{
-%       \begin{array}{lll}
-%         \Phi_{(0)}(z, \theta) < \Phi_{(1)}(z, \theta), & & z < \tau \\[1ex]
-%         \Phi_{(0)}(z, \theta) = \Phi_{(1)}(z, \theta), & & z = \tau \\[1ex]
-%         \Phi_{(0)}(z, \theta) > \Phi_{(1)}(z, \theta), & & z > \tau \\
-%       \end{array}
-%     \right.
-%   \end{equation*}
-%   Furthermore, we can infer that
-%   $F_{(0)}^{-1}(\theta) < \tau < F_{(1)}^{-1}(\theta)$.  Setting the loss
-%   functions equal for $z$ in this interval yields:
-%   \begin{align*}
-%     & \Phi_{(0)}(z, \theta) \stackrel{\mathit{set}}{=} \Phi_{(1)}(z, \theta) \\
-%     & \hspace{5mm} \Longleftrightarrow \hspace{5mm}
-%       \ind\!\! \left(z > F_{(0)}^{-1}(\theta)\right) \theta
-%       \left(z - F_{(0)}^{-1}(\theta)\right) +
-%       \ind\!\! \left(z \leq F_{(0)}^{-1}(\theta)\right) (1 - \theta)
-%       \left(F_{(0)}^{-1}(\theta) - z\right) \\
-%     & \hspace{25mm} =
-%       \ind\!\! \left(z > F_{(1)}^{-1}(\theta)\right) \theta
-%       \left(z - F_{(1)}^{-1}(\theta)\right) +
-%       \ind\!\! \left(z \leq F_{(1)}^{-1}(\theta)\right) (1 - \theta)
-%       \left(F_{(1)}^{-1}(\theta) - z\right) \\
-%     & \hspace{5mm} \Longleftrightarrow \hspace{5mm}
-%       \theta \left(z - F_{(0)}^{-1}(\theta)\right) =
-%       (1 - \theta) \left(F_{(1)}^{-1}(\theta) - z\right) \\
-%     & \hspace{5mm} \Longleftrightarrow \hspace{5mm}
-%       z = \theta\, F_{(0)}^{-1}(\theta) + (1 - \theta)\, F_{(1)}^{-1}(\theta).
-%   \end{align*}
-%   It can then be verified that $\Phi_{(0)}(z, \theta) < \Phi_{(1)}(z, \theta)$
-%   corresponds to classifying $z$ to $\Pi_{(0)}$ and that
-%   $\Phi_{(0)}(z, \theta) > \Phi_{(1)}(z, \theta)$ corresponds to classifying $z$
-%   to $\Pi_{(1)}$.  Combining these facts yields the desired result.
-% \end{proof}
 It is interesting to note that the decision rule boundary lies on the line
 segment between $F_0^{-1}(\theta)$ and $F_1^{-1}(\theta)$, with the location of
 the point on the line segment determined by the quantile level.  We saw an
@@ -608,14 +352,6 @@ estimator.
   $x_i$.
 \end{lemma}
 
-% \begin{proof}
-%   % \input{empirical_quant_proof.tex}
-%   The proof is relegated to the supplementary materials.  The result is
-%   essentially a consequence of the fact that the problem can be cast as a linear
-%   programming problem where the extreme points of the feasible set are the
-%   values of the $x_i$.
-% \end{proof}
-
 Futhermore, as a consequence of the results of Lemmas
 \ref{lem:decision-boundary} and \ref{lem:empirical-quantlev}, the result in
 Lemma \ref{lem:decision-rule-time} characterizes the complexity of obtaining the
@@ -626,17 +362,6 @@ empirical decision rule boundary for a given dataset.
   Obtaining the quantile classifier decision rule boundary for a fixed choice of
   quantile level is an $\bigO(n)$ operation.
 \end{lemma}
-
-% \begin{proof}
-%   Constructing the $\theta$-th quantile classifier requires merely finding the
-%   $\lceil \theta n_0 \rceil$-th largest value from the observations that were
-%   drawn from population $\Pi_0$, and the $\lceil \theta n_1 \rceil$-th largest
-%   value from the observations that were drawn from population $\Pi_1$, and then
-%   calculating the decision boundary based on Lemma \ref{lem:decision-boundary}.
-%   Finding the $k$-th largest value of a set is an $\bigO(n)$ operation, and the
-%   calculation to obtain the decision boundary using Lemma
-%   \ref{lem:decision-boundary} is an $\bigO(1)$ operation.
-% \end{proof}
 
 
 
@@ -720,102 +445,6 @@ empirically quantile levels from which to choose.
 \end{figure}
 
 
-% \begin{algorithm}[p]
-%   \label{alg:empirically-optimal-classifier}
-%   \DontPrintSemicolon
-%   \BlankLine
-%   % \KwResult{Write here the result}
-%   \SetKwInOut{Input}{Data}
-%   % \SetKwInOut{Output}{Output}
-%   \Input{$v_1, \dots, v_{n_0}$ from $\Pi_0$ and $w_1, \dots, w_{n_1}$ in
-%     $\Pi_W$}
-%   % \Output{Write here the output}
-%   % \BlankLine
-  
-%   sort observations $v_1, \dots, v_{n_0}$ and $w_1, \dots, w_{n_1}$.  Assume
-%   that in the case of ties, we classify to $\Pi_W$. \;
-  
-%   sort $x_1, \dots, x_r$ a collection of the unique values from among the $v_i$
-%   and $w_i$, and track how many $v_i$ and how many $w_i$ are less than each
-%   $x_j$ \;
-  
-%   calculate in such a way so as to produce a sorted set of quantile levels given by
-%   \begin{equation*}
-%     \Theta = \Big\{ 0 \Big\} \bigcup
-%     \left\{ \frac{k}{n_0}: 1 \leq k \leq n_0 \right\} \bigcup
-%     \left\{ \frac{k}{n_1}: 1 \leq k \leq n_1 \right\}
-%   \end{equation*}
-
-%   \For{$i$ in 2 to $|\Theta|$}{
-    
-%     \BlankLine
-    
-%     calculate $\hat{F}_V^{-1}(\theta_i)$ and $\hat{F}_W^{-1}(\theta_i)$, and
-%     find
-%     \begin{equation*}
-%       a = \min \Big\{ \hat{F}_0^{-1}(\theta_i),~ \hat{F}_1^{-1}(\theta_i) \Big\}
-%       \hspace{5mm} \text{and} \hspace{5mm}
-%       b = \max \Big\{ \hat{F}_0^{-1}(\theta_i),~ \hat{F}_1^{-1}(\theta_i) \Big\}
-%     \end{equation*}
-
-%     calculate the interval
-%     \[
-%       G_i = \Big[
-%       \theta_i\, a + (1 - \theta_i)\, b,
-%       \hspace{3mm}
-%       \theta_{i-1}\, a + (1 - \theta_{i-1})\, b\,
-%       \Big) = \big[x_{\scriptscriptstyle\text{low}},\,
-%       x_{\scriptscriptstyle\text{high}}\big)
-%     \]
-%     % Let $x_{\scriptscriptstyle\text{low}}$ and
-%     % $x_{\scriptscriptstyle\text{high}}$ denote the lower and upper bounds of $G_i$,
-%     % respectively.  \;
-
-%     find the smallest $x_i \in [x_{\scriptscriptstyle\text{low}}, \infty)$.  If
-%     $x_i \geq x_{\scriptscriptstyle\text{high}}$ then calculate the
-%     classification rate for $G_i$.
-
-%     \BlankLine
-
-%     \While{$x_i \in G_i$}{
-
-%       calculate the classification rate for the interval with upper and lower
-%       bounds determined by $x_i$ and
-%       $\min\{x_{i+1}, x_{\scriptscriptstyle\text{high}}\}$, respectively (for
-%       whether bounds in interval are open or closed see below)
-
-%       \BlankLine
-
-%       \uIf{$\hat{F}_V^{-1}(\theta_i) < \hat{F}_W^{-1}(\theta_i)$}{
-%         % partition $G_i$ into the following intervals each with a constant
-%         % classification rate \vspace{-2mm}
-%         calculate classification rate for the interval with bounds $x_i$ and
-%         $x_{i+1}$ among the following:
-%         \begin{equation*}
-%           [x_{\scriptscriptstyle\text{low}}, x_k],\, (x_k, x_{k+1}],\, \dots,\,
-%           (x_{k+s-1}, x_{k+s}],\, (x_{k+s},\, x_{\scriptscriptstyle\text{high}})
-%         \end{equation*}
-%       }
-%       \Else{
-%         % partition $G_i$ into the following intervals each with a constant
-%         % classification rate \vspace{-2mm}
-%         calculate classification rate for the interval with bounds $x_i$ and
-%         $x_{i+1}$ among the following:
-%         \begin{equation*}
-%           [x_{\scriptscriptstyle\text{low}}, x_k),\, [x_k, x_{k+1}),\, \dots,\,
-%           [x_{k+s-1}, x_{k+s}),\, [x_{k+s},\, x_{\scriptscriptstyle\text{high}})
-%         \end{equation*}
-%       }
-
-%       map interval back to corresponding interval in the quantile levels space \;
-      
-%       $x_i \leftarrow x_{i+1}$
-            
-%     }
-    
-%   }
-%   \caption{calculate the empirically optimal quantile classifer}
-% \end{algorithm}
 
 
 \begin{algorithm}[ht]
@@ -826,11 +455,7 @@ empirically quantile levels from which to choose.
   \SetKwInOut{Input}{Data}
   \Input{$v_1, \dots, v_{n_0}$ from $\Pi_0$ and $w_1, \dots, w_{n_1}$ in
     $\Pi_1$}
-  
-  % sort observations $v_1, \dots, v_{n_0}$ and $w_1, \dots, w_{n_1}$ \;
-  
-  % Sort $x_1, \dots, x_r$ a collection of the unique values from among the $v_i$
-  % and $w_i$ \;
+
 
   Sort $v_1, \dots, v_{n_0}, w_1, \dots, w_{n_1}$ and denote the unique values
   as $x_1, \dots, x_r$
@@ -864,9 +489,6 @@ empirically quantile levels from which to choose.
       \Big) = \big[x_{\scriptscriptstyle\text{low}},\,
       x_{\scriptscriptstyle\text{high}}\big)
     \]
-    % Let $x_{\scriptscriptstyle\text{low}}$ and
-    % $x_{\scriptscriptstyle\text{high}}$ denote the lower and upper bounds of $G_i$,
-    % respectively.  \;
 
     partition
     $\big[x_{\scriptscriptstyle\text{low}},\,
@@ -883,38 +505,6 @@ empirically quantile levels from which to choose.
   The decision rule for the empirically optimal quantile classifier can be
   obtained in $\mathcal{O}(n^2)$ time.
 \end{proposition}
-
-% \begin{proof}
-%   Sorting the data is an $\mathcal{O}(n \log n)$ operation.  The operations
-%   performed in line 2 of Algorithm \ref{alg:empirically-optimal-classifier}
-%   takes $\mathcal{O}(n)$ time.
-
-%   The outer loop beginning on line 3 of Algorithm
-%   \ref{alg:empirically-optimal-classifier} requires some number of iterations
-%   that is bounded from above by $n - 1$.  Within each iteration, calculating
-%   $F_V^{-1}$ and $F_W^{-1}$ and the interval $G_i$ are each constant time
-%   operations.
-
-%   The step in line 6 of Algorithm \ref{alg:empirically-optimal-classifier} is
-%   really a high-level view of a second loop.  This inner loop requires first
-%   finding the set of $x_i$'s with values in
-%   $\big[x_{\scriptscriptstyle\text{low}},\,
-%   x_{\scriptscriptstyle\text{high}}\big)$ which is an $\mathcal{O}(\log n)$
-%   operation.  The number of times that the inner loop is performed is determined
-%   by the number of points with values in the interval and is bounded from above
-%   by $n - 1$.  Calculating the classification rate the sub-interval in each step
-%   of the inner loop is a constant time operation, as is mapping the sub-interval
-%   back to the quantile levels space.
-
-%   So combining the worst-case bound for the outer and inner loops, we find that
-%   the total number of intervals for which we calculate the classification rate
-%   for has a worst-case bound on the order of $n^2$ intervals, and that each
-%   calculation is a constant time operation for a total cost of
-%   $\mathcal{O}(n^2)$ time.  The initial operations performed in lines 1-2 of
-%   Algorithm \ref{alg:empirically-optimal-classifier} have an aggregate cost with
-%   $\mathcal{O}(n \log n)$ time, so in total the algorithm runs in
-%   $\mathcal{O}(n^2)$ time.
-% \end{proof}
 
 It remains an open question as to whether the bound obtained in Proposition
 \ref{lem:optimal-quantile-time} is actually achievable.  In practice, for both
