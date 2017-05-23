@@ -10,7 +10,7 @@ FANS \cite{fan2016}, penalized linear regression ($\ell_1$ penalty)
 k-nearest neighbor \cite{cover1967}, naive Bayes \cite{hastie2009}, nearest
 shrunken centroids \cite{tibshirani2002}, penalized LDA \cite{witten2011}, and
 decision trees \cite{breiman1984}.  Detailed descriptions of the settings and
-software implementations for each of these methods is provided in the
+software implementations for each of these methods are provided in the
 supplementary materials.
 
 
@@ -49,27 +49,27 @@ into 5 blocks of 10 and the following transformations performed to each block:
 and $W_{ij} \sim \exp(Z_j) + 0.2$, (iii) $V_{ij} \sim \log |Z_j|$ and
 $W_{ij} \sim \log |Z_j| + 0.1$, (iv) $V_{ij} \sim Z_j^2$ and
 $W_{ij} \sim Z_j^2 + 0.2$, and (v) $V_{ij} \sim |Z_j|^{1/2}$ and
-$W_{ij} \sim |Z_j|^{1/2} + 0.1$.  In one setting we consider uncorrelated data
-for the underlying Gaussian distribution, and in another setting we consider
-autoregressive correlation.
+$W_{ij} \sim |Z_j|^{1/2} + 0.1$.  In Table \ref{tab:block-transformed-corr0} we
+consider uncorrelated data for the underlying Gaussian distribution, and in
+Table \ref{tab:block-transformed-corr08} we consider autoregressive correlation.
 
 In the second scenario, we consider data with different distributional shapes
 within each feature.  In one setting we consider data with features following
 independent beta distributions and in another setting we considered data with
 features following independent gamma distributions.  The beta distribution
-parameters were sampled as follows.  Two shape parameters were sampled for each
-feature each from a $\mathit{unif}(0.1, 3)$ and $\mathit{unif}(0.5, 3)$
-distribution for each shape parameter, respectively.  Then for each class and
-feature, each parameter was transformed by taking the absolute value of some
-additive Gaussian random noise.  So for example, suppose that $\alpha_j$ and
-$\beta_j$ are the shape parameters drawn for the $j$-th feature.  Then for each
-class the distributional parameters are each sampled from
-$|\alpha_j + N(0, \sigma_j^2)|$ and $|\beta_j + N(0, \sigma_j^2)|$
-distributions.  $\sigma_1, \dots, \sigma_{50}$ were given by a fixed sequence
-each with values between 0.05 and 0.20.  Once the shape parameters were sampled,
-the same parameters were used for every replicate and every simulation study.
-The gamma distribution parameters in the other setting were sampled in
-essentially the same manner.
+parameters were sampled as follows.  Two shape parameters fore each feature were
+sampled from a $\mathit{unif}(0.1, 3)$ and $\mathit{unif}(0.5, 3)$ distribution
+for each shape parameter, respectively.  Then for each class and feature, each
+parameter was transformed by taking the absolute value of some additive Gaussian
+random noise.  So for example, suppose that $\alpha_j$ and $\beta_j$ are the
+shape parameters drawn for the $j$-th feature.  Then for each class the
+distributional parameters are each sampled from $|\alpha_j + N(0, \sigma_j^2)|$
+and $|\beta_j + N(0, \sigma_j^2)|$ distributions.  The parameters
+$\sigma_1, \dots, \sigma_{50}$ were given by a fixed sequence each with values
+between 0.05 and 0.20.  Once the shape parameters were sampled, the same
+parameters were used for every replicate and every simulation study.  The gamma
+distribution parameters in the other setting were sampled in essentially the
+same manner.
 
 One issue with the composite quantile-based classifiers approach is that the
 data is partitioned into two parts: one for selecting quantile levels and
@@ -89,10 +89,10 @@ quantile levels as selected by the quantile-based classifiers method and then
 applying the linear combination step on the transformed variables as in the
 usual composite quantile-based classifiers method, which we call the hybrid
 approach.  This results in choosing quantile levels that are more stable at the
-cost of losing flexibility.  In practice, our suggestion is that when the amount
-of available data is relatively small, say less than 100, to perform
-cross-validation to choose between the regular and the hybrid approach.  It is
-noted in the discussion of the simulations whenever the hybrid approach is used.
+cost of losing flexibility.  When the amount of available data is relatively
+small, say less than 100, one can perform cross-validation to choose between the
+regular and the hybrid approach.  It is noted in the discussion of the
+simulations whenever the hybrid approach is used.
 
 
 % \subsubsection{Classifier implementations and settings}
@@ -140,7 +140,7 @@ abbreviated as CQC augmented.  Simulation results for the block transformed
 Gaussian setting are shown in Tables \ref{tab:block-transformed-corr0} and
 \ref{tab:block-transformed-corr08}.  In these settings composite quantile-based
 classifiers and FANS typically perform better than other classifiers.  Decision
-trees also performs well in some settings, which suggests that there are some
+trees also perform well in some settings, which suggests that there are some
 relatively discriminative features.  When the quantity of the training data
 decreases to $n = 50$ we see a sharp rise in the misclassification rates for all
 methods.  It is in this setting that the hybrid quantile-based classifiers do
@@ -163,9 +163,9 @@ composite quantile-based classifiers to select varying quantile levels results
 in better performance as compared to quantile-based classifiers.  Similar
 results are exhibited for the gamma distributed data, although in this case
 quantile-based classifiers perform about as well as composite quantile-based
-classifiers.  We see this as suggesting that there happen to be a number of
+classifiers.  We see this as suggesting that there happens to be a number of
 features with similar optimal quantile levels that quantile-based classifiers
-can select to achieve similar performance as the more flexible approach.
+can select to achieve similar performance as the more flexible approaches.
 
 \input{tables_paper.tex}
 
@@ -179,10 +179,10 @@ For a real data study, we consider a spam email data set with a total of 4,601
 observations and 57 features.  The attributes are, for example, the percentage
 of specific words or phrases in the email (e.g. money, free, order), the average
 and maximum run lengths of uppercase letters, and the total number of uppercase
-letters.  The features for this data are typically highly skewed: often 90\% of
-the data have no occurrences of a word while a few emails have a high rate.
-39\% of the emails in the data set were spam emails, versus 61\% non-spam
-emails.
+letters.  The features for this data set are typically highly skewed: often 90\%
+of the data have no occurrences of a word while a few emails have a high rate.
+In this data set 39\% of the emails in the data set were spam emails, versus 61\%
+non-spam emails.
 
 Various settings were considered for this data as follows.  For each setting, a
 certain amount of data was randomly selected to be the training data, and the
@@ -190,9 +190,10 @@ misclassification rate was then based on the remaining holdout data.  The number
 of observations used to train the classifiers for the various settings was 100,
 250, 500, and 1000 observations, respectively.  The misclassification rate as
 the number of training observations increased for more than 1,000 training
-observations was nearly constant across the classifiers and is not shown.
+observations was nearly constant for all of the classifiers and consequently is
+not shown.
 
-We observe that augmented quantile-based classifiers has nearly the lowest
+We observe that augmented quantile-based classifiers have nearly the lowest
 misclassification rate across all of the settings.  Penalized logistic
 regression is one of the better competitors which suggests that a linear
 decision rule boundary is a reasonable choice of boundary for this problem.  The

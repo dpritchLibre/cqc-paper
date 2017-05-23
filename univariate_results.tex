@@ -24,11 +24,11 @@ quantile classifier in the univariate setting.  A closed-form expression for the
 decision boundary for the quantile classifier for a fixed choice of quantile
 level is derived, as well as a closed-form solution for the empirical quantile
 for a given quantile level.  It is shown that these two results in conjunction
-yield a decision rule that can be found in $\bigO(n)$ time, where $n$ is the
-number of observations in the training data.  Consistency of both the estimated
-optimal quantile level and that of the empirically optimal quantile classifier
-is established.  Furthermore, an algorithm is proposed that obtains the decision
-rule for the empirically optimal quantile classifier in $\bigO(n^2)$ time.
+yield a decision rule that can be found in linear time.  Consistency of both the
+estimated optimal quantile level and that of the empirically optimal quantile
+classifier is established.  Furthermore, an algorithm is proposed that obtains
+the decision rule for the empirically optimal quantile classifier in quadratic
+time.
 
 
 
@@ -87,30 +87,47 @@ defined as follows.
     \end{array} .
   \right.
 \end{equation}
-To further demonstrate the $\theta$-th quantile classifier and the relationship
-between the quantile distances and the difference of the quantile distances two
-small examples are provided in Figure \ref{fig:phi-lambda}.  In these examples
-we suppose that $F_0^{-1}(\theta) < F_1^{-1}(\theta)$ at both the 0.25- and
-0.75-th quantile levels, and that $F_1^{-1}(\theta) - F_0^{-1}(\theta)$ is the
-same for the two quantile levels.  This is the case for example for populations
-that follow $N(0, 1)$ and $N(1, 1)$ distributions.  In the upper-left plot we
-show the check loss distance to the populations' 0.25-th quantiles as a function
-of input $z$ and denoted as $\Phi_1$ and $\Phi_0$, while in the bottom-left plot
-we show the difference of these same check loss distances, i.e.
-$\Lambda = \Phi_1 - \Phi_0$, again as a function of input $z$.  The upper-right
-and lower right plots also show the check loss distances and difference between
-the distances, but instead with respect to the populations' 0.75-th quantiles.
-In each of these figures $\tau_{\theta}$ can be seen to represent the decision
-rule boundary point, i.e. when $\Lambda = 0$.  We note that the decision rule
-boundary is always between $F_{0}^{-1}$ and $F_{1}^{-1}$, and that when the
-quantile level is less than 1/2 that $\tau_{\theta}$ is closer to $F_{1}^{-1}$,
-and conversely that when the quantile level is greater than 1/2 that
-$\tau_{\theta}$ is closer to $F_{0}^{-1}$.  Finally, we note that $\Lambda$ is
-piecewise linear with a slope of -1 between $F_{0}^{-1}(\theta)$ and
+\begin{figure}[ht]
+  \caption[Quantile loss function]{Plots of the check loss function for various
+    choices of quantile levels.}
+  \label{fig:quantile-loss}
+  \vspace{5mm}
+
+  \begin{minipage}[t]{0.33\linewidth}
+    \centering
+    \includegraphics{check-loss-0-1}
+  \end{minipage}
+  \begin{minipage}[t]{0.33\linewidth}
+    \centering
+    \includegraphics{check-loss-0-5}
+  \end{minipage}
+  \begin{minipage}[t]{0.33\linewidth}
+    \centering
+    \includegraphics{check-loss-0-9}
+  \end{minipage}
+  
+\end{figure}
+Two small examples are provided in Figure \ref{fig:phi-lambda} to further
+demonstrate the $\theta$-th quantile classifier and the relationship between the
+quantile distances and the difference of the quantile distances.  In these
+examples we suppose that $F_0^{-1}(\theta) < F_1^{-1}(\theta)$ at both the 0.25-
+and 0.75-th quantile levels, and that $F_1^{-1}(\theta) - F_0^{-1}(\theta)$ is
+the same for the two quantile levels.  This is the case for example for
+populations that follow $N(0, 1)$ and $N(1, 1)$ distributions.  In the
+upper-left plot we show the check loss distance to the populations' 0.25-th
+quantiles as a function of input $z$ and denoted as $\Phi_1$ and $\Phi_0$, while
+in the bottom-left plot we show the difference of these same check loss
+distances, i.e.  $\Lambda = \Phi_1 - \Phi_0$, again as a function of input $z$.
+The upper-right and lower right plots also show the check loss distances and
+difference between the distances, but instead with respect to the populations'
+0.75-th quantiles.  In each of these figures $\tau_{\theta}$ can be seen to
+represent the decision rule boundary point, i.e. when $\Lambda = 0$.  We note
+that the decision rule boundary is always between $F_{0}^{-1}$ and $F_{1}^{-1}$,
+and that when the quantile level is less than 1/2 that $\tau_{\theta}$ is closer
+to $F_{1}^{-1}$, and conversely that when the quantile level is greater than 1/2
+that $\tau_{\theta}$ is closer to $F_{0}^{-1}$.  Finally, we note that $\Lambda$
+is piecewise linear with a slope of $-1$ between $F_{0}^{-1}(\theta)$ and
 $F_{1}^{-1}(\theta)$, and is constant otherwise.
-
-
-
 
 Finally, let $Z$ be a random variable with a prior probability $\pi_0$ of being
 a member of population $\Pi_0$, and $\pi_1 = 1 - \pi_0$ the prior probability of
@@ -132,28 +149,6 @@ with the optimal quantile level $\theta$ the optimal quantile classifier.  Since
 in practice the optimal choice of $\theta$ is unknown, this necessitates the
 emprically optimal quantile classifier, which is presented in Section
 \ref{sec:empirical-classifier}.
-
-
-\begin{figure}[ht]
-  \caption[Quantile loss function]{Plots of the check loss function for various
-    choices of quantile levels.}
-  \label{fig:quantile-loss}
-  \vspace{5mm}
-
-  \begin{minipage}[t]{0.33\linewidth}
-    \centering
-    \includegraphics{check-loss-0-1}
-  \end{minipage}
-  \begin{minipage}[t]{0.33\linewidth}
-    \centering
-    \includegraphics{check-loss-0-5}
-  \end{minipage}
-  \begin{minipage}[t]{0.33\linewidth}
-    \centering
-    \includegraphics{check-loss-0-9}
-  \end{minipage}
-  
-\end{figure}
 
 
 \begin{figure}[ht]
@@ -621,10 +616,10 @@ estimator.
 %   values of the $x_i$.
 % \end{proof}
 
-Futhermore, as a consequence of the results of Lemma
-\ref{lem:empirical-quantlev} and Lemma \ref{lem:decision-boundary}, the result
-in Lemma \ref{lem:decision-rule-time} characterizes the complexity of obtaining
-the empirical decision rule boundary for a given dataset.
+Futhermore, as a consequence of the results of Lemmas
+\ref{lem:decision-boundary} and \ref{lem:empirical-quantlev}, the result in
+Lemma \ref{lem:decision-rule-time} characterizes the complexity of obtaining the
+empirical decision rule boundary for a given dataset.
 
 \begin{lemma}
   \label{lem:decision-rule-time}
@@ -683,9 +678,12 @@ An illustrative example for a small data set is presented as Figure
 \ref{fig:empirical-classification-rate} showing the decision rule boundary and
 corresponding classification rate as a function of the quantile level.  A data
 set for class 0 with 7 observations was sampled from independent $N(0, 1)$
-distributions yielding the values -0.96, -0.78, -0.46, -0.10, 0.24, 0.98, 1.61,
-and a data set for class 1 with 5 observations was sampled from independent
-$N(1, 1)$ distributions yielding the values -0.60, 0.37, 0.64, 1.37, 1.78.
+distributions yielding the values
+$-0.96,\allowbreak -0.78,\allowbreak -0.46,\allowbreak -0.10,\allowbreak
+0.24,\allowbreak 0.98,\allowbreak 1.61$, and a data set for class 1 with 5
+observations was sampled from independent $N(1, 1)$ distributions yielding the
+values
+$-0.60,\allowbreak 0.37,\allowbreak 0.64,\allowbreak 1.37,\allowbreak 1.78$.
 These values are shown as the horizontal lines in the top panel, along with the
 decision rule boundaries corresponding to this data which are displayed as the
 diagonal blue lines.  The dashed vertical lines represent the quantile levels at
@@ -696,12 +694,12 @@ figure we see that the classification rate of the quantile classifier is
 constant for the intervals between the quantile estimate change points except
 when the set of corresponding decision rule boundary values includes values in
 the data.  When this is the case the intervals can be further divided into
-sub-intervals with a constant classification rate.  For this example the
-theoretically optimal quantile level is 0.5, which is indeed one of the
+sub-intervals with a constant classification rate.  For this particular example
+the theoretically optimal quantile level is 0.5, which is indeed one of the
 empirically optimal quantile levels.
 
-One issue yet to be addressed that is evident in this example is how to choose a
-quantile level based on a training data set when there is more than one
+One issue that has yet to be addressed that is evident in this example is how to
+choose a quantile level based on a training data set when there is more than one
 empirically optimal value.  When this is the case, as it typically is, we find
 that selecting the value closest to the median works well in many settings.  One
 argument for this choice is that the median is the optimal choice of quantile

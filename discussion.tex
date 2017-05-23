@@ -2,21 +2,21 @@
 \section{Discussion}
 \label{sec:discussion}
 
-We propose a family of classification rules based on the marginal quantiles of
-the class features.  The univariate quantile classifier is equal to the Bayes
-rule for the optimal choice of quantile level and under some assumptions, so we
-consider this as a starting point for constructing a multivariate classifier.
-The multivariate classifiers considered in this paper are constructed in a two
-step process.  First, the marginal quantiles of the data are estimated and an
-estimate of the optimal quantile level for each component is calculated.
-Secondly, a rule for combining the information provided by an observation's
-quantile distances to the marginal within-class quantile is constructed through
-a linear combination obtained using penalized linear regression.  We observe
-competitive performance of composite quantile-based classifiers in simulation
-examples and a spam email classification application.  The composite
-quantile-based classifiers decision rule is computationally efficient to train
-and the decision rule boundary has a simple piecewise-linear form that is
-well-suited for high-dimensional settings.
+In this paper, We propose a family of classification rules based on the marginal
+quantiles of the class features.  The univariate quantile classifier is equal to
+the Bayes rule for the optimal choice of quantile level and under some
+assumptions.  Motivated by this, we consider univariate quantile classifiers as
+a starting point for constructing a multivariate classifier.  The multivariate
+classifiers considered in this paper are constructed in a two step process.
+First, the marginal quantiles of the data are estimated and an estimate of the
+optimal quantile level for each component is calculated.  Secondly, a rule for
+combining the information provided by an observation's quantile distances to the
+marginal within-class quantile is constructed through a linear combination
+obtained using penalized linear regression.  We observe competitive performance
+of composite quantile-based classifiers in simulation examples and a spam email
+classification application.  The composite quantile-based classifiers decision
+rule is computationally efficient to train and the decision rule boundary has a
+simple piecewise-linear form that is well-suited for high-dimensional settings.
 
 
 

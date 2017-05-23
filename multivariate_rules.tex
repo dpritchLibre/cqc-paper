@@ -77,11 +77,11 @@ population's component-wise quantiles.  A natural way to incorporate both the
 distances and the number of components that an observation is closer to is to
 simply sum up the $\Lambda_j(z_j, \theta_j)$'s and classify according to whether
 the result is positive or negative.  This approach has a few difficulties
-however.  One potential drawback is that equal weight is given to each of
+however.  One potential drawback is that equal weights are given to each of
 features.  Naturally, some features may potentially be more discriminatory and
 we would like to draw more heavily on these features for classification
 purposes.  The second is an issue of scaling.  Features with a larger scale than
-other features will implicitly be given more discriminatory weight under this
+other features will implicitly be given higher discriminatory weight under this
 scheme.  Finally, we would like to be able to account for dependencies that may
 exist in the data.  With these issues in mind we propose using a linear
 combination of the $\Lambda_j(z_j, \theta_j)$'s as follows.  We call this family
@@ -104,18 +104,18 @@ of classifiers \emph{composite quantile-based classifiers}.
 for $\vec{\alpha} = (\alpha_0, \dots, \alpha_p) \in \mathbb{R}^{p+1}$.  By
 introducing the coefficients to the classification model this in principle
 provides the ability to both handle the differences in scale of the features and
-to provide more or less weight to variables as a function of their
-discriminatory power. Additionally, while we do not explicitly model
-dependencies between the features, allowing the coefficients to take on both
-positive and negative values permits the model to account for features' joint
-effects and to select a good linear combination of features as the decision rule
-boundary.  Finally, the coefficient $\alpha_0$ can be interpreted as an offset
-to classify an observation when the linear combination of the differences of the
-quantile distances is small.  This is useful when the prior probability of an
-observation being drawn from one class is higher than for the other.  When this
-is the case, we can require a higher threshold of closeness for an observation
-to a population that has a low prior probability before we decide to classify
-the observation to that population.
+to provide varying weight to variables as a function of their discriminatory
+power. Additionally, while we do not explicitly model dependencies between the
+features, allowing the coefficients to take on both positive and negative values
+permits the model to account for features' joint effects and to select a good
+linear combination of features as the decision rule boundary.  Finally, the
+coefficient $\alpha_0$ can be interpreted as an offset to classify an
+observation when the linear combination of the differences of the quantile
+distances is small.  This is useful when the prior probability of an observation
+being drawn from one class is higher than for that the other.  When this is the
+case, we can require a higher threshold of closeness for an observation to a
+population that has a low prior probability before we decide to classify the
+observation to that population.
 
 
 \subsubsection{Properties of composite quantile-based classifiers}
@@ -229,12 +229,13 @@ see that the decision rule boundary is given by
 \end{equation}
 As an aside, we note that the set of $\vec{z}$ that satisfy
 (\ref{eq:composite-classifiers-boundary}) may be empty for certain choices of
-$(\alpha_0, \dots, \alpha_p, \allowbreak\theta_1, \allowbreak\dots, \allowbreak\theta_p)$, which corresponds to a
-decision rule that only classifies observations to one of the two classes.  If
-the solution set is nonempty, then we can show that the decision rule boundary
-is a piecewise linear function with a particularly simple form, as is discussed
-in what follows.  Let us define the component-wise quantile classifier decision
-boundary $\tau_j$ to be the unique point satisfying
+$(\alpha_0, \dots, \alpha_p, \allowbreak\theta_1, \allowbreak\dots,
+\allowbreak\theta_p)$, which corresponds to a decision rule that exclusively
+classifies observations to one of the two classes.  If the solution set is
+nonempty, then we can show that the decision rule boundary is a piecewise linear
+function with a particularly simple form, as is discussed in what follows.  Let
+us define the component-wise quantile classifier decision boundary $\tau_j$ to
+be the unique point satisfying
 $\Lambda_j (\tau_j, \theta_j) = 0,~ j = 1, \dots, p$.  We can assume without
 loss of generality that $\tau_j$ is unique because it is only non-unique when
 $\Lambda(\,\cdot\,,\, \theta_j)$ is identically zero, in which case the problem
@@ -630,12 +631,11 @@ nonlinear in the original features.  The difference in the classifiers comes of
 course from the transformation performed on each of the components.
 
 One final point that was noted in \cite{fan2016} and bears repeating here, is
-that instead of using penalized linear regression, FANS may well use the SVM
-(linear kernel) or any other linear classifier as a means through which to
-obtain the transformed feature coefficient values.  Indeed, this observation is
-equally true with composite quantile-based classifiers as well.  In this paper,
-as in \cite{fan2016}, we focus on using penalized linear regression with the
-$\ell_1$ penalty.
+that instead of using penalized linear regression, composite quantile-based
+classifiers may well use the SVM (linear kernel) or any other linear classifier
+as a means through which to obtain the transformed feature coefficient values.
+In this paper, as in \cite{fan2016}, we focus on using penalized linear
+regression with the $\ell_1$ penalty.
 
 
 
@@ -876,13 +876,13 @@ split the data.  Based on empirical evidence, we suggest randomly splitting the
 data into evenly-sized partitions.  In our experience, this equitable
 partitioning tends to work well across different sizes and types of data.
 
-While alleviating one problem, splitting the data leads to a another concern:
+While alleviating one problem, splitting the data leads to another concern:
 namely that different splits of the data can lead to different model choices.
-To protect against arbitrary assignments of the data, the data is split not just
-once but multiple times, and a classification model is procured for each split.
-The final model is then obtained by averaging the individual models in the
-following sense.  Let $f_i$ be one of the individual models among a total of $L$
-data splits.  Then a new observation $\vec{z}$ is classified according to
+To protect against arbitrary assignments of the data, the data are split not
+just once but multiple times, and a classification model is procured for each
+split.  The final model is then obtained by averaging the individual models in
+the following sense.  Let $f_i$ be one of the individual models among a total of
+$L$ data splits.  Then a new observation $\vec{z}$ is classified according to
 $\frac{1}{L} \sum_{i=1}^L f_i(\vec{z})$ where the decision rule boundary is 0
 (furthermore, since the boundary rule is 0 we need not divide by $L$).  We note
 that the process described here is similar in concept to the ideas presented in
@@ -1005,7 +1005,7 @@ can be calculated independently of the other features (lines 3-8 of Algorithm
 combination coefficients can be parallelized over the folds in the
 cross-validation procedure (line 9 of Algorithm \ref{alg:classifier}).
 Exploiting these opportunities for parallelism leads to the run time complexity
-described in below.
+described below.
 
 \begin{proposition}
   \label{thm:cqc-runtime}
@@ -1328,13 +1328,13 @@ populations where the within-class distributions follow independent beta
 distributions, and in the right panel we consider populations where the
 within-class distributions follow independent gamma distributions.  The
 parameters of the beta and gamma distributions were chosen at random.  As in the
-previous example, contour lines denoting 68\% and 95\% percent of the
-distributional mass for each population are shown.  The Bayes rule decision
-boundary is shown as the black line and the composite quantile-based decision
-rule boundary is shown as the blue line.  The composite quantile-based
-classifiers rule has a classification rate of 0.84 compared to 0.87 for the
-Bayes rule for the beta distributed data, and a classification rate of 0.75
-compared to 0.76 for the gamma distributed data.
+previous example, contour lines denoting 68\% and 95\% of the distributional
+mass for each population are shown.  The Bayes rule decision boundary is shown
+as the black line and the composite quantile-based decision rule boundary is
+shown as the blue line.  The composite quantile-based classifiers rule has a
+classification rate of 0.84 compared to 0.87 for the Bayes rule for the beta
+distributed data, and a classification rate of 0.75 compared to 0.76 for the
+gamma distributed data.
 
 In both examples we see that the Bayes rule decision boundary is nonlinear, so
 we can only at best hope to approximate it.  Fortunately, in both examples the
@@ -1370,11 +1370,13 @@ these examples is that the classification rate does not in general achieve the
 Bayes rule classification rate even in the limit.  This is a consequence of the
 piecewise linear form of the decision rule boundary.  We view this limitation as
 a trade-off between simplicity of the classifier and its ability to perform well
-in all situations.  Because of the simple nature of the classifier it is
-well-suited for high-dimensional problems even in the presence of limited data.
-For settings where the Bayes rule decision boundary is linear as in Example 1, a
-variant of composite quantile-based classifiers is discussed in the following
-section that can achieve the Bayes rule classification rate.
+in all situations.  A similar property holds for tree-based methods, which
+perform a vertical or horizontal cut at each stage.  Because of the simple
+nature of the classifier it is well-suited for high-dimensional problems, even
+in the presence of limited data.  For settings where the Bayes rule decision
+boundary is linear as in Example 1, a variant of composite quantile-based
+classifiers is discussed in the following section that can achieve the Bayes
+rule classification rate.
 
 
 \subsection{Augmented composite quantile-based classifiers}
