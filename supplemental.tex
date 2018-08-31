@@ -40,6 +40,8 @@
 \def\r/{\textsf{R}}
 \def\matlab/{\textsf{MATLAB}}
 
+\newcommand{\bn}{\fontseries{b}\selectfont} % Bold Number, for highlighting numbers in tables
+
 % Sets the document line spacing; 1.6 is double spacing.  See
 % https://www.sharelatex.com/learn/Paragraph_formatting#Line_spacing
 \linespread{1.6}
@@ -73,16 +75,21 @@
 
 \begin{document}
 
-% title and author specifications
-\title{Supplementary Material for Composite Quantile-Based Classifiers}
-\author[1]{David A. Pritchard}
-\author[2]{Yufeng Liu}
-\affil[1]{Department of Biostatistics, University of North Carolina, Chapel
-  Hill, NC 27599, USA}
-\affil[2]{Department of Statistics and Operations Research, University of North
-  Carolina, Chapel Hill, NC 27599, USA}
-\date{}
-\maketitle
+% title and author information
+\begin{center}
+
+  {\LARGE Composite Quantile-Based Classifiers} \vspace{5mm}
+
+  {\large David A. Pritchard$^1$ and Yufeng Liu$^{2,3,1}$} \vspace{5mm}
+
+  {\large
+    $^1$Department of Biostatistics,
+    $^2$Department of Statistics and Operations Research,
+    $^3$Department of Genetics,
+    University of North Carolina, Chapel Hill, NC 27599, USA
+  }
+
+\end{center}
 
 \section{Theoretical proofs}
 \label{sec:theoretical-proofs}
@@ -233,29 +240,25 @@ algorithm is presented as Algorithm \ref{alg:empirically-optimal-classifier}.
   \SetKwInOut{Input}{Data}
   % \SetKwInOut{Output}{Output}
   \Input{$v_1, \dots, v_{n_0}$ from $\Pi_0$ and $w_1, \dots, w_{n_1}$ in
-    $\Pi_W$}
+    $\Pi_1$}
   % \Output{Write here the output}
   % \BlankLine
   
   sort observations $v_1, \dots, v_{n_0}$ and $w_1, \dots, w_{n_1}$.  Assume
-  that in the case of ties, we classify to $\Pi_W$. \;
+  that in the case of ties, we classify to $\Pi_1$. \;
   
-  sort $x_1, \dots, x_r$ a collection of the unique values from among the $v_i$
-  and $w_i$, and track how many $v_i$ and how many $w_i$ are less than each
-  $x_j$ \;
+  sort $v_1, \dots, v_{n_0}, w_1, \dots, w_{n_1}$ and denote the unique values
+  as $x_1, \dots, x_r$
   
-  calculate in such a way so as to produce a sorted set of quantile levels given by
-  \begin{equation*}
-    \Theta = \Big\{ 0 \Big\} \bigcup
-    \left\{ \frac{k}{n_0}: 1 \leq k \leq n_0 \right\} \bigcup
-    \left\{ \frac{k}{n_1}: 1 \leq k \leq n_1 \right\}
-  \end{equation*}
+  Produce a sorted set of quantile levels given by
+  $ \Theta = \Big\{ 0 \Big\} \bigcup \left\{ \frac{k}{n_0}: 1 \leq k \leq n_0
+  \right\} \bigcup \left\{ \frac{k}{n_1}: 1 \leq k \leq n_1 \right\} $
 
   \For{$i$ in 2 to $|\Theta|$}{
     
     \BlankLine
     
-    calculate $\hat{F}_V^{-1}(\theta_i)$ and $\hat{F}_W^{-1}(\theta_i)$, and
+    calculate $\hat{F}_0^{-1}(\theta_i)$ and $\hat{F}_1^{-1}(\theta_i)$, and
     find
     \begin{equation*}
       a = \min \Big\{ \hat{F}_0^{-1}(\theta_i),~ \hat{F}_1^{-1}(\theta_i) \Big\}
@@ -291,7 +294,7 @@ algorithm is presented as Algorithm \ref{alg:empirically-optimal-classifier}.
 
       \BlankLine
 
-      \uIf{$\hat{F}_V^{-1}(\theta_i) < \hat{F}_W^{-1}(\theta_i)$}{
+      \uIf{$\hat{F}_0^{-1}(\theta_i) < \hat{F}_1^{-1}(\theta_i)$}{
         % partition $G_i$ into the following intervals each with a constant
         % classification rate \vspace{-2mm}
         calculate classification rate for the interval with bounds $x_i$ and
@@ -336,7 +339,7 @@ algorithm is presented as Algorithm \ref{alg:empirically-optimal-classifier}.
     % }  
     
   }
-  \caption{calculate the empirically optimal quantile classifer}
+  \caption{Calculating the empirically optimal quantile classifier}
 \end{algorithm}
 
 
@@ -348,7 +351,7 @@ algorithm is presented as Algorithm \ref{alg:empirically-optimal-classifier}.
 \section{Extended simulation results}
 \label{sec:simulation-results}
 
-\subsubsection{Simulated data scenarios}
+\subsection{Simulated data scenarios}
 \label{sec:simulated-data-scenarios}
 
 Consider the following framework for each of the scenarios.  Let
@@ -402,11 +405,11 @@ absolute value of some additive Gaussian random noise.  So for example, suppose
 that $\alpha_j$ and $\beta_j$ are the shape parameters drawn for the $j$-th
 feature.  Then for each class the distributional parameters are each sampled
 from $|\alpha_j + N(0, \sigma_j^2)|$ and $|\beta_j + N(0, \sigma_j^2)|$
-distributions.  $\sigma_1, \dots, \sigma_{50}$ were given by a fixed sequence
-each with values between 0.05 and 0.20.  Once the shape parameters were sampled,
-the same parameters were used for every replicate and every simulation study.
-Finally, the gamma distribution parameters in the eighth scenario were sampled in
-essentially the same manner.
+distributions.  The parameters $\sigma_1, \dots, \sigma_{50}$ were given by a
+fixed sequence each with values between 0.05 and 0.20.  Once the shape
+parameters were sampled, the same parameters were used for every replicate and
+every simulation study.  Finally, the gamma distribution parameters in the
+eighth scenario were sampled in essentially the same manner.
 
 
 % \subsubsection{Hybrid CQC and quantile-based classifiers}
@@ -496,10 +499,9 @@ well, although performance deteriorates relative to other methods when
 conditions are less ideal.
 
 Simulation results for the exponentiated Gaussian setting are shown in Table
-\ref{tab:exp-gauss-corr0} and Table \ref{tab:exp-gauss-corr08}.  As we saw in
-the main paper in the 2-dimensional examples discussion , that in this setting
-quantile-based classifiers are nearly optimal and this is borne out in the
-simulation study results.  CQC performs well also, although never as well as
+\ref{tab:exp-gauss-corr0} and Table \ref{tab:exp-gauss-corr08}.  In this setting
+the 0-th quantile level for all features is optimal and quantile-based perform
+extremely well.  CQC performs well also, although never as well as
 quantile-based classifiers.  We see this as being due to several reasons.
 Firstly, quantile-based classifiers composite quantile-based classifiers
 sacrifice part of the data set in order to train the linear combination
@@ -580,15 +582,16 @@ data where the the quantiles of the underlying populations are given as follows.
 This example raises the question as to what the quantile distances would be for
 a fixed choice of quantile level.  Suppose first that we consider a quantile
 level with nonzero quantiles for both classes, say 0.97.  In this case, the
-quantile distances for the data in class 0 with value 0 than the data quantile
-distances for the data in class 1 with value 0.  As a result, the quantile-based
-data will have spuriously introduced differences in the data for 90\% of the
-data, when in fact there is no discriminative information in those quantiles.
-Conversely, suppose now that we select a quantile level with quantiles for both
-classes with value 0.  Doing so has the effect of simply multiplying the nonzero
-values in the data by a constant factor (i.e. the chosen quantile level).  While
-this is less disastrous then the previous scenario, we are not using the
-quantile-based data approach consistent with the rest of the paper.
+quantile distances for the data in class 0 with value 0 are larger than the
+quantile distances for the data in class 1 with value 0.  As a result, the
+quantile-based data will have spuriously introduced differences in the data for
+90\% of the data, when in fact there is no discriminative information in those
+quantiles.  Conversely, suppose now that we select a quantile level with
+quantiles for both classes with value 0.  Doing so has the effect of simply
+multiplying the nonzero values in the data by a constant factor (i.e. the chosen
+quantile level).  While this is less disastrous then the previous scenario, we
+are not using the quantile-based data approach consistent with the rest of the
+paper.
 
 What we propose to do for such a scenario is the following.  When mixture data
 such as the example given above is present for a variable, we try to separate
@@ -598,11 +601,9 @@ mass data, we create a categorical variable that includes a reference category
 for the continuous part of the data, and for the continuous part we perform the
 quantile-based classification using only the reduced subset of the data.
 
-
 \input{tables_supp.tex}
 
-\newpage
-\bibliography{cqc_paper}
+\bibliography{supplemental}
 
 \end{document}
 
